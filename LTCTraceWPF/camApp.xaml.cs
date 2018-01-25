@@ -90,11 +90,14 @@ namespace LTCTraceWPF
             ImageToDb.Show();
         }
 
-
-
         private void MainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("explorer.exe", "C:\\TraceImages\\");
         }
     }
 }

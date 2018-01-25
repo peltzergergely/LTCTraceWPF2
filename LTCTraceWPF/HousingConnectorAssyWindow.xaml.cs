@@ -100,8 +100,6 @@ namespace LTCTraceWPF
             msgWindow.Activate();
         }
 
-        //have to do precheck but needs a generator first
-
         private void DbInsert(string table) //DB insert
         {
             try

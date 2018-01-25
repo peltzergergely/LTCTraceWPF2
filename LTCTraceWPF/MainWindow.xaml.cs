@@ -148,5 +148,11 @@ namespace LTCTraceWPF
             var webCam = new camApp();
             webCam.Show();
         }
+
+        private void imgViewer_Click(object sender, RoutedEventArgs e)
+        {
+            var ImgViewer = new ImgViewer();
+            ImgViewer.Show();
+        }
     }
 }

@@ -37,6 +37,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition Height="75"/>
+                    <RowDefinition Height="auto"/>
                     <!--  <RowDefinition Height="132"/> -->
                 </Grid.RowDefinitions>
 
@@ -104,6 +105,17 @@
                             IsTabStop="True"
                             TabIndex="0"
                             Click="TakeSnapshotButton_Click"/>
+                <Button Grid.Row="2" 
+                            Grid.ColumnSpan="2" 
+                            Content="Képek megtekintése"
+                            Height="36"
+                            Width="200" 
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                        Margin="5"
+                            IsTabStop="True"
+                            TabIndex="1"
+                            Click="Button_Click"/>
                 <!-- </Grid> -->
             </Grid>
 
@@ -120,7 +132,7 @@
                 BorderBrush="White" 
                 Foreground="DarkSlateGray" 
                 KeyboardNavigation.IsTabStop="True"
-                TabIndex="1">
+                TabIndex="2">
             <StackPanel Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" 
                            Margin="5" 

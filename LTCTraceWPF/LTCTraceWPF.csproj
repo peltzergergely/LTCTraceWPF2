@@ -148,6 +148,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ImgViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LeakTest2Window.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -210,6 +214,9 @@
     </Compile>
     <Compile Include="ImageToDb.xaml.cs">
       <DependentUpon>ImageToDb.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImgViewer.xaml.cs">
+      <DependentUpon>ImgViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="LeakTest2Window.xaml.cs">
       <DependentUpon>LeakTest2Window.xaml</DependentUpon>

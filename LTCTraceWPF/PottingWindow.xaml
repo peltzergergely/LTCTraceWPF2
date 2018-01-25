@@ -65,64 +65,32 @@
                            FontSize="35"
                            HorizontalAlignment="Right" 
                            Margin="30,15">
-                    Kapton fotózása
+                    Kapton fotózása / Képek száma
                 </TextBlock>
-                <!--
-                <TextBlock Grid.Row="2"
-                           Grid.Column="0"
-                           FontSize="35"
-                           HorizontalAlignment="Right"
-                           Margin="30,15">
-                    Potting kész
-                </TextBlock>
-                <TextBlock Grid.Row="4" 
-                           Grid.Column="0" 
-                           FontSize="35" 
-                           HorizontalAlignment="Right"
-                           Margin="30,15">
-                    Filterboard Mainboard izolátor
-                </TextBlock>
-                -->
-                <TextBox Grid.Row="0" 
+                <TextBox x:Name="HousingDmTxbx" 
+                         Grid.Row="0" 
                          Grid.Column="1" 
                          FontSize="35" 
-                         Margin="30,15">
+                         Margin="30,15"
+                         LostFocus="HousingDmTxbx_LostFocus"
+                         KeyUp="OnKeyUpEvent">
                 </TextBox>
-                <TextBox Grid.Row="1" 
+                <TextBox x:Name="FbDmTxbx" Grid.Row="1" 
                          Grid.Column="1" 
                          FontSize="35" 
-                         Margin="30,15">
+                         Margin="30,15"
+                         KeyUp="OnKeyUpEvent">
                 </TextBox>
-                <Button x:Name="WebCamLaunchBtn"
-                        Grid.Row="3" 
-                        Grid.Column="1" 
+                    <Button x:Name="WebCamLaunchBtn"
+                            Grid.Row="3" 
+                            Grid.Column="1"
                         FontSize="25" 
                         HorizontalAlignment="Left" 
                         Margin="30,15"
-                        TabIndex="3" 
+                        TabIndex="2" 
                         Click="WebCamLaunchClick"
                         KeyUp="OnKeyUpEvent" >
                     Kamera indítása</Button>
-                <!--
-                <CheckBox Grid.Row="2"
-                          Grid.Column="1" 
-                          HorizontalAlignment="left"
-                          Margin="30,15">
-                    <CheckBox.LayoutTransform>
-                        <ScaleTransform ScaleX="2.5" ScaleY="2.5"></ScaleTransform>
-                    </CheckBox.LayoutTransform>
-                </CheckBox>
-                <CheckBox Grid.Row="4" 
-                          Grid.Column="1" 
-                          HorizontalAlignment="left"
-                          Margin="30,15">
-                    <CheckBox.LayoutTransform>
-                        <ScaleTransform ScaleX="2.5" 
-                                        ScaleY="2.5">
-                        </ScaleTransform>
-                    </CheckBox.LayoutTransform>
-                </CheckBox>
-                -->
             </Grid>
         </StackPanel>
 
@@ -157,7 +125,10 @@
                 Width="auto" 
                 Background="#FDFDFD" 
                 BorderBrush="White" 
-                Foreground="DarkSlateGray">
+                Foreground="DarkSlateGray" 
+                Click="SaveBtn_Click"
+                IsTabStop="True"
+                TabIndex="3">
             <StackPanel Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" 
                            Margin="5" 
