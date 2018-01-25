@@ -51,7 +51,7 @@ namespace LTCTraceWPF
                 DataTable dataTable = ds.Tables[0];
                 foreach (DataRow column in dataTable.Rows)
                 {
-                    for (int i = 0; i < 6; i++)
+                    for (int i = 0; i < 9; i++)
                     {
                         //Store binary data read from the database in a byte array
                         byte[] blob = (byte[])column[i + 6];

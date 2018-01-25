@@ -64,22 +64,28 @@ namespace LTCTraceWPF
         private void FormValidator()
         {
             string errorMsg = "";
-            if (IsDmValidated == true && CameraLaunched == true && IsPreChkPassed)
+            if (IsDmValidated == true && CameraLaunched)
             {
-                AllFieldsValidated = true;
+                PreChk("housing_leak_test_one");
+                if (IsPreChkPassed)
+                {
+                    if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length > 3)
+                    {
+                        AllFieldsValidated = true;
+                    }
+                }
+                else
+                    errorMsg += "Előző munkafolyamaton nem szerepelt a termék!";
             }
             if (IsDmValidated == false)
             {
-                errorMsg += "DataMátrix nem megfelelő ";
+                errorMsg += "DataMátrix nem megfelelő! ";
             }
             if (CameraLaunched == false)
             {
-                errorMsg += "Kamera nem volt elindítva";
+                errorMsg += "Kamera nem volt elindítva! ";
             }
-            if (IsPreChkPassed == false)
-            {
-                errorMsg += "Előző munkafolyamatot nem találom";
-            }
+            CallMessageForm(errorMsg);
         }
 
         public bool RegexValidation(string dataToValidate, string datafieldName)
@@ -90,7 +96,7 @@ namespace LTCTraceWPF
 
         private void DmValidator()
         {
-            if (RegexValidation(HousingDmTxbx.Text, "HousingDmRegEx") == true 
+            if (RegexValidation(HousingDmTxbx.Text, "HousingDmRegEx") == true
                 && RegexValidation(FbDmTxbx.Text, "FbDmRegEx") == true)
                 IsDmValidated = true;
             else
@@ -136,63 +142,71 @@ namespace LTCTraceWPF
 
         private void DbInsert(string table)
         {
-            try
+            FilePathStr = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
+            int imgArrayLimit = 9;
+            if (FilePathStr.Length > imgArrayLimit)
             {
+                MessageBox.Show("A készített képek száma meghaladja a maximum 9 képes limitet! Töröld ki a fölösleget a TraceImages mappából!'");
+                System.Diagnostics.Process.Start("explorer.exe", "C:\\TraceImages\\");
+            }
+            else
+            {
+                imgArrayLimit = FilePathStr.Length;
 
-                FilePathStr = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
-                int imgArrayLimit = 9;
-                if (FilePathStr.Length > imgArrayLimit)
+                try
                 {
-                    MessageBox.Show("A készített képek száma meghaladja a maximum 9 képes limitet! Töröld ki a fölösleget a C:\\TraceImages mappából!");
-                }
-                byte[][] imgByteArray = new byte[imgArrayLimit][];
-                for (int i = 0; i < imgArrayLimit; i++)
-                {
-                    FileStream fs = new FileStream(FilePathStr[i], FileMode.Open, FileAccess.Read);
-                    imgByteArray[i] = new byte[fs.Length];
-                    fs.Read(imgByteArray[i], 0, Convert.ToInt32(fs.Length));
-                    fs.Close();
-                }
 
-                using (NpgsqlConnection conn = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["ltctrace.dbconnectionstring"].ConnectionString))
-                {
-                    conn.Open();
-                    var cmd = new NpgsqlCommand("insert into " + table + " (housing_dm, fb_dm, pc_name, started_on, saved_on, pic1, pic2, pic3, pic4, pic5, pic6) " +
-                    "values(:housing_dm, :fb_dm, :pc_name, :started_on, :saved_on, :pic1, :pic2, :pic3, :pic4, :pic5, :pic6)", conn);
-                    cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
-                    cmd.Parameters.Add(new NpgsqlParameter("fb_dm", FbDmTxbx.Text));
-                    cmd.Parameters.Add(new NpgsqlParameter("pc_name", System.Environment.MachineName));
-                    cmd.Parameters.Add(new NpgsqlParameter("started_on", StartedOn));
-                    cmd.Parameters.Add(new NpgsqlParameter("saved_on", DateTime.Now));
-                    //uploading the pictures
+
+                    byte[][] imgByteArray = new byte[9][];
                     for (int i = 0; i < imgArrayLimit; i++)
                     {
-                        if (i < FilePathStr.Length)
-                            cmd.Parameters.Add(new NpgsqlParameter("pic" + (i + 1).ToString(), imgByteArray[i]));
-                        else //making them empty
-                        {
-                            imgByteArray[i] = new byte[0];
-                            cmd.Parameters.Add(new NpgsqlParameter("pic" + (i + 1).ToString(), imgByteArray[i]));
-                        }
+                        FileStream fs = new FileStream(FilePathStr[i], FileMode.Open, FileAccess.Read);
+                        imgByteArray[i] = new byte[fs.Length];
+                        fs.Read(imgByteArray[i], 0, Convert.ToInt32(fs.Length));
+                        fs.Close();
                     }
 
-                    int result = cmd.ExecuteNonQuery();
-                    if (result == 1)
+                    using (NpgsqlConnection conn = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["ltctrace.dbconnectionstring"].ConnectionString))
                     {
-                        FilePathStr = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
-                        System.IO.Directory.CreateDirectory("C:\\TraceImagesArchive\\" + HousingDmTxbx.Text);
-                        for (int i = 0; i < FilePathStr.Length; i++)
+                        conn.Open();
+                        var cmd = new NpgsqlCommand("insert into " + table + " (housing_dm, fb_dm, pc_name, started_on, saved_on, pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8, pic9) " +
+                        "values(:housing_dm, :fb_dm, :pc_name, :started_on, :saved_on, :pic1, :pic2, :pic3, :pic4, :pic5, :pic6, :pic7, :pic8, :pic9)", conn);
+                        cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
+                        cmd.Parameters.Add(new NpgsqlParameter("fb_dm", FbDmTxbx.Text));
+                        cmd.Parameters.Add(new NpgsqlParameter("pc_name", System.Environment.MachineName));
+                        cmd.Parameters.Add(new NpgsqlParameter("started_on", StartedOn));
+                        cmd.Parameters.Add(new NpgsqlParameter("saved_on", DateTime.Now));
+                        //uploading the pictures
+                        for (int i = 0; i < 9; i++)
                         {
-                            File.Move(FilePathStr[i], "C:\\TraceImagesArchive\\" + HousingDmTxbx.Text + "\\" + Path.GetFileName(FilePathStr[i]));
+                            if (i < FilePathStr.Length)
+                                cmd.Parameters.Add(new NpgsqlParameter("pic" + (i + 1).ToString(), imgByteArray[i]));
+                            else //making them empty
+                            {
+                                imgByteArray[i] = new byte[0];
+                                cmd.Parameters.Add(new NpgsqlParameter("pic" + (i + 1).ToString(), imgByteArray[i]));
+                            }
                         }
-                        CallMessageForm("Adatok elmentve!");
+
+                        int result = cmd.ExecuteNonQuery();
+                        if (result == 1)
+                        {
+                            FilePathStr = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
+                            System.IO.Directory.CreateDirectory("C:\\TraceImagesArchive\\" + HousingDmTxbx.Text);
+                            for (int i = 0; i < FilePathStr.Length; i++)
+                            {
+                                File.Move(FilePathStr[i], "C:\\TraceImagesArchive\\" + HousingDmTxbx.Text + "\\" + Path.GetFileName(FilePathStr[i]));
+                            }
+                            CallMessageForm("Adatok elmentve!");
+                        }
+                        conn.Close();
                     }
-                    conn.Close();
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    throw;
+                }
             }
         }
 
@@ -211,20 +225,15 @@ namespace LTCTraceWPF
             SaveBtn.Focus();
             var webCam = new camApp();
             webCam.Show();
-            CameraLaunched = true;
         }
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            PreChk("housing_leak_test_one");
             FormValidator();
-
             if (AllFieldsValidated)
             {
                 DbInsert("fb_emc_assy");
             }
-            else
-                CallMessageForm("Validálási hiba " + AllFieldsValidated.ToString() + IsDmValidated.ToString() + CameraLaunched.ToString() + IsPreChkPassed.ToString());
         }
     }
 }

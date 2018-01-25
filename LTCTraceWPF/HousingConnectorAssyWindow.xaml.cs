@@ -16,6 +16,8 @@ namespace LTCTraceWPF
 
         public bool AllFieldsValidated { get; set; } = false;
 
+        public bool IsPreChkPassed { get; set; } = false;
+
         public DateTime? StartedOn { get; set; } = null;
 
         public HousingConnectorAssyWindow()
@@ -50,7 +52,6 @@ namespace LTCTraceWPF
 
             if (Keyboard.FocusedElement == SaveBtn)
             {
-                FormValidator();
                 SaveBtn_Click(sender, e);
             }
 
@@ -61,7 +62,13 @@ namespace LTCTraceWPF
         {
             if (IsDmValidated == true && screwChkbx.IsChecked == true)
             {
-                AllFieldsValidated = true;
+                PreChk("hipot_test_one");
+                if (IsPreChkPassed)
+                {
+                    AllFieldsValidated = true;
+                }
+                else
+                    CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
             }
             else
             {
@@ -100,6 +107,25 @@ namespace LTCTraceWPF
             msgWindow.Activate();
         }
 
+        private void PreChk(string previousTable)
+        {
+            string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
+            var conn = new NpgsqlConnection(connstring);
+            conn.Open();
+            var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM " + previousTable + " WHERE housing_dm = :housing_dm", conn);
+            cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
+            Int32 countProd = Convert.ToInt32(cmd.ExecuteScalar());
+            conn.Close();
+            if (countProd == 1)
+            {
+                IsPreChkPassed = true;
+            }
+            else
+            {
+                IsPreChkPassed = false;
+            }
+        }
+
         private void DbInsert(string table) //DB insert
         {
             try
@@ -130,6 +156,7 @@ namespace LTCTraceWPF
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
+            FormValidator();
             if (AllFieldsValidated)
             {
                 DbInsert("housing_connector_assy");
