@@ -5,21 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LTCTraceWPF"
         mc:Ignorable="d"
-        Title="Végszerelés II." Height="1080" Width="1920" ResizeMode="NoResize" WindowState="Maximized" WindowStartupLocation="CenterScreen" WindowStyle="None" FontFamily="Verdana" Background="#FDFDFD">
+        Title="Mainboard Heatsink Szerelés" 
+        Height="1080" 
+        Width="1920" 
+        ResizeMode="NoResize"
+        WindowState="Maximized" 
+        WindowStartupLocation="CenterScreen" 
+        WindowStyle="None" 
+        FontFamily="Verdana" 
+        Background="#FDFDFD">
     <Grid>
         <StackPanel>
-            <Label Content="Végszerelés II." Padding="10" FontSize="25" Background="#00363a" Foreground="white" />
-            <Label Content="Tölsd ki az alábbi mezőket!" HorizontalContentAlignment="Center" Padding="30" FontSize="35" Background="#006064" Foreground="white"/>
+            <Label Content="Mainboard Heatsink Szerelés" 
+                   Padding="10" 
+                   FontSize="25" 
+                   Background="#00363a" 
+                   Foreground="white" />
+            <Label Content="Tölsd ki az alábbi mezőket!" 
+                   HorizontalContentAlignment="Center" 
+                   Padding="30" 
+                   FontSize="35" 
+                   Background="#006064" 
+                   Foreground="white"/>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -29,50 +43,98 @@
                     <ColumnDefinition Width="700" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" FontSize="35" HorizontalAlignment="Right" Margin="30,15">Ház DataMátrix</TextBlock>
-                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="35" HorizontalAlignment="Right" Margin="30,15">Gateway Csavarozás adatok</TextBlock>
-                <TextBlock Grid.Row="2" Grid.Column="0" FontSize="35" HorizontalAlignment="Right" Margin="30,15">Izolátor</TextBlock>
-                <TextBlock Grid.Row="3" Grid.Column="0" FontSize="35" HorizontalAlignment="Right" Margin="30,15">Gap Pad</TextBlock>
-                <TextBlock Grid.Row="4" Grid.Column="0" FontSize="35" HorizontalAlignment="Right" Margin="30,15">Sealing (HUN?)</TextBlock>
-                <TextBlock Grid.Row="5" Grid.Column="0" FontSize="35" HorizontalAlignment="Right" Margin="30,15">Tető + Clip</TextBlock>
-                <TextBlock Grid.Row="6" Grid.Column="0" FontSize="35" HorizontalAlignment="Right" Margin="30,15">Ház tisztítás</TextBlock>
-
-                <TextBox Grid.Row="0" Grid.Column="1" FontSize="35" Margin="30,15"></TextBox>
-                <TextBlock Grid.Row="1" Grid.Column="1" FontSize="35" HorizontalAlignment="Left" Margin="30,15">Placeholder</TextBlock>
-                <TextBox Grid.Row="2" Grid.Column="1" FontSize="35" Margin="30,15"></TextBox>
-                <CheckBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="left" Margin="30,15">
+                <TextBlock Grid.Row="0" 
+                           Grid.Column="0" 
+                           FontSize="35" 
+                           HorizontalAlignment="Right" 
+                           Margin="30,15">Ház DataMatrix</TextBlock>
+                <TextBlock Grid.Row="1" 
+                           Grid.Column="0" 
+                           FontSize="35" 
+                           HorizontalAlignment="Right" 
+                           Margin="30,15">Gateway DataMatrix</TextBlock>
+                <TextBlock Grid.Row="2" 
+                           Grid.Column="0"
+                           FontSize="35"
+                           HorizontalAlignment="Right"
+                           Margin="30,15">Csavarozás kész</TextBlock>
+                <TextBox x:Name="HousingDmTxbx" 
+                         Grid.Row="0" 
+                         Grid.Column="1" 
+                         FontSize="35" 
+                         Margin="30,15"
+                         IsTabStop="True"
+                         TabIndex="0"
+                         KeyUp="OnKeyUpEvent"
+                         LostFocus="HousingDmTxbx_LostFocus"></TextBox>
+                <TextBox x:Name="GwDmTxbx" 
+                         Grid.Row="1" 
+                         Grid.Column="1" 
+                         FontSize="35" 
+                         Margin="30,15"
+                         IsTabStop="True"
+                         TabIndex="0"
+                         KeyUp="OnKeyUpEvent"></TextBox>
+                <CheckBox x:Name="screwChkbx"
+                          Grid.Row="3"
+                          Grid.Column="1"
+                          HorizontalAlignment="left" 
+                          Margin="30,15" 
+                          KeyboardNavigation.TabIndex="1" 
+                          KeyUp="OnKeyUpEvent">
                     <CheckBox.LayoutTransform>
-                        <ScaleTransform ScaleX="2.3" ScaleY="2.3"></ScaleTransform>
-                    </CheckBox.LayoutTransform>
-                </CheckBox>
-                <CheckBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="left" Margin="30,15">
-                    <CheckBox.LayoutTransform>
-                        <ScaleTransform ScaleX="2.3" ScaleY="2.3"></ScaleTransform>
-                    </CheckBox.LayoutTransform>
-                </CheckBox>
-                <CheckBox Grid.Row="5" Grid.Column="1" HorizontalAlignment="left" Margin="30,15">
-                    <CheckBox.LayoutTransform>
-                        <ScaleTransform ScaleX="2.3" ScaleY="2.3"></ScaleTransform>
-                    </CheckBox.LayoutTransform>
-                </CheckBox>
-                <CheckBox Grid.Row="6" Grid.Column="1" HorizontalAlignment="left" Margin="30,15">
-                    <CheckBox.LayoutTransform>
-                        <ScaleTransform ScaleX="2.3" ScaleY="2.3"></ScaleTransform>
+                        <ScaleTransform ScaleX="3" 
+                                        ScaleY="3"
+                                        ></ScaleTransform>
                     </CheckBox.LayoutTransform>
                 </CheckBox>
             </Grid>
         </StackPanel>
 
-        <Button x:Name="MainMenuBtn" HorizontalAlignment="Left" Margin="40" VerticalAlignment="Bottom" Height="auto" Width="auto" Click="MainMenuBtn_Click" Background="#FDFDFD" BorderBrush="White" Foreground="DarkSlateGray" KeyboardNavigation.IsTabStop="False">
+        <Button x:Name="MainMenuBtn" 
+                HorizontalAlignment="Left"
+                Margin="40" 
+                VerticalAlignment="Bottom" 
+                Height="auto"
+                Width="auto"
+                Click="MainMenuBtn_Click" 
+                Background="#FDFDFD" 
+                BorderBrush="White" 
+                Foreground="DarkSlateGray" 
+                KeyboardNavigation.IsTabStop="False">
             <StackPanel Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Margin="5" HorizontalAlignment="Left" FontFamily="Segoe MDL2 Assets" FontSize="48" Padding="2" >&#xE8FC;</TextBlock>
-                <TextBlock VerticalAlignment="Center" FontSize="25" Padding="2">Főmenü</TextBlock>
+                <TextBlock VerticalAlignment="Center" 
+                           Margin="5" 
+                           HorizontalAlignment="Left" 
+                           FontFamily="Segoe MDL2 Assets" 
+                           FontSize="48"
+                           Padding="2" >&#xE8FC;</TextBlock>
+                <TextBlock VerticalAlignment="Center"
+                           FontSize="25"
+                           Padding="2">Főmenü</TextBlock>
             </StackPanel>
         </Button>
-        <Button x:Name="SaveBtn" HorizontalAlignment="Right" Margin="40" VerticalAlignment="Bottom" Height="auto" Width="auto" Background="#FDFDFD" BorderBrush="White" Foreground="DarkSlateGray">
+        <Button x:Name="SaveBtn" 
+                HorizontalAlignment="Right"
+                Margin="40" 
+                VerticalAlignment="Bottom" 
+                Height="auto"
+                Width="auto" 
+                Background="#FDFDFD"
+                BorderBrush="White" 
+                Foreground="DarkSlateGray" 
+                Click="SaveBtn_Click">
             <StackPanel Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Margin="5" HorizontalAlignment="Left" FontFamily="Segoe MDL2 Assets" FontSize="48" Padding="2" >&#xE74E;</TextBlock>
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="25" Padding="2">Mentés</TextBlock>
+                <TextBlock VerticalAlignment="Center" 
+                           Margin="5"
+                           HorizontalAlignment="Left"
+                           FontFamily="Segoe MDL2 Assets" 
+                           FontSize="48" 
+                           Padding="2" >&#xE74E;</TextBlock>
+                <TextBlock VerticalAlignment="Center"
+                           HorizontalAlignment="Right" 
+                           FontSize="25" 
+                           Padding="2">Mentés</TextBlock>
             </StackPanel>
         </Button>
     </Grid>

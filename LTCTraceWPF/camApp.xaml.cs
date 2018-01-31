@@ -48,7 +48,7 @@ namespace LTCTraceWPF
                 // Display webcam video
                 WebcamViewer.StartPreview();
             }
-            catch (Microsoft.Expression.Encoder.SystemErrorException ex)
+            catch (Microsoft.Expression.Encoder.SystemErrorException)
             {
                 MessageBox.Show("Device is in use by another application");
             }
@@ -61,7 +61,7 @@ namespace LTCTraceWPF
                 // Display webcam video
                 WebcamViewer.StartPreview();
             }
-            catch (Microsoft.Expression.Encoder.SystemErrorException ex)
+            catch (Microsoft.Expression.Encoder.SystemErrorException)
             {
                 MessageBox.Show("Device is in use by another application");
             }
@@ -78,14 +78,8 @@ namespace LTCTraceWPF
         private void TakeSnapshotButton_Click(object sender, RoutedEventArgs e)
         {
             // Take snapshot of webcam video.
-            WebcamViewer.TakeSnapshot();
+            // WebcamViewer.TakeSnapshot();
             FilePath = (WebcamViewer.TakeSnapshot());
-            TransferFileName();
-        }
-
-        private void TransferFileName()
-        {
-            //public ImageToDb(string filePathName, string dataMatrix, string tableName, int numOfImage)
             var ImageToDb = new ImageToDb(FilePath);
             ImageToDb.Show();
         }

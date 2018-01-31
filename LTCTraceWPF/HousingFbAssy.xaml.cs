@@ -11,13 +11,13 @@ namespace LTCTraceWPF
     /// <summary>
     /// Interaction logic for PottingWindow.xaml
     /// </summary>
-    public partial class PottingWindow : Window
+    public partial class HousingFbAssy : Window
     {
         public bool IsDmValidated { get; set; } = false;
 
         public bool AllFieldsValidated { get; set; } = false;
 
-        public bool CameraLaunched { get; set; } = false;
+        public bool IsCameraLaunched { get; set; } = false;
 
         public DateTime? StartedOn { get; set; } = null;
 
@@ -25,7 +25,7 @@ namespace LTCTraceWPF
 
         public string[] FilePathStr = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
 
-        public PottingWindow()
+        public HousingFbAssy()
         {
             Loaded += (sender, e) => MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             InitializeComponent();
@@ -64,7 +64,7 @@ namespace LTCTraceWPF
         private void FormValidator()
         {
             string errorMsg = "";
-            if (IsDmValidated == true && CameraLaunched)
+            if (IsDmValidated == true) 
             {
                 PreChk("housing_leak_test_one");
                 if (IsPreChkPassed)
@@ -81,11 +81,14 @@ namespace LTCTraceWPF
             {
                 errorMsg += "DataMátrix nem megfelelő! ";
             }
-            if (CameraLaunched == false)
+            if (IsCameraLaunched == false)
             {
                 errorMsg += "Kamera nem volt elindítva! ";
             }
-            CallMessageForm(errorMsg);
+            if  (errorMsg != "")
+            {
+                CallMessageForm(errorMsg);
+            }
         }
 
         public bool RegexValidation(string dataToValidate, string datafieldName)
@@ -107,7 +110,7 @@ namespace LTCTraceWPF
         {
             IsDmValidated = false;
             AllFieldsValidated = false;
-            CameraLaunched = false;
+            IsCameraLaunched = false;
             HousingDmTxbx.Text = "";
             FbDmTxbx.Text = "";
             HousingDmTxbx.Focus();
@@ -115,7 +118,7 @@ namespace LTCTraceWPF
 
         private void CallMessageForm(string msgToShow)
         {
-            //ResetForm();
+            ResetForm();
             var msgWindow = new MessageForm(msgToShow);
             msgWindow.Show();
             msgWindow.Activate();
@@ -152,11 +155,8 @@ namespace LTCTraceWPF
             else
             {
                 imgArrayLimit = FilePathStr.Length;
-
                 try
                 {
-
-
                     byte[][] imgByteArray = new byte[9][];
                     for (int i = 0; i < imgArrayLimit; i++)
                     {
@@ -192,10 +192,10 @@ namespace LTCTraceWPF
                         if (result == 1)
                         {
                             FilePathStr = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
-                            System.IO.Directory.CreateDirectory("C:\\TraceImagesArchive\\" + HousingDmTxbx.Text);
+                            System.IO.Directory.CreateDirectory("C:\\TraceImagesArchive\\" + "HOUSINGDM_" + HousingDmTxbx.Text);
                             for (int i = 0; i < FilePathStr.Length; i++)
                             {
-                                File.Move(FilePathStr[i], "C:\\TraceImagesArchive\\" + HousingDmTxbx.Text + "\\" + Path.GetFileName(FilePathStr[i]));
+                                File.Move(FilePathStr[i], "C:\\TraceImagesArchive\\" + "HOUSINGDM_" + HousingDmTxbx.Text + "\\" + Path.GetFileName(FilePathStr[i]));
                             }
                             CallMessageForm("Adatok elmentve!");
                         }
@@ -205,7 +205,6 @@ namespace LTCTraceWPF
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
-                    throw;
                 }
             }
         }
@@ -225,6 +224,7 @@ namespace LTCTraceWPF
             SaveBtn.Focus();
             var webCam = new camApp();
             webCam.Show();
+            IsCameraLaunched = true;
         }
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
@@ -232,7 +232,7 @@ namespace LTCTraceWPF
             FormValidator();
             if (AllFieldsValidated)
             {
-                DbInsert("fb_emc_assy");
+                DbInsert("housing_fb_assy");
             }
         }
     }

@@ -54,7 +54,6 @@ namespace LTCTraceWPF
             {
                 SaveBtn_Click(sender, e);
             }
-
             DmValidator();
         }
 
@@ -96,6 +95,7 @@ namespace LTCTraceWPF
             AllFieldsValidated = false;
             HousingDmTxbx.Text = "";
             screwChkbx.IsChecked = false;
+            IsPreChkPassed = false;
             HousingDmTxbx.Focus();
         }
 

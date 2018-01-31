@@ -1,41 +1,34 @@
 ﻿using Npgsql;
 using System;
 using System.Configuration;
-using System.Data;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace LTCTraceWPF
 {
     /// <summary>
-    /// Interaction logic for FbEmcWindow.xaml
+    /// Interaction logic for MbThtWindow.xaml
     /// </summary>
-    public partial class FbEmcWindow : Window
+    public partial class MbDspAssy : Window
     {
         public bool IsDmValidated { get; set; } = false;
 
         public bool AllFieldsValidated { get; set; } = false;
 
-        public bool IsCameraLaunched { get; set; } = false;
-
-        public bool IsPreChkPassed { get; set; } = false;
+        public bool IsCameraLaunched { get; set; } = true;
 
         public DateTime? StartedOn { get; set; } = null;
 
+        public bool IsPreChkPassed { get; set; } = false;
+
         public string[] FilePathStr = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
 
-        public FbEmcWindow()
+        public MbDspAssy()
         {
             Loaded += (sender, e) => MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             InitializeComponent();
-        }
-
-        private void MainMenuBtn_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
 
         private void OnKeyUpEvent(object sender, KeyEventArgs e)
@@ -49,7 +42,7 @@ namespace LTCTraceWPF
                 return;
             }
 
-            if (e.Key == Key.Enter && FbDmTxbx.Text.Length > 0)
+            if (e.Key == Key.Enter && MbDmTxbx.Text.Length > 0)
             {
                 TraversalRequest tRequest = new TraversalRequest(FocusNavigationDirection.Next);
                 UIElement keyboardFocus = Keyboard.FocusedElement as UIElement;
@@ -61,22 +54,19 @@ namespace LTCTraceWPF
                 e.Handled = true;
             }
 
-            if (Keyboard.FocusedElement == SaveBtn) //calls the validator for the field in focus
+            if (Keyboard.FocusedElement == SaveBtn)
             {
                 SaveBtn_Click(sender, e);
             }
-
             DmValidator();
         }
 
-
-        //fb_acdc_assy
         private void FormValidator()
         {
             string errorMsg = "";
             if (IsDmValidated == true)
             {
-                PreChk("fb_acdc_assy");
+                PreChk("mb_hs_assy");
                 if (IsPreChkPassed)
                 {
                     if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length > 3)
@@ -109,35 +99,34 @@ namespace LTCTraceWPF
 
         private void DmValidator()
         {
-            if (RegexValidation(FbDmTxbx.Text, "FbDmRegEx"))
+            if (RegexValidation(MbDmTxbx.Text, "HousingDmRegEx") == true
+                && RegexValidation(DspOne1.Text, "FbDmRegEx") == true)
                 IsDmValidated = true;
             else
                 IsDmValidated = false;
         }
+
         private void ResetForm()
         {
             IsDmValidated = false;
             AllFieldsValidated = false;
             IsCameraLaunched = false;
-            FbDmTxbx.Text = "";
-            FbDmTxbx.Focus();
+            //IsPreChkPassed = false;
+            //MbDmTxbx.Text = "";
+            //DspOne1.Text = "";
+            //DspOne2.Text = "";
+            //DspOne3.Text = "";
+            //DspTwo1.Text = "";
+            //DspTwo2.Text = "";
+            //DspTwo3.Text = "";
+            MbDmTxbx.Focus();
         }
-
 
         private void CallMessageForm(string msgToShow)
         {
-            ResetForm();
             var msgWindow = new MessageForm(msgToShow);
             msgWindow.Show();
             msgWindow.Activate();
-        }
-
-        private void WebCamLaunchClick(object sender, RoutedEventArgs e)
-        {
-            SaveBtn.Focus();
-            IsCameraLaunched = true;
-            var webCam = new camApp();
-            webCam.Show();
         }
 
         private void PreChk(string previousTable)
@@ -145,8 +134,8 @@ namespace LTCTraceWPF
             string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
             var conn = new NpgsqlConnection(connstring);
             conn.Open();
-            var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM " + previousTable + " WHERE fb_dm = :fb_dm", conn);
-            cmd.Parameters.Add(new NpgsqlParameter("fb_dm", FbDmTxbx.Text));
+            var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM " + previousTable + " WHERE mb_dm = :mb_dm", conn);
+            cmd.Parameters.Add(new NpgsqlParameter("mb_dm", MbDmTxbx.Text));
             Int32 countProd = Convert.ToInt32(cmd.ExecuteScalar());
             conn.Close();
             if (countProd == 1)
@@ -155,9 +144,11 @@ namespace LTCTraceWPF
             }
             else
             {
-                IsPreChkPassed = false;
+                IsPreChkPassed = true;
             }
         }
+
+
 
         private void DbInsert(string table)
         {
@@ -165,7 +156,7 @@ namespace LTCTraceWPF
             int imgArrayLimit = 9;
             if (FilePathStr.Length > imgArrayLimit)
             {
-                MessageBox.Show("A készített képek száma meghaladja a maximum 9 képes limitet! Töröld ki a fölösleget a C:\\TraceImages mappából!'");
+                MessageBox.Show("A készített képek száma meghaladja a maximum 9 képes limitet! Töröld ki a fölösleget a TraceImages mappából!'");
                 System.Diagnostics.Process.Start("explorer.exe", "C:\\TraceImages\\");
             }
             else
@@ -185,9 +176,15 @@ namespace LTCTraceWPF
                     using (NpgsqlConnection conn = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["ltctrace.dbconnectionstring"].ConnectionString))
                     {
                         conn.Open();
-                        var cmd = new NpgsqlCommand("insert into " + table + " (fb_dm, pc_name, started_on, saved_on, pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8, pic9) " +
-                        "values(:fb_dm, :pc_name, :started_on, :saved_on, :pic1, :pic2, :pic3, :pic4, :pic5, :pic6, :pic7, :pic8, :pic9)", conn);
-                        cmd.Parameters.Add(new NpgsqlParameter("fb_dm", FbDmTxbx.Text));
+                        var cmd = new NpgsqlCommand("insert into " + table + " (mb_dm, dsp_one_one, dsp_one_two, dsp_one_three, dsp_two_one, dsp_two_two, dsp_two_three, pc_name, started_on, saved_on, pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8, pic9) " +
+                        "values(:mb_dm, :dsp_one_one, :dsp_one_two, :dsp_one_three, :dsp_two_one, :dsp_two_two, :dsp_two_three, :pc_name, :started_on, :saved_on, :pic1, :pic2, :pic3, :pic4, :pic5, :pic6, :pic7, :pic8, :pic9)", conn);
+                        cmd.Parameters.Add(new NpgsqlParameter("mb_dm", MbDmTxbx.Text));
+                        cmd.Parameters.Add(new NpgsqlParameter("dsp_one_one", DspOne1.Text));
+                        cmd.Parameters.Add(new NpgsqlParameter("dsp_one_two", DspOne2.Text));
+                        cmd.Parameters.Add(new NpgsqlParameter("dsp_one_three", DspOne3.Text));
+                        cmd.Parameters.Add(new NpgsqlParameter("dsp_two_one", DspTwo1.Text));
+                        cmd.Parameters.Add(new NpgsqlParameter("dsp_two_two", DspTwo2.Text));
+                        cmd.Parameters.Add(new NpgsqlParameter("dsp_two_three", DspTwo3.Text));
                         cmd.Parameters.Add(new NpgsqlParameter("pc_name", System.Environment.MachineName));
                         cmd.Parameters.Add(new NpgsqlParameter("started_on", StartedOn));
                         cmd.Parameters.Add(new NpgsqlParameter("saved_on", DateTime.Now));
@@ -207,13 +204,14 @@ namespace LTCTraceWPF
                         if (result == 1)
                         {
                             FilePathStr = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
-                            System.IO.Directory.CreateDirectory("C:\\TraceImagesArchive\\" + "FBDM_" + FbDmTxbx.Text);
+                            System.IO.Directory.CreateDirectory("C:\\TraceImagesArchive\\" + "MBDM_" + MbDmTxbx.Text);
                             for (int i = 0; i < FilePathStr.Length; i++)
                             {
-                                File.Move(FilePathStr[i], "C:\\TraceImagesArchive\\" + "FBDM_"+ FbDmTxbx.Text + "\\" + Path.GetFileName(FilePathStr[i]));
+                                File.Move(FilePathStr[i], "C:\\TraceImagesArchive\\" + "MBDM_" + MbDmTxbx.Text + "\\" + Path.GetFileName(FilePathStr[i]));
                             }
                             CallMessageForm("Adatok elmentve!");
                         }
+                        else CallMessageForm("Hiba a feltöltésben!");
                         conn.Close();
                     }
                 }
@@ -224,18 +222,32 @@ namespace LTCTraceWPF
             }
         }
 
+        private void MbDmTxbx_LostFocus(object sender, RoutedEventArgs e)
+        {
+            StartedOn = DateTime.Now;
+        }
+
+        private void MainMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void WebCamLaunchClick(object sender, RoutedEventArgs e)
+        {
+            SaveBtn.Focus();
+            var webCam = new camApp();
+            webCam.Show();
+            IsCameraLaunched = true;
+        }
+
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
             FormValidator();
             if (AllFieldsValidated)
             {
-                DbInsert("fb_emc_assy");
+                DbInsert("mb_dsp_assy");
             }
-        }
-
-        private void FbDmTxbx_LostFocus(object sender, RoutedEventArgs e)
-        {
-            StartedOn = DateTime.Now;
+            ResetForm();
         }
     }
 }

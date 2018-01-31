@@ -18,6 +18,8 @@ namespace LTCTraceWPF
 
         public DateTime? StartedOn { get; set; } = null;
 
+        public bool IsPreChkPassed { get; set; } = false;
+
         public MbHsAssyWindow()
         {
             Loaded += (sender, e) => MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
@@ -85,6 +87,7 @@ namespace LTCTraceWPF
             AllFieldsValidated = false;
             MbDmTxbx.Text = "";
             screwChkbx.IsChecked = false;
+            IsPreChkPassed = false;
             MbDmTxbx.Focus();
         }
 

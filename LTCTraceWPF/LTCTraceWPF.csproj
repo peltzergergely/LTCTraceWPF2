@@ -128,7 +128,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Hipot1Window.xaml">
+    <Page Include="HipotTestOne.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -200,8 +200,8 @@
     <Compile Include="GwThtWindow.xaml.cs">
       <DependentUpon>GwThtWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Hipot1Window.xaml.cs">
-      <DependentUpon>Hipot1Window.xaml</DependentUpon>
+    <Compile Include="HipotTestOne.xaml.cs">
+      <DependentUpon>HipotTestOne.xaml</DependentUpon>
     </Compile>
     <Compile Include="HousingConnectorAssyWindow.xaml.cs">
       <DependentUpon>HousingConnectorAssyWindow.xaml</DependentUpon>
@@ -233,7 +233,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MbThtWindow.xaml">
+    <Page Include="MbDspAssy.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -241,7 +241,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PottingWindow.xaml">
+    <Page Include="HousingFbAssy.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -261,14 +261,14 @@
     <Compile Include="MbReworkWindow.xaml.cs">
       <DependentUpon>MbReworkWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MbThtWindow.xaml.cs">
-      <DependentUpon>MbThtWindow.xaml</DependentUpon>
+    <Compile Include="MbDspAssy.xaml.cs">
+      <DependentUpon>MbDspAssy.xaml</DependentUpon>
     </Compile>
     <Compile Include="MessageForm.xaml.cs">
       <DependentUpon>MessageForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PottingWindow.xaml.cs">
-      <DependentUpon>PottingWindow.xaml</DependentUpon>
+    <Compile Include="HousingFbAssy.xaml.cs">
+      <DependentUpon>HousingFbAssy.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

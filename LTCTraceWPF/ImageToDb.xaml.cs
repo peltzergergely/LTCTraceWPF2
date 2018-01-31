@@ -52,6 +52,8 @@ namespace LTCTraceWPF
             FilePathStr = filePathName;
             camApp.NumOfPics = 0 ;
             ShowImage();
+            int numOfPics = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length;
+            numOfPicsLbl.Text += numOfPics.ToString();
         }
 
         private void ShowImage()

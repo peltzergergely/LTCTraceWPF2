@@ -68,11 +68,11 @@ namespace LTCTraceWPF
             }
             else if (IsDmValidated == false)
             {
-                CallMessageForm("DataMátrix nem megfelelő!");
+                CallMessageForm("HIBA: DataMátrix nem megfelelő!");
             }
             else if (IsPreChkPassed == false)
             {
-                CallMessageForm("Előző munkafolyamatot nem találom!");
+                CallMessageForm("HIBA: Előző munkafolyamaton nem szerepelt a termék!");
             }
         }
 

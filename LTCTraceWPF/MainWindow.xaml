@@ -68,7 +68,7 @@
                             Padding="10,10" 
                             Margin="10,30,10,10" 
                             Background="#FFEBC1" 
-                            Click="Button_Click_1">Filterboard AC DC Konnektor Szer. Cam</Button>
+                            Click="Button_Click_1">Filterboard AC DC Konnektor Szer. chk</Button>
                     <Button x:Name="FbEmcBtn"
                             FontSize="25"
                             Padding="10,10" 
@@ -87,18 +87,6 @@
                             Margin="10,30,10,10"
                             Background="#F2C66C" 
                             Click="MbThtBtn_Click">Mainboard DSP Trace/Szer. Cam</Button>
-                    <Button x:Name="camAppBtn" 
-                            FontSize="25"
-                            Padding="10,10"
-                            Margin="10,30,10,10"
-                            Background="LightGray" 
-                            Click="webCam_Click">CamApp</Button>
-                    <Button x:Name="imgViewer" 
-                            FontSize="25"
-                            Padding="10,10"
-                            Margin="10,30,10,10"
-                            Background="LightGray" 
-                            Click="imgViewer_Click">Képnézegető</Button>
                 </StackPanel>
                 <StackPanel Margin="40,0" 
                             Width="550">
@@ -114,7 +102,7 @@
                             Margin="10,30,10,10"
                             Background="#AEBCDE" 
                             Click="CalibBtn_Click" 
-                            IsEnabled="False">Kalibráció Gen</Button>
+                            IsEnabled="True">Kalibráció Gen</Button>
                     <Button x:Name="FinalAssy2Btn" 
                             FontSize="25"
                             Padding="10,10" 

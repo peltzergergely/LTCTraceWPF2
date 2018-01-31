@@ -50,7 +50,6 @@ namespace LTCTraceWPF
 
             if (Keyboard.FocusedElement == SaveBtn)
             {
-                FormValidator();
                 SaveBtn_Click(sender, e);
             }
 
@@ -100,16 +99,14 @@ namespace LTCTraceWPF
             msgWindow.Activate();
         }
 
-        private void DbInsert(string table) //DB insert
+        private void DbInsert(string table)
         {
             try
             {
                 string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
-                // Making connection with Npgsql provider
                 var conn = new NpgsqlConnection(connstring);
                 DateTime UploadMoment = DateTime.Now;
                 conn.Open();
-                // building SQL query
                 var cmd = new NpgsqlCommand("INSERT INTO " + table + " (fb_dm, pc_name, started_on, saved_on) " +
                     "VALUES(:fb_dm, :pc_name, :started_on, :saved_on)", conn);
                 cmd.Parameters.Add(new NpgsqlParameter("fb_dm", FbDmTxbx.Text));
@@ -117,7 +114,6 @@ namespace LTCTraceWPF
                 cmd.Parameters.Add(new NpgsqlParameter("started_on", StartedOn));
                 cmd.Parameters.Add(new NpgsqlParameter("saved_on", DateTime.Now));
                 cmd.ExecuteNonQuery();
-                //closing connection ASAP
                 conn.Close();
                 CallMessageForm("Adatok feltöltve!");
             }
@@ -130,6 +126,7 @@ namespace LTCTraceWPF
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
+            FormValidator();
             if (AllFieldsValidated)
             {
                 DbInsert("fb_acdc_assy");
