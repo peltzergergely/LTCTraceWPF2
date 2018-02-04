@@ -127,7 +127,7 @@
                             Padding="10,10" 
                             Margin="10,30,10,10"
                             Background="#F26F6C"
-                            Click="FirewallBtn_Click">Firewall Cam </Button>
+                            Click="FirewallBtn_Click">Firewall Cam</Button>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

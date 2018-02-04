@@ -59,7 +59,7 @@
                            Margin="30,15">
                     Filterboard DataMátrix
                 </TextBlock>
-                
+
                 <TextBlock Grid.Row="3" 
                            Grid.Column="0" 
                            FontSize="35"
@@ -81,7 +81,7 @@
                          Margin="30,15"
                          KeyUp="OnKeyUpEvent">
                 </TextBox>
-                    <Button x:Name="WebCamLaunchBtn"
+                <Button x:Name="WebCamLaunchBtn"
                             Grid.Row="3" 
                             Grid.Column="1"
                         FontSize="25" 

@@ -29,43 +29,67 @@
                    Foreground="white"/>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" 
+        <StackPanel Orientation="Vertical" 
                     HorizontalAlignment="Center" 
-                    VerticalAlignment="Center">
-            <Grid Margin="0,150">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" 
-                                      MinWidth="800"/>
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
+                    VerticalAlignment="Center"
+                    Margin="10"
+                    Width="1600"
+                    Height="700">
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="costumquery" 
+                         Grid.Row="0" 
+                         Grid.Column="0" 
+                         FontSize="25" 
+                         Margin="30,15"
+                         Height="50"
+                         Width="1124"></TextBox>
+            </StackPanel>
 
-                <Button x:Name="listDbBtn"
-                        Grid.Row="0" 
-                        Grid.Column="1" 
-                        FontSize="35" 
-                        HorizontalAlignment="Right" 
-                        Margin="30,15"
-                        Click="listDbBtn_Click">SQL query</Button>
-                <DataGrid x:Name="dataGridView1" 
-                          Grid.Row="2" 
-                          Grid.Column="0"
-                          Grid.ColumnSpan="2"
-                          Height="800"
-                          Width="1600" 
-                          FontSize="20" 
-                          HorizontalAlignment="Stretch" 
-                          ColumnWidth="0.25*" />
-
+            <StackPanel Orientation="Horizontal">
                 <TextBox x:Name="queryTb" 
                          Grid.Row="0" 
                          Grid.Column="0" 
-                         FontSize="35" 
-                         Margin="30,15" ></TextBox>
-            </Grid>
+                         FontSize="25" 
+                         Margin="30,15"
+                         Height="50"
+                         Width="500"></TextBox>
+                <ComboBox Name="workStationTableName" 
+                          FontSize="25" 
+                          MinWidth="300" 
+                          Height="50"/>
+                <ComboBox Name="searchedField" 
+                          FontSize="25" 
+                          MinWidth="300" 
+                          Height="50"/>
+                <Button x:Name="listDbBtn"
+                        FontSize="25" 
+                        HorizontalAlignment="Right" 
+                        Margin="30,15" 
+                        Click="listDbBtn_Click"
+                        >Lekérdez</Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+            <DataGrid x:Name="dataGridView1"
+                      MinHeight="500"
+                      VerticalAlignment="Stretch"
+                      Width="1200" 
+                      FontSize="20" 
+                      HorizontalAlignment="Left" 
+                      ColumnWidth="0.25*"
+                      BorderThickness="2"
+                      Style="{StaticResource AzureDataGrid}"
+                      IsReadOnly="True"
+                      SelectionUnit="Cell"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto" />
+                <TreeView 
+                    Name="tree"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Stretch"
+                    Width="380"
+                    BorderThickness="2"
+                    FontSize="25"/>
+            </StackPanel>
         </StackPanel>
 
         <Button x:Name="MainMenuBtn" 
