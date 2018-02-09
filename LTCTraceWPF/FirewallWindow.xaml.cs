@@ -67,7 +67,7 @@ namespace LTCTraceWPF
             string errorMsg = "";
             if (IsDmValidated == true)
             {
-                PreChk("housing_leak_test_two");
+                PreChk("eol");
                 if (IsPreChkPassed)
                 {
                     if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length > 2)

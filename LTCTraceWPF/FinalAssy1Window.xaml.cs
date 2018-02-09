@@ -54,7 +54,6 @@ namespace LTCTraceWPF
                 FormValidator();
                 SaveBtn_Click(sender, e);
             }
-
             DmValidator();
         }
 
@@ -124,7 +123,7 @@ namespace LTCTraceWPF
             cmd.Parameters.Add(new NpgsqlParameter("dataToFind", dataToFind));
             Int32 countProd = Convert.ToInt32(cmd.ExecuteScalar());
             conn.Close();
-            if (countProd == 1)
+            if (countProd > 1)
             {
                 IsPreChkPassed = true;
             }
@@ -175,7 +174,6 @@ namespace LTCTraceWPF
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            FormValidator();
             if (AllFieldsValidated)
             {
                 DbInsert("final_assy_one");

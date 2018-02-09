@@ -1,21 +1,10 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Npgsql;
 using System.Configuration;
 using System.Data;
-using System.ComponentModel;
-using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
 
 namespace LTCTraceWPF
 {
@@ -30,7 +19,6 @@ namespace LTCTraceWPF
             InitializeComponent();
             FillWorkStationList();
             FillProductNames();
-            TreeViewMaker();
         }
 
         public IDictionary<string, string> workSteps = new Dictionary<string, string>();
@@ -48,7 +36,7 @@ namespace LTCTraceWPF
             workSteps.Add("41 Végszerelés I.", "housing_connector_assy");
             workSteps.Add("42 Kalibráció", "calibration");
             workSteps.Add("43 Végszerelés II.", "final_assy_two");
-            workSteps.Add("44 Leak Teszt II.", "leak_test_two");
+            workSteps.Add("44 Leak Teszt II.", "housing_leak_test_two");
             workSteps.Add("45 Hipot Teszt II.", "hipot_test_two");
             workSteps.Add("46 EOL", "eol");
             workSteps.Add("47 Firewall", "firewall");
@@ -92,21 +80,6 @@ namespace LTCTraceWPF
             table_select(query);
         }
 
-        private void TreeViewMaker()
-        {
-            TreeViewItem ceo = new TreeViewItem() { Header = "CEO" };
-            TreeViewItem manager1 = new TreeViewItem() { Header = "Manager1" };
-            TreeViewItem manager2 = new TreeViewItem() { Header = "Manager2" };
-            TreeViewItem person1 = new TreeViewItem() { Header = "person1" };
-            TreeViewItem person2 = new TreeViewItem() { Header = "person2" };
-
-            manager1.Items.Add(person1);
-            manager2.Items.Add(person2);
-            ceo.Items.Add(manager1);
-            ceo.Items.Add(manager2);
-            tree.Items.Add(ceo);
-        }
-
         private DataSet dataSet = new DataSet();
         private DataTable dataTable = new DataTable();
 
@@ -147,6 +120,18 @@ namespace LTCTraceWPF
         private void listDbBtn_Click(object sender, RoutedEventArgs e)
         {
             QueryGen();
+        }
+
+        private void imgBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var ImgViewer = new ImgViewer();
+            ImgViewer.Show();
+        }
+
+        private void reportBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var report = new Report();
+            report.Show();
         }
     }
 }

@@ -8,23 +8,27 @@ using System.Windows.Input;
 namespace LTCTraceWPF
 {
     /// <summary>
-    /// Interaction logic for FinalAssy2Window.xaml
+    /// Interaction logic for EOLTest.xaml
     /// </summary>
-    public partial class FinalAssy2Window : Window
+    public partial class EOLTest : Window
     {
-        public bool AllFieldsValidated { get; set; } = false;
-
         public bool IsDmValidated { get; set; } = false;
-
-        public DateTime? StartedOn { get; set; } = null;
 
         public bool IsPreChkPassed { get; set; } = false;
 
-        public FinalAssy2Window()
+        public bool AllFieldsValidated { get; set; } = false;
+
+        public DateTime? StartedOn { get; set; } = null;
+
+        public string tableName { get; set; } = "eol";
+
+        public EOLTest()
         {
             Loaded += (sender, e) => MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             InitializeComponent();
         }
+
+        //Handles focus movement and checks validator
         private void OnKeyUpEvent(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
@@ -50,6 +54,7 @@ namespace LTCTraceWPF
 
             if (Keyboard.FocusedElement == SaveBtn)
             {
+                PreChk("hipot_test_two");
                 FormValidator();
                 SaveBtn_Click(sender, e);
             }
@@ -59,19 +64,17 @@ namespace LTCTraceWPF
 
         private void FormValidator()
         {
-            if (IsDmValidated == true)
+            if (IsDmValidated == true && IsPreChkPassed == true)
             {
-                PreChk("calibration", "housing_dm", HousingDmTxbx.Text);
-                if (IsPreChkPassed)
-                {
-                    AllFieldsValidated = true;
-                }
-                else
-                    CallMessageForm("Előző munkafolyamaton nem szerepelt a Ház!");
+                AllFieldsValidated = true;
             }
-            else
+            else if (IsDmValidated == false)
             {
-                CallMessageForm("Hibás kitöltés");
+                CallMessageForm("HIBA: DataMátrix nem megfelelő!");
+            }
+            else if (IsPreChkPassed == false)
+            {
+                CallMessageForm("HIBA: Előző munkafolyamaton nem szerepelt a termék!");
             }
         }
 
@@ -83,9 +86,8 @@ namespace LTCTraceWPF
 
         private void DmValidator()
         {
-            if (RegexValidation(HousingDmTxbx.Text, "MbDmRegEx"))
-               // if (RegexValidation(GwDmTxbx.Text, "MbDmRegEx"))
-                    IsDmValidated = true;
+            if (RegexValidation(HousingDmTxbx.Text, "HousingDmRegEx"))
+                IsDmValidated = true;
             else
                 IsDmValidated = false;
         }
@@ -95,9 +97,6 @@ namespace LTCTraceWPF
             IsDmValidated = false;
             AllFieldsValidated = false;
             HousingDmTxbx.Text = "";
-            GwDmTxbx.Text = "";
-            screwChkbx.IsChecked = false;
-            IsPreChkPassed = false;
             HousingDmTxbx.Focus();
         }
 
@@ -109,16 +108,16 @@ namespace LTCTraceWPF
             msgWindow.Activate();
         }
 
-        private void PreChk(string previousTable, string columnToSearch, string dataToFind)
+        private void PreChk(string previousTable)
         {
             string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
             var conn = new NpgsqlConnection(connstring);
             conn.Open();
-            var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM " + previousTable + " WHERE " + columnToSearch + " = :dataToFind", conn);
-            cmd.Parameters.Add(new NpgsqlParameter("dataToFind", dataToFind));
+            var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM " + previousTable + " WHERE housing_dm = :housing_dm", conn);
+            cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
             Int32 countProd = Convert.ToInt32(cmd.ExecuteScalar());
             conn.Close();
-            if (countProd > 0)
+            if (countProd == 1)
             {
                 IsPreChkPassed = true;
             }
@@ -138,10 +137,10 @@ namespace LTCTraceWPF
                 DateTime UploadMoment = DateTime.Now;
                 conn.Open();
                 // building SQL query
-                var cmd = new NpgsqlCommand("INSERT INTO " + table + " (housing_dm, gw_dm, pc_name, started_on, saved_on) " +
-                    "VALUES(:housing_dm, :gw_dm, :pc_name, :started_on, :saved_on)", conn);
+                var cmd = new NpgsqlCommand("INSERT INTO " + table + " (housing_dm, test_result, pc_name, started_on, saved_on) " +
+                    "VALUES(:housing_dm, :test_result, :pc_name, :started_on, :saved_on)", conn);
                 cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
-                cmd.Parameters.Add(new NpgsqlParameter("gw_dm", GwDmTxbx.Text));
+                cmd.Parameters.Add(new NpgsqlParameter("test_result", PFGenChkbx.IsChecked));
                 cmd.Parameters.Add(new NpgsqlParameter("pc_name", System.Environment.MachineName));
                 cmd.Parameters.Add(new NpgsqlParameter("started_on", StartedOn));
                 cmd.Parameters.Add(new NpgsqlParameter("saved_on", DateTime.Now));
@@ -157,7 +156,15 @@ namespace LTCTraceWPF
             }
         }
 
-        private void HousingDmTxbx_LostFocus(object sender, RoutedEventArgs e)
+        private void SaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (AllFieldsValidated)
+            {
+                DbInsert(tableName);
+            }
+        }
+
+        private void FbDmTxbx_LostFocus(object sender, RoutedEventArgs e)
         {
             StartedOn = DateTime.Now;
         }
@@ -165,14 +172,6 @@ namespace LTCTraceWPF
         private void MainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-        }
-
-        private void SaveBtn_Click(object sender, RoutedEventArgs e)
-        {
-            if (AllFieldsValidated)
-            {
-                DbInsert("final_assy_two");
-            }
         }
     }
 }

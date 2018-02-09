@@ -146,7 +146,6 @@ namespace LTCTraceWPF
             catch (Exception msg)
             {
                 MessageBox.Show(msg.ToString());
-                ResetForm();
             }
         }
 
@@ -156,7 +155,6 @@ namespace LTCTraceWPF
             {
                 DbInsert("calibration");
             }
-            ResetForm();
         }
 
         private void FbDmTxbx_LostFocus(object sender, RoutedEventArgs e)

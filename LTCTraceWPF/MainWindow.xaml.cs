@@ -148,5 +148,17 @@ namespace LTCTraceWPF
             var ImgViewer = new ImgViewer();
             ImgViewer.Show();
         }
+
+        private void HiPotTwoBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var HipotTestTwo = new HipotTestTwo();
+            HipotTestTwo.Show();
+        }
+
+        private void EolBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var eolTest = new EOLTest();
+            eolTest.Show();
+        }
     }
 }
