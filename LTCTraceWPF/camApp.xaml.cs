@@ -27,10 +27,6 @@ namespace LTCTraceWPF
 
         public static int NumOfPics { get; set; } = 0;
 
-        public string TableName { get; set; } = "";
-
-        public string DataMatrix { get; set; } = "";
-
         public camApp()
         {
             InitializeComponent();
@@ -59,7 +55,7 @@ namespace LTCTraceWPF
             try
             {
                 // Display webcam video
-                WebcamViewer.StartPreview();
+                //WebcamViewer.StartPreview();
             }
             catch (Microsoft.Expression.Encoder.SystemErrorException)
             {
@@ -73,12 +69,12 @@ namespace LTCTraceWPF
             WebcamViewer.StopPreview();
         }
 
-        public string FilePath { get; set; } = "";
+        public string FilePath { get; set; }
 
         private void TakeSnapshotButton_Click(object sender, RoutedEventArgs e)
         {
-            // Take snapshot of webcam video.
-            // WebcamViewer.TakeSnapshot();
+            //Take snapshot of webcam video.
+            WebcamViewer.TakeSnapshot();
             FilePath = (WebcamViewer.TakeSnapshot());
             var ImageToDb = new ImageToDb(FilePath);
             ImageToDb.Show();
@@ -91,7 +87,7 @@ namespace LTCTraceWPF
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("explorer.exe", "C:\\TraceImages\\");
+            System.Diagnostics.Process.Start("explorer.exe", @"c:\TraceImages\");
         }
     }
 }

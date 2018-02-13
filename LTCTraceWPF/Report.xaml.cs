@@ -51,7 +51,7 @@ namespace LTCTraceWPF
                     sb.AppendFormat(WoName + "\n");
                     for (int j = 0; j < dataTable.Columns.Count; j++)
                     {
-                        sb.AppendFormat("   {0, -20}{1, 5}\n", dataTable.Columns[j].ColumnName, dataTable.Rows[i][j]);
+                        sb.AppendFormat("   {0, -20}{1}\n", dataTable.Columns[j].ColumnName, dataTable.Rows[i][j]);
                         if (dataTable.Columns[j].ColumnName == "mb_dm")
                         {
                             MbDm = dataTable.Rows[i][j].ToString();

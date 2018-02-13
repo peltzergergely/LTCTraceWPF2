@@ -23,7 +23,7 @@ namespace LTCTraceWPF
 
         public bool IsPreChkPassed { get; set; } = false;
 
-        public string[] FilePathStr = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
+        public string[] FilePathStr { get; set; }//Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
 
         public HousingFbAssy()
         {
@@ -64,7 +64,7 @@ namespace LTCTraceWPF
         private void FormValidator()
         {
             string errorMsg = "";
-            if (IsDmValidated == true) 
+            if (IsDmValidated == true)
             {
                 PreChk("housing_leak_test_one");
                 if (IsPreChkPassed)
@@ -85,7 +85,7 @@ namespace LTCTraceWPF
             {
                 errorMsg += "Kamera nem volt elindítva! ";
             }
-            if  (errorMsg != "")
+            if (errorMsg != "")
             {
                 CallMessageForm(errorMsg);
             }
@@ -145,6 +145,7 @@ namespace LTCTraceWPF
 
         private void DbInsert(string table)
         {
+            System.IO.Directory.CreateDirectory(@"c:\TraceImages\");
             FilePathStr = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
             int imgArrayLimit = 9;
             if (FilePathStr.Length > imgArrayLimit)
@@ -173,7 +174,7 @@ namespace LTCTraceWPF
                         "values(:housing_dm, :fb_dm, :pc_name, :started_on, :saved_on, :pic1, :pic2, :pic3, :pic4, :pic5, :pic6, :pic7, :pic8, :pic9)", conn);
                         cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
                         cmd.Parameters.Add(new NpgsqlParameter("fb_dm", FbDmTxbx.Text));
-                        cmd.Parameters.Add(new NpgsqlParameter("pc_name", System.Environment.MachineName));
+                        cmd.Parameters.Add(new NpgsqlParameter("pc_name", Environment.MachineName));
                         cmd.Parameters.Add(new NpgsqlParameter("started_on", StartedOn));
                         cmd.Parameters.Add(new NpgsqlParameter("saved_on", DateTime.Now));
                         //uploading the pictures
@@ -192,7 +193,7 @@ namespace LTCTraceWPF
                         if (result == 1)
                         {
                             FilePathStr = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
-                            System.IO.Directory.CreateDirectory("C:\\TraceImagesArchive\\" + "HOUSINGDM_" + HousingDmTxbx.Text);
+                            Directory.CreateDirectory("C:\\TraceImagesArchive\\" + "HOUSINGDM_" + HousingDmTxbx.Text);
                             for (int i = 0; i < FilePathStr.Length; i++)
                             {
                                 File.Move(FilePathStr[i], "C:\\TraceImagesArchive\\" + "HOUSINGDM_" + HousingDmTxbx.Text + "\\" + Path.GetFileName(FilePathStr[i]));

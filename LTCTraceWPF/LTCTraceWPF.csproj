@@ -35,6 +35,26 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MahApps.Metro, Version=1.5.0.23, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\MahApps.Metro.dll</HintPath>
@@ -46,34 +66,58 @@
     <Reference Include="Npgsql, Version=3.2.6.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.3.2.6\lib\net451\Npgsql.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Drawing" />
+    <Reference Include="System">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Configuration">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
+      <Private>True</Private>
     </Reference>
     <Reference Include="WebcamControl, Version=3.3.1.0, Culture=neutral, processorArchitecture=x86">
       <HintPath>..\packages\WpfWebcamControl.3.3.1\lib\WebcamControl.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="ZedGraph, Version=5.1.5.28844, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
-      <HintPath>..\packages\ZedGraph.5.1.5\lib\ZedGraph.dll</HintPath>
+    <Reference Include="PresentationCore">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -90,7 +134,7 @@
     <Compile Include="Report.xaml.cs">
       <DependentUpon>Report.xaml</DependentUpon>
     </Compile>
-    <Page Include="CalibWindow.xaml">
+    <Page Include="Calibration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -98,11 +142,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DbWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="EolHipotWindow.xaml">
+    <Page Include="DbViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -114,23 +154,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FbEmcWindow.xaml">
+    <Page Include="FbEmcAssy.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FbKaptWindow.xaml">
+    <Page Include="OutdatedExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FbThtWindow.xaml">
+    <Page Include="FinalAssy1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FinalAssy1Window.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="FinalAssy2Window.xaml">
+    <Page Include="FinalAssy2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -142,7 +178,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="HipotTestOne.xaml">
+    <Page Include="HipotTest1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -154,7 +190,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="HousingLeakTestWindow.xaml">
+    <Page Include="LeakTest1Window.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -182,35 +218,29 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CalibWindow.xaml.cs">
-      <DependentUpon>CalibWindow.xaml</DependentUpon>
+    <Compile Include="Calibration.xaml.cs">
+      <DependentUpon>Calibration.xaml</DependentUpon>
     </Compile>
     <Compile Include="camApp.xaml.cs">
       <DependentUpon>camApp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DbWindow.xaml.cs">
-      <DependentUpon>DbWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="EolHipotWindow.xaml.cs">
-      <DependentUpon>EolHipotWindow.xaml</DependentUpon>
+    <Compile Include="DbViewer.xaml.cs">
+      <DependentUpon>DbViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="FbACDCAssy.xaml.cs">
       <DependentUpon>FbACDCAssy.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FbEmcWindow.xaml.cs">
-      <DependentUpon>FbEmcWindow.xaml</DependentUpon>
+    <Compile Include="FbEmcAssy.xaml.cs">
+      <DependentUpon>FbEmcAssy.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FbKaptWindow.xaml.cs">
-      <DependentUpon>FbKaptWindow.xaml</DependentUpon>
+    <Compile Include="OutdatedExample.xaml.cs">
+      <DependentUpon>OutdatedExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FbThtWindow.xaml.cs">
-      <DependentUpon>FbThtWindow.xaml</DependentUpon>
+    <Compile Include="FinalAssy1.xaml.cs">
+      <DependentUpon>FinalAssy1.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FinalAssy1Window.xaml.cs">
-      <DependentUpon>FinalAssy1Window.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="FinalAssy2Window.xaml.cs">
-      <DependentUpon>FinalAssy2Window.xaml</DependentUpon>
+    <Compile Include="FinalAssy2.xaml.cs">
+      <DependentUpon>FinalAssy2.xaml</DependentUpon>
     </Compile>
     <Compile Include="FirewallWindow.xaml.cs">
       <DependentUpon>FirewallWindow.xaml</DependentUpon>
@@ -218,14 +248,14 @@
     <Compile Include="GwThtWindow.xaml.cs">
       <DependentUpon>GwThtWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="HipotTestOne.xaml.cs">
-      <DependentUpon>HipotTestOne.xaml</DependentUpon>
+    <Compile Include="HipotTest1.xaml.cs">
+      <DependentUpon>HipotTest1.xaml</DependentUpon>
     </Compile>
     <Compile Include="HousingConnectorAssyWindow.xaml.cs">
       <DependentUpon>HousingConnectorAssyWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="HousingLeakTestWindow.xaml.cs">
-      <DependentUpon>HousingLeakTestWindow.xaml</DependentUpon>
+    <Compile Include="LeakTest1Window.xaml.cs">
+      <DependentUpon>LeakTest1Window.xaml</DependentUpon>
     </Compile>
     <Compile Include="HsPreAssyWindow.xaml.cs">
       <DependentUpon>HsPreAssyWindow.xaml</DependentUpon>

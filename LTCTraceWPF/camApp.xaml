@@ -67,7 +67,7 @@
                               DisplayMemberPath="Name"
                               SelectedIndex="0"
                               IsTabStop="False"
-                              IsEnabled="False"/>
+                              IsEnabled="True"/>
 
                 </Grid>
                 <!--

@@ -123,7 +123,7 @@ namespace LTCTraceWPF
             cmd.Parameters.Add(new NpgsqlParameter("dataToFind", dataToFind));
             Int32 countProd = Convert.ToInt32(cmd.ExecuteScalar());
             conn.Close();
-            if (countProd > 1)
+            if (countProd > 0)
             {
                 IsPreChkPassed = true;
             }

@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace LTCTraceWPF
 {
@@ -43,7 +30,7 @@ namespace LTCTraceWPF
 
         private void HouseLeakTestBtn_Click(object sender, RoutedEventArgs e)
         {
-            var HousingLeakTestWindow = new HousingLeakTestWindow();
+            var HousingLeakTestWindow = new LeakTest1Win();
             HousingLeakTestWindow.Show();
         }
 
@@ -57,12 +44,6 @@ namespace LTCTraceWPF
         {
             var Hipot1Window = new Hipot1Window();
             Hipot1Window.Show();
-        }
-
-        private void FbKaptBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var FbKaptWindow = new FbKaptWindow();
-            FbKaptWindow.Show();
         }
 
         private void HousingConnectorAssyBtn_Click(object sender, RoutedEventArgs e)
@@ -123,12 +104,6 @@ namespace LTCTraceWPF
         {
             var LeakTest2Window = new LeakTest2Window();
             LeakTest2Window.Show();
-        }
-
-        private void EolHipotBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var EolHipotWindow = new EolHipotWindow();
-            EolHipotWindow.Show();
         }
 
         private void FirewallBtn_Click(object sender, RoutedEventArgs e)

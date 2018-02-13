@@ -23,7 +23,7 @@ namespace LTCTraceWPF
 
         public bool IsPreChkPassed { get; set; } = false;
 
-        public string[] FilePathStr = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
+        public string[] FilePathStr { get; set; }
 
         public MbDspAssy()
         {
@@ -111,14 +111,14 @@ namespace LTCTraceWPF
             IsDmValidated = false;
             AllFieldsValidated = false;
             IsCameraLaunched = false;
-            //IsPreChkPassed = false;
-            //MbDmTxbx.Text = "";
-            //DspOne1.Text = "";
-            //DspOne2.Text = "";
-            //DspOne3.Text = "";
-            //DspTwo1.Text = "";
-            //DspTwo2.Text = "";
-            //DspTwo3.Text = "";
+            IsPreChkPassed = false;
+            MbDmTxbx.Text = "";
+            DspOne1.Text = "";
+            DspOne2.Text = "";
+            DspOne3.Text = "";
+            DspTwo1.Text = "";
+            DspTwo2.Text = "";
+            DspTwo3.Text = "";
             MbDmTxbx.Focus();
         }
 
@@ -148,8 +148,6 @@ namespace LTCTraceWPF
             }
         }
 
-
-
         private void DbInsert(string table)
         {
             FilePathStr = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
@@ -157,7 +155,7 @@ namespace LTCTraceWPF
             if (FilePathStr.Length > imgArrayLimit)
             {
                 MessageBox.Show("A készített képek száma meghaladja a maximum 9 képes limitet! Töröld ki a fölösleget a TraceImages mappából!'");
-                System.Diagnostics.Process.Start("explorer.exe", "C:\\TraceImages\\");
+                System.Diagnostics.Process.Start("explorer.exe", @"c:\TraceImages\");
             }
             else
             {
