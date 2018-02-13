@@ -13,7 +13,8 @@
         WindowStartupLocation="CenterScreen" 
         WindowStyle="None"
         FontFamily="Verdana"
-        Background="#FDFDFD">
+        Background="#FDFDFD"
+        >
     <Grid>
         <StackPanel>
             <Label Content="Képnézegető" 
@@ -33,7 +34,7 @@
                 <TextBox x:Name="queryTb" 
                          FontSize="35" 
                          Margin="30,15" 
-                         Width="1200">SELECT * FROM fb_emc_assy where id = 14</TextBox>
+                         Width="1200">SELECT * FROM housing_fb_assy where id = 1</TextBox>
                 <Button x:Name="listDbBtn"
                         FontSize="35" 
                         HorizontalAlignment="Right" 
@@ -46,10 +47,17 @@
                         Click="saveImgBtn_Click">Képek mentése</Button>
             </StackPanel>
             <StackPanel Orientation="Vertical">
+                <ItemsControl x:Name="imageItems">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding}" Margin="5" Width="100" Height="100"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Image Height="286" 
                         HorizontalAlignment="Left"
-                        Name="image2" 
+                        Name="image0" 
                         Stretch="Fill" 
                          VerticalAlignment="Top"
                          Margin="15"
@@ -57,16 +65,32 @@
                            />
                     <Image Height="286" 
                    HorizontalAlignment="Left"
-                   Name="image3" 
+                   Name="image1" 
                    Stretch="Fill" 
                    VerticalAlignment="Top"
                            Margin="15"
                    Width="382" />
                     <Image Height="286" 
                    HorizontalAlignment="Left"
-                   Name="image4" 
+                   Name="image2" 
                    Stretch="Fill" 
                    VerticalAlignment="Top"
+                           Margin="15"
+                   Width="382" />
+                    <Image Height="286" 
+                   HorizontalAlignment="Left"
+                   Name="image3" 
+                   Stretch="Fill" 
+                   VerticalAlignment="Top" 
+                           Margin="15"
+                   Width="382" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Image Height="286" 
+                   HorizontalAlignment="Left"
+                   Name="image4" 
+                   Stretch="Fill" 
+                   VerticalAlignment="Top" 
                            Margin="15"
                    Width="382" />
                     <Image Height="286" 
@@ -76,33 +100,17 @@
                    VerticalAlignment="Top" 
                            Margin="15"
                    Width="382" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Image Height="286" 
+                    <Image Height="286" 
                    HorizontalAlignment="Left"
+                           Margin="15"
                    Name="image6" 
                    Stretch="Fill" 
                    VerticalAlignment="Top" 
-                           Margin="15"
                    Width="382" />
                     <Image Height="286" 
                    HorizontalAlignment="Left"
+                           Margin="15"
                    Name="image7" 
-                   Stretch="Fill" 
-                   VerticalAlignment="Top" 
-                           Margin="15"
-                   Width="382" />
-                    <Image Height="286" 
-                   HorizontalAlignment="Left"
-                           Margin="15"
-                   Name="image8" 
-                   Stretch="Fill" 
-                   VerticalAlignment="Top" 
-                   Width="382" />
-                    <Image Height="286" 
-                   HorizontalAlignment="Left"
-                           Margin="15"
-                   Name="image9" 
                    Stretch="Fill" 
                    VerticalAlignment="Top" 
                    Width="382" />

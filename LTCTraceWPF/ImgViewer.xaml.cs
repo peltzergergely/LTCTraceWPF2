@@ -1,5 +1,6 @@
 ﻿using Npgsql;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
@@ -23,7 +24,6 @@ namespace LTCTraceWPF
         DataSet ds;
 
         string constr = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
-
 
         private void listDbBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -49,43 +49,53 @@ namespace LTCTraceWPF
             try
             {
                 DataTable dataTable = ds.Tables[0];
-                foreach (DataRow column in dataTable.Rows)
+                //foreach (DataRow column in dataTable.Rows)
+                int picCounter = 0;
+                //for (int i = 0; i < dataTable.Rows.Count; i++)
+                //{
+                int i = 0;
+                for (int j = 0; j < dataTable.Columns.Count; j++)
                 {
-                    for (int i = 0; i < 9; i++)
+                    if (dataTable.Columns[j].ColumnName.Contains("pic"))
                     {
+                        picCounter += 1;
                         //Store binary data read from the database in a byte array
-                        byte[] blob = (byte[])column[i + 6];
+                        byte[] blob = (byte[])dataTable.Rows[i][j];
                         MemoryStream stream = new MemoryStream();
-                        stream.Write(blob, 0, blob.Length);
-                        stream.Position = 0;
+                        if (blob.Length > 10)
+                        {
+                            stream.Write(blob, 0, blob.Length);
+                            stream.Position = 0;
 
-                        System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
-                        BitmapImage bi = new BitmapImage();
-                        bi.BeginInit();
+                            System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
+                            BitmapImage bi = new BitmapImage();
+                            bi.BeginInit();
 
-                        MemoryStream ms = new MemoryStream();
-                        img.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-                        ms.Seek(0, SeekOrigin.Begin);
-                        bi.StreamSource = ms;
-                        bi.EndInit();
-                        if (i == 0)
-                            image2.Source = bi;
-                        if (i == 1)
-                            image3.Source = bi;
-                        if (i == 2)
-                            image4.Source = bi;
-                        if (i == 3)
-                            image5.Source = bi;
-                        if (i == 4)
-                            image6.Source = bi;
-                        if (i == 5)
-                            image7.Source = bi;
-                        if (i == 6)
-                            image8.Source = bi;
-                        if (i == 7)
-                            image9.Source = bi;
+                            MemoryStream ms = new MemoryStream();
+                            img.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                            ms.Seek(0, SeekOrigin.Begin);
+                            bi.StreamSource = ms;
+                            bi.EndInit();
+                            if (picCounter == 1)
+                                image0.Source = bi;
+                            if (picCounter == 2)
+                                image1.Source = bi;
+                            if (picCounter == 3)
+                                image2.Source = bi;
+                            if (picCounter == 4)
+                                image3.Source = bi;
+                            if (picCounter == 5)
+                                image4.Source = bi;
+                            if (picCounter == 6)
+                                image5.Source = bi;
+                            if (picCounter == 7)
+                                image6.Source = bi;
+                            if (picCounter == 8)
+                                image7.Source = bi;
+                        }
                     }
                 }
+                //}
             }
             catch (Exception ex)
             {
@@ -100,7 +110,8 @@ namespace LTCTraceWPF
 
         private void saveImgBtn_Click(object sender, RoutedEventArgs e)
         {
-            System.IO.Directory.CreateDirectory("D:\\Traceimages\\");
+            var systemPath = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            System.IO.Directory.CreateDirectory(systemPath + "\\LTCReportFolder\\Report_Images");
             try
             {
                 using (NpgsqlConnection conn = new NpgsqlConnection(constr))
@@ -123,25 +134,34 @@ namespace LTCTraceWPF
             try //saving the images
             {
                 DataTable dataTable = ds.Tables[0];
-                foreach (DataRow column in dataTable.Rows)
+                int i = 0;
+                for (int j = 0; j < dataTable.Columns.Count; j++)
                 {
-                    for (int i = 0; i < 6; i++)
+                    if (dataTable.Columns[j].ColumnName.Contains("pic"))
                     {
-                        byte[] blob = (byte[])column[i + 6];
-                        MemoryStream stream = new MemoryStream();
-                        stream.Write(blob, 0, blob.Length);
-                        stream.Position = 0;
+                        //        foreach (DataRow column in dataTable.Rows)
+                        //{
+                        //    for (int i = 0; j < 5; j++)
+                        //    {
+                        byte[] blob = (byte[])dataTable.Rows[i][j];
+                        if (blob.Length > 10)
+                        {
+                            MemoryStream stream = new MemoryStream();
+                            stream.Write(blob, 0, blob.Length);
+                            stream.Position = 0;
 
-                        System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
-                        BitmapImage bi = new BitmapImage();
-                        bi.BeginInit();
+                            System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
+                            BitmapImage bi = new BitmapImage();
+                            bi.BeginInit();
 
-                        MemoryStream ms = new MemoryStream();
-                        img.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-                        ms.Seek(0, SeekOrigin.Begin);
-                        bi.StreamSource = ms;
-                        bi.EndInit();
-                        img.Save("C:\\TraceImages\\" + column[2] + "_" + i + ".Jpeg", ImageFormat.Jpeg);
+                            MemoryStream ms = new MemoryStream();
+                            img.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                            ms.Seek(0, SeekOrigin.Begin);
+                            bi.StreamSource = ms;
+                            bi.EndInit();
+                            var complete = Path.Combine(systemPath + "\\LTCReportFolder\\Report_" + "Images", dataTable.Rows[i][2] + "_" + j + ".Jpeg");
+                            img.Save(complete, ImageFormat.Jpeg);
+                        }
                     }
                 }
             }
@@ -149,7 +169,7 @@ namespace LTCTraceWPF
             {
                 MessageBox.Show(ex.Message);
             }
-            Process.Start("explorer.exe", "C:\\TraceImages\\");
+            System.Diagnostics.Process.Start("explorer.exe", systemPath + "\\LTCReportFolder");
         }
     }
 }

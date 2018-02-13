@@ -14,6 +14,7 @@
         WindowStyle="None"
         FontFamily="Verdana"
         Background="#FDFDFD">
+    
     <Grid>
         <StackPanel>
             <Label Content="Adatbázis megjelenítése" 
@@ -27,14 +28,6 @@
                    FontSize="35" 
                    Background="#006064" 
                    Foreground="white"/>
-        </StackPanel>
-
-        <StackPanel Orientation="Vertical" 
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Center"
-                    Margin="10"
-                    Width="1600"
-                    Height="700">
             <StackPanel Orientation="Horizontal">
                 <TextBox x:Name="searchedDM" 
                          Grid.Row="0" 
@@ -52,18 +45,26 @@
                         >Report készítése</Button>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Height="596">
+                <StackPanel Orientation="Horizontal">
+                    
                 <TextBox x:Name="txtBlck" 
                              TextWrapping="Wrap"
-                             Width="828" 
-                             Height="524" 
+                             Width="444" 
+                             Height="692" 
                              VerticalAlignment="Top" 
                              ScrollViewer.CanContentScroll="True"
                              ScrollViewer.VerticalScrollBarVisibility="Visible" 
                          HorizontalAlignment="Center"
-                             IsReadOnly="True" />
+                             IsReadOnly="True"
+                         Margin="30,15"/>
+                    <ItemsControl x:Name="imageItems">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding}" Margin="5"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
 

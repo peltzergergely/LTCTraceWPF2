@@ -33,13 +33,6 @@ namespace LTCTraceWPF
 
         public string constr { get; set; } = @ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
 
-
-        //BitmapImage image = new BitmapImage();
-        //image.BeginInit();
-        //    image.CacheOption = BitmapCacheOption.OnLoad;
-        //    image.UriSource = new Uri(FilePathStr);
-        //image.EndInit();
-
         public ImageToDb()
         {
             ShowImage();
