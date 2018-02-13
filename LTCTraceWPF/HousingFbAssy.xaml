@@ -73,13 +73,17 @@
                          FontSize="35" 
                          Margin="30,15"
                          LostFocus="HousingDmTxbx_LostFocus"
-                         KeyUp="OnKeyUpEvent">
+                         KeyUp="OnKeyUpEvent"
+                         IsTabStop="True"
+                         TabIndex="0">
                 </TextBox>
                 <TextBox x:Name="FbDmTxbx" Grid.Row="1" 
                          Grid.Column="1" 
                          FontSize="35" 
                          Margin="30,15"
-                         KeyUp="OnKeyUpEvent">
+                         KeyUp="OnKeyUpEvent"
+                         IsTabStop="True"
+                         TabIndex="1">
                 </TextBox>
                 <Button x:Name="WebCamLaunchBtn"
                             Grid.Row="3" 

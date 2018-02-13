@@ -124,6 +124,7 @@ namespace LTCTraceWPF
 
         private void CallMessageForm(string msgToShow)
         {
+            ResetForm();
             var msgWindow = new MessageForm(msgToShow);
             msgWindow.Show();
             msgWindow.Activate();
@@ -245,7 +246,6 @@ namespace LTCTraceWPF
             {
                 DbInsert("mb_dsp_assy");
             }
-            ResetForm();
         }
     }
 }
