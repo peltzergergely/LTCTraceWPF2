@@ -11,6 +11,20 @@ using System.Windows.Media.Imaging;
 
 namespace LTCTraceWPF
 {
+    public static class ImageLoader
+    {
+        public static List<BitmapImage> LoadImages()
+        {
+            List<BitmapImage> robotImages = new List<BitmapImage>();
+            DirectoryInfo robotImageDir = new DirectoryInfo(@"C:\ProgramData\LTCReportFolder\Report_Images");
+            foreach (FileInfo robotImageFile in robotImageDir.GetFiles("*.Jpeg"))
+            {
+                Uri uri = new Uri(robotImageFile.FullName);
+                robotImages.Add(new BitmapImage(uri));
+            }
+            return robotImages;
+        }
+    }
     /// <summary>
     /// Interaction logic for ImgViewer.xaml
     /// </summary>
@@ -19,6 +33,18 @@ namespace LTCTraceWPF
         public ImgViewer()
         {
             InitializeComponent();
+        }
+
+        public static List<BitmapImage> LoadImages()
+        {
+            List<BitmapImage> robotImages = new List<BitmapImage>();
+            DirectoryInfo robotImageDir = new DirectoryInfo(@"C:\ProgramData\LTCReportFolder\Report_Images");
+            foreach (FileInfo robotImageFile in robotImageDir.GetFiles("*.Jpeg"))
+            {
+                Uri uri = new Uri(robotImageFile.FullName);
+                robotImages.Add(new BitmapImage(uri));
+            }
+            return robotImages;
         }
 
         DataSet ds;
@@ -117,7 +143,6 @@ namespace LTCTraceWPF
                 using (NpgsqlConnection conn = new NpgsqlConnection(constr))
                 {
                     conn.Open();
-
                     using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(queryTb.Text, conn))
                     {
                         ds = new DataSet("myDataSet");
