@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 
@@ -11,6 +12,7 @@ namespace LTCTraceWPF
 {
     /// <summary>
     /// Interaction logic for HousingLeakTestWindow.xaml
+    /// Get leak test result in number then print a unique ID
     /// </summary>
     public partial class LeakTest1Win : Window
     {
@@ -115,6 +117,16 @@ namespace LTCTraceWPF
             catch (Exception msg)
             {
                 MessageBox.Show(msg.ToString());
+            }
+        }
+
+        private void PrintDMC()
+        {
+            string s = @"^XA^MMT^PW406^LL0280^LS0^FT67,240^A0N,28,28^FH\^FDLTC1E0002187ADB2.5^FS^FT67,273^A0N,28,28^FH\^FDVALEO1500^FS^BY154,154^FT123,209^BXN,7,200,0,0,1,~^FH\^FDLTC1E0002187ADB2.5\0D\0AVALEO1500^FS^PQ1,0,1,Y^XZ";
+            PrintDialog pd = new PrintDialog();
+            if (pd.ShowDialog() == true)
+            {
+                RawPrinterHelper.SendStringToPrinter(pd.PrintQueue.FullName, s);
             }
         }
 
