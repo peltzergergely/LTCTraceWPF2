@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LTCTraceWPF"
         mc:Ignorable="d"
-        Title="Potting"
+        Title="47 - Firewall"
         Height="1080"
         Width="1920" 
         ResizeMode="NoResize" 
@@ -16,17 +16,21 @@
         Background="#FDFDFD">
     <Grid>
         <StackPanel>
-            <Label Content="Firewall" 
-                   Padding="10" 
-                   FontSize="25" 
-                   Background="#00363a"
-                   Foreground="white" />
-            <Label Content="Tölsd ki az alábbi mezőket!" 
+            <Label Content="47 - Firewall"
                    HorizontalContentAlignment="Center" 
+                   Padding="15" 
+                   FontSize="45" 
+                   Background="#00363a" 
+                   Foreground="white"/>
+            <TextBlock
                    Padding="30" 
                    FontSize="35" 
                    Background="#006064" 
-                   Foreground="white"/>
+                   Foreground="white"
+                TextWrapping="Wrap"
+                TextAlignment="Center">
+                Olvasd be a Ház Datamátrixot majd fényképezd le a matricákat!
+            </TextBlock>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LTCTraceWPF"
         mc:Ignorable="d"
-        Title="Ház Leak Teszt" 
+        Title="31 - Ház Leak Teszt" 
         Height="1080"
         Width="1920" 
         ResizeMode="NoResize"
@@ -16,19 +16,30 @@
         Background="#FDFDFD">
     <Grid>
         <StackPanel>
-            <Label Content="Ház Leak Teszt"
+            <Label Content="31 - Ház Leak Teszt"
                    HorizontalContentAlignment="Center" 
                    Padding="15" 
                    FontSize="45" 
                    Background="#00363a" 
                    Foreground="white"/>
-            <Label Content="Ha a szivárgás teszt eredménye 5 pa/s -nál kisebb akkor nyomtass Vonalkódot és ragaszd fel a házra!"
-                   HorizontalContentAlignment="Center" 
+            <TextBlock
                    Padding="30" 
                    FontSize="35" 
                    Background="#006064" 
-                   Foreground="white"/>
+                   Foreground="white"
+                TextWrapping="Wrap"
+                TextAlignment="Center"
+                   >Ha a szivárgás teszt eredménye 5 pa/s -nál kisebb akkor írd be, nyomj Entert és ragaszt fel a kinyomtatott matricát! A piros gombbal ÚJRA tudod nyomtatni a legutóbbi címkét.
+            </TextBlock>
         </StackPanel>
+            <Button
+                    FontSize="20"
+                    Margin="759,960,761,40"
+                    Width="300"
+                    Height="60"
+                    Background="#F26F6C"
+                    Content="Címke újranyomtatása" Click="Button_Click"
+                    />
 
         <StackPanel Orientation="Horizontal" 
                     HorizontalAlignment="Center"
@@ -37,38 +48,48 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="700" />
                     <ColumnDefinition Width="700" />
                 </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Row="0" 
-                           Grid.Column="0"
-                           FontSize="35" 
-                           HorizontalAlignment="Right"
-                           Margin="30,15">Ház DataMatrix</TextBlock>
-                <TextBlock Grid.Row="1"
+                <TextBlock Grid.Row="0"
                            Grid.Column="0" 
                            FontSize="35"
                            HorizontalAlignment="Right" 
                            Margin="30,15">Leak Teszt Eredmény (Pa/s)</TextBlock>
-                <TextBox x:Name="housingDmTxbx"
-                         Grid.Row="0" 
-                         Grid.Column="1" 
-                         FontSize="35" 
-                         Margin="30,15"
-                         IsTabStop="True"
-                         TabIndex="0"
-                         KeyUp="OnKeyUpEvent" ></TextBox>
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0" 
+                           FontSize="35"
+                           HorizontalAlignment="Right" 
+                           Margin="30,15">Szöveg:</TextBlock>
+                <TextBlock Grid.Row="1"
+                           Grid.Column="1" 
+                           FontSize="35"
+                           HorizontalAlignment="Left" 
+                           Margin="30,15">LTC1E0002187AD B2.5</TextBlock>
+                <TextBlock Grid.Row="2"
+                           Grid.Column="0" 
+                           FontSize="35"
+                           HorizontalAlignment="Right" 
+                           Margin="30,15">Sorszám:</TextBlock>
+                <TextBlock Name ="CounterTxbx"
+                    Grid.Row="2"
+                           Grid.Column="1" 
+                           FontSize="35"
+                           HorizontalAlignment="Left" 
+                           Margin="30,15">szám</TextBlock>
                 <TextBox x:Name="leakTestTxbx"
-                         Grid.Row="1" 
+                         Grid.Row="0" 
                          Grid.Column="1" 
                          FontSize="35" 
                          Margin="30,15"
                          IsTabStop="True"
                          TabIndex="1"
                          KeyUp="OnKeyUpEvent"></TextBox>
+
             </Grid>
         </StackPanel>
 
@@ -95,8 +116,7 @@
                            Padding="2">Főmenü</TextBlock>
             </StackPanel>
         </Button>
-
-            <Button x:Name="SaveBtn"
+        <Button x:Name="SaveBtn"
                 HorizontalAlignment="Right" 
                 Margin="40" 
                 VerticalAlignment="Bottom" 

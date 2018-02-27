@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LTCTraceWPF"
         mc:Ignorable="d"
-        Title="Mainboard THT" 
+        Title="12 - Mainboard DSP Szerelés" 
         Height="1080" 
         Width="1920"
         ResizeMode="NoResize"
@@ -16,12 +16,13 @@
         Background="#FDFDFD">
     <Grid>
         <StackPanel>
-            <Label Content="Mainboard DSP szerelés" 
-                   Padding="10" 
-                   FontSize="25" 
+            <Label Content="12 - Mainboard DSP Szerelés"
+                   HorizontalContentAlignment="Center" 
+                   Padding="15" 
+                   FontSize="45" 
                    Background="#00363a" 
-                   Foreground="white" />
-            <Label Content="Tölsd ki az alábbi mezőket!" 
+                   Foreground="white"/>
+            <Label Content="Olvasd be a Mainboard és a DSP-k vonalkódjait majd fotózd körbe a terméket!" 
                    HorizontalContentAlignment="Center" 
                    Padding="30" 
                    FontSize="35"

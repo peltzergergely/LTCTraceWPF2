@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LTCTraceWPF"
         mc:Ignorable="d"
-        Title="Potting"
+        Title="32 - Ház FB Szerelés"
         Height="1080"
         Width="1920" 
         ResizeMode="NoResize" 
@@ -16,12 +16,13 @@
         Background="#FDFDFD">
     <Grid>
         <StackPanel>
-            <Label Content="Ház Filterboard szerelés" 
-                   Padding="10" 
-                   FontSize="25" 
-                   Background="#00363a"
-                   Foreground="white" />
-            <Label Content="Tölsd ki az alábbi mezőket!" 
+            <Label Content="32 - Ház Filterboard Szerelés"
+                   HorizontalContentAlignment="Center" 
+                   Padding="15" 
+                   FontSize="45" 
+                   Background="#00363a" 
+                   Foreground="white"/>
+            <Label Content="Olvasd be a Ház majd a Filterboard Datamátrixát majd fotózd körbe a terméket és mentsd el!" 
                    HorizontalContentAlignment="Center" 
                    Padding="30" 
                    FontSize="35" 

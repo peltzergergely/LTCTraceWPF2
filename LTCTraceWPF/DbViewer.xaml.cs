@@ -25,10 +25,10 @@ namespace LTCTraceWPF
 
         public void FillWorkStationList()
         {
-            workSteps.Add("11 FB ACDC Szerelés", "fb_acdc_assy");
-            workSteps.Add("12 FB EMC Szerelés", "fb_emc_assy");
-            workSteps.Add("21 MB HS Szerelés", "mb_hs_assy");
-            workSteps.Add("22 MB DSP Szerelés", "mb_dsp_assy");
+            workSteps.Add("11 MB HS Szerelés", "mb_hs_assy");
+            workSteps.Add("12 MB DSP Szerelés", "mb_dsp_assy");
+            workSteps.Add("21 FB ACDC Szerelés", "fb_acdc_assy");
+            workSteps.Add("22 FB EMC Szerelés", "fb_emc_assy");
             workSteps.Add("31 Ház Leak Teszt I.", "housing_leak_test_one");
             workSteps.Add("32 Ház FB Szerelés", "housing_fb_assy");
             workSteps.Add("33 HiPot Teszt I.", "hipot_test_one");

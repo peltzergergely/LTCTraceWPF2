@@ -36,6 +36,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="700" />
@@ -46,7 +47,7 @@
                            FontSize="35" 
                            HorizontalAlignment="Right" 
                            Margin="30,15">Ház DataMatrix</TextBlock>
-                <TextBlock Grid.Row="5" 
+                <TextBlock Grid.Row="1" 
                            Grid.Column="0"
                            FontSize="35"
                            HorizontalAlignment="Right"
@@ -61,7 +62,7 @@
                          KeyUp="OnKeyUpEvent"
                          LostFocus="FbDmTxbx_LostFocus"></TextBox>
                 <CheckBox x:Name="screwChkbx"
-                          Grid.Row="3"
+                          Grid.Row="1"
                           Grid.Column="1"
                           HorizontalAlignment="left" 
                           Margin="30,15" 
@@ -74,6 +75,17 @@
                                         ></ScaleTransform>
                     </CheckBox.LayoutTransform>
                 </CheckBox>
+                <!--<Button
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    Margin="30, 15"
+                    Width="300"
+                    FontSize="25" 
+                    Click="Button_Click"
+                    >
+                    LaunchFiledialog
+                </Button>-->
             </Grid>
         </StackPanel>
 

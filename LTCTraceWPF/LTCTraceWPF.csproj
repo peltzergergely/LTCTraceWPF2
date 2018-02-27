@@ -196,10 +196,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="HsPreAssyWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ImageToDb.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -258,9 +254,6 @@
     </Compile>
     <Compile Include="LeakTest1Window.xaml.cs">
       <DependentUpon>LeakTest1Window.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="HsPreAssyWindow.xaml.cs">
-      <DependentUpon>HsPreAssyWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ImageToDb.xaml.cs">
       <DependentUpon>ImageToDb.xaml</DependentUpon>

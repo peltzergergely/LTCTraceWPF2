@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LTCTraceWPF"
         mc:Ignorable="d"
-        Title="Ház Konnektor Szerelés" 
+        Title="41 - Végszerelés I." 
         Height="1080" 
         Width="1920" 
         ResizeMode="NoResize"
@@ -16,17 +16,21 @@
         Background="#FDFDFD">
     <Grid>
         <StackPanel>
-            <Label Content="Ház konnektor szerelés" 
-                   Padding="10" 
-                   FontSize="25" 
-                   Background="#00363a" 
-                   Foreground="white" />
-            <Label Content="Csavarozás előtt olvasd be a Ház Datamátrixát majd csavarozás után pipáld ki és ments!" 
+            <Label Content="41 - Végszerelés I."
                    HorizontalContentAlignment="Center" 
+                   Padding="15" 
+                   FontSize="45" 
+                   Background="#00363a" 
+                   Foreground="white"/>
+            <TextBlock
                    Padding="30" 
                    FontSize="35" 
                    Background="#006064" 
-                   Foreground="white"/>
+                   Foreground="white"
+                TextWrapping="Wrap"
+                TextAlignment="Center">
+                Csavarozás ELŐTT olvasd be a Ház és Mainboard Datamátrixot majd csavarozás után pipáld ki és mentsd el!
+            </TextBlock>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" 

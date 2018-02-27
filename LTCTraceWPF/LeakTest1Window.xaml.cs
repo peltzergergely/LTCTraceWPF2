@@ -13,12 +13,18 @@ namespace LTCTraceWPF
     /// <summary>
     /// Interaction logic for HousingLeakTestWindow.xaml
     /// Get leak test result in number then print a unique ID
+    /// option to reprint and database to store value
+    /// table with running number, always just add + 1?
     /// </summary>
     public partial class LeakTest1Win : Window
     {
-        public bool IsDmValidated { get; set; } = false;
+        public bool IsDmValidated { get; set; } = true;
 
         public bool AllFieldsValidated { get; set; } = false;
+
+        public string HousingDM { get; set; }
+
+        public int SerialNumber { get; set; }
 
         public LeakTest1Win()
         {
@@ -37,7 +43,7 @@ namespace LTCTraceWPF
                 return;
             }
 
-            if (e.Key == Key.Enter && housingDmTxbx.Text.Length > 0)
+            if (e.Key == Key.Enter && leakTestTxbx.Text.Length > 0)
             {
                 TraversalRequest tRequest = new TraversalRequest(FocusNavigationDirection.Next);
                 UIElement keyboardFocus = Keyboard.FocusedElement as UIElement;
@@ -54,8 +60,6 @@ namespace LTCTraceWPF
                 FormValidator();
                 SaveBtn_Click(sender, e);
             }
-
-            DmValidator();
         }
 
         public bool RegexValidation(string dataToValidate, string datafieldName)
@@ -64,26 +68,16 @@ namespace LTCTraceWPF
             return (Regex.IsMatch(dataToValidate, rgx));
         }
 
-        private void DmValidator()
-        {
-            if (RegexValidation(housingDmTxbx.Text, "HousingDmRegEx"))
-                IsDmValidated = true;
-            else
-                IsDmValidated = false;
-        }
-
         private void ResetForm()
         {
-            IsDmValidated = false;
             AllFieldsValidated = false;
-            housingDmTxbx.Text = "";
             leakTestTxbx.Text = "";
-            housingDmTxbx.Focus();
+            leakTestTxbx.Focus();
         }
 
         private void FormValidator()
         {
-            if (IsDmValidated == true &&  float.Parse(leakTestTxbx.Text, CultureInfo.InvariantCulture.NumberFormat) < 5 && float.Parse(leakTestTxbx.Text, CultureInfo.InvariantCulture.NumberFormat) > 0)
+            if (IsDmValidated == true && float.Parse(leakTestTxbx.Text, CultureInfo.InvariantCulture.NumberFormat) < 5 && float.Parse(leakTestTxbx.Text, CultureInfo.InvariantCulture.NumberFormat) > 0)
             {
                 AllFieldsValidated = true;
             }
@@ -105,7 +99,7 @@ namespace LTCTraceWPF
                 // building SQL query
                 var cmd = new NpgsqlCommand("INSERT INTO " + table + " (housing_dm, leak_test_result, pc_name, created_on) " +
                     "VALUES(:housing_dm, :leak_test_result, :pc_name, :timestamp)", conn);
-                cmd.Parameters.Add(new NpgsqlParameter("housing_dm", housingDmTxbx.Text));
+                cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDM));
                 cmd.Parameters.Add(new NpgsqlParameter("leak_test_result", float.Parse(leakTestTxbx.Text, CultureInfo.InvariantCulture.NumberFormat)));
                 cmd.Parameters.Add(new NpgsqlParameter("pc_name", Environment.MachineName));
                 cmd.Parameters.Add(new NpgsqlParameter("timestamp", UploadMoment));
@@ -120,13 +114,67 @@ namespace LTCTraceWPF
             }
         }
 
-        private void PrintDMC()
+        private void PrintDMC(int number)
         {
-            string s = @"^XA^MMT^PW406^LL0280^LS0^FT67,240^A0N,28,28^FH\^FDLTC1E0002187ADB2.5^FS^FT67,273^A0N,28,28^FH\^FDVALEO1500^FS^BY154,154^FT123,209^BXN,7,200,0,0,1,~^FH\^FDLTC1E0002187ADB2.5\0D\0AVALEO1500^FS^PQ1,0,1,Y^XZ";
-            PrintDialog pd = new PrintDialog();
-            if (pd.ShowDialog() == true)
+            string runningtext = "LTCOBCVSP";
+            if (number > 0)
             {
-                RawPrinterHelper.SendStringToPrinter(pd.PrintQueue.FullName, s);
+                HousingDM = runningtext + number.ToString();
+                CounterTxbx.Text = HousingDM;
+                string s = @"^XA^MMT^PW406^LL0280^LS0^FT67,240^A0N,28,28^FH\^" + HousingDM + @"^FS^BY154,154^FT123,209^BXN,7,200,0,0,1,~^FH\^FDLTC1E0002187ADB2.5\0D\0A" + HousingDM + "^FS^PQ1,0,1,Y^XZ";
+                PrintDialog pd = new PrintDialog();
+                if (pd.ShowDialog() == true)
+                {
+                    RawPrinterHelper.SendStringToPrinter(pd.PrintQueue.FullName, s);
+                }
+            }
+            else
+            {
+                CallMessageForm("Hiba a sorszámkiosztásnál");
+            }
+        }
+
+        private int GetNextNumber()
+        {
+            IncreaseCounterDB();
+            int counter;
+            try
+            {
+                string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
+                var conn = new NpgsqlConnection(connstring);
+                conn.Open();
+                var cmd = new NpgsqlCommand("SELECT id FROM counter order by id desc limit 1", conn);
+                counter = Convert.ToInt16(cmd.ExecuteScalar());
+                conn.Close();
+                return counter;
+            }
+            catch (Exception msg)
+            {
+                MessageBox.Show(msg.ToString());
+                return counter = 0;
+            }
+        }
+
+        private void IncreaseCounterDB()
+        {
+            try
+            {
+                string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
+                // Making connection with Npgsql provider
+                var conn = new NpgsqlConnection(connstring);
+                var UploadMoment = DateTime.Now;
+                conn.Open();
+                // building SQL query
+                var cmd = new NpgsqlCommand("INSERT INTO counter (created_at) " +
+                                            "VALUES(:timestamp)", conn);
+                cmd.Parameters.Add(new NpgsqlParameter("timestamp", UploadMoment));
+                cmd.ExecuteNonQuery();
+                //closing connection ASAP
+                conn.Close();
+            }
+            catch (Exception msg)
+            {
+                MessageBox.Show(msg.ToString());
             }
         }
 
@@ -142,13 +190,19 @@ namespace LTCTraceWPF
             msgWindow.Show();
             msgWindow.Activate();
         }
-
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
             if (AllFieldsValidated)
             {
+                SerialNumber = GetNextNumber();
+                PrintDMC(SerialNumber);
                 DbInsert("housing_leak_test_one");
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            PrintDMC(SerialNumber);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using Microsoft.Win32;
+using Npgsql;
 using System;
 using System.Configuration;
 using System.IO;
@@ -20,6 +21,8 @@ namespace LTCTraceWPF
         public DateTime? StartedOn { get; set; } = null;
 
         public bool IsPreChkPassed { get; set; } = false;
+
+        OpenFileDialog openFileDialog = new OpenFileDialog();
 
         public CalibWindow()
         {
@@ -62,6 +65,7 @@ namespace LTCTraceWPF
             if (IsDmValidated == true)
             {
                 PreChk("final_assy_one");
+                //IsPreChkPassed = true;
                 if (IsPreChkPassed)
                 {
                     AllFieldsValidated = true;
@@ -126,18 +130,33 @@ namespace LTCTraceWPF
         {
             try
             {
+                if (openFileDialog.FileName == "")
+                    LaunchFiledialog();
+
+                FileStream fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
+                var fileToByteArr = new byte[fs.Length];
+                fs.Read(fileToByteArr, 0, Convert.ToInt32(fs.Length));
+                fs.Close();
+
+
                 string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
                 // Making connection with Npgsql provider
                 var conn = new NpgsqlConnection(connstring);
                 DateTime UploadMoment = DateTime.Now;
                 conn.Open();
                 // building SQL query
-                var cmd = new NpgsqlCommand("INSERT INTO " + table + " (housing_dm, pc_name, started_on, saved_on) " +
-                    "VALUES(:housing_dm, :pc_name, :started_on, :saved_on)", conn);
+                var cmd = new NpgsqlCommand("INSERT INTO " + table + " (housing_dm, pc_name, started_on, saved_on, filename, file, filename1, file1) " +
+                    "VALUES(:housing_dm, :pc_name, :started_on, :saved_on, :filename, :file, :filename1, :file1)", conn);
                 cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
                 cmd.Parameters.Add(new NpgsqlParameter("pc_name", System.Environment.MachineName));
                 cmd.Parameters.Add(new NpgsqlParameter("started_on", StartedOn));
                 cmd.Parameters.Add(new NpgsqlParameter("saved_on", DateTime.Now));
+                cmd.Parameters.Add(new NpgsqlParameter("filename", openFileDialog.SafeFileName));
+                cmd.Parameters.Add(new NpgsqlParameter("file", fileToByteArr));
+                LaunchFiledialog();
+                cmd.Parameters.Add(new NpgsqlParameter("filename1", openFileDialog.SafeFileName));
+                cmd.Parameters.Add(new NpgsqlParameter("file1", fileToByteArr));
+
                 cmd.ExecuteNonQuery();
                 //closing connection ASAP
                 conn.Close();
@@ -165,6 +184,20 @@ namespace LTCTraceWPF
         private void MainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+
+
+        private void LaunchFiledialog()
+        {
+            openFileDialog.Filter = "All files (*.*)|*.*";
+            openFileDialog.InitialDirectory = @"D:\";
+            openFileDialog.ShowDialog();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            LaunchFiledialog();
         }
     }
 }

@@ -14,7 +14,7 @@
         WindowStyle="None"
         FontFamily="Verdana"
         Background="#FDFDFD">
-    
+
     <Grid>
         <StackPanel>
             <Label Content="Adatbázis megjelenítése" 
@@ -46,17 +46,6 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <StackPanel Orientation="Horizontal">
-                    
-                <TextBox x:Name="txtBlck" 
-                             TextWrapping="Wrap"
-                             Width="444" 
-                             Height="692" 
-                             VerticalAlignment="Top" 
-                             ScrollViewer.CanContentScroll="True"
-                             ScrollViewer.VerticalScrollBarVisibility="Visible" 
-                         HorizontalAlignment="Center"
-                             IsReadOnly="True"
-                         Margin="30,15"/>
                     <ItemsControl x:Name="imageItems">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -64,6 +53,16 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+                    <TextBox x:Name="txtBlck" 
+                             TextWrapping="Wrap"
+                             Width="902" 
+                             Height="692" 
+                             VerticalAlignment="Top" 
+                             ScrollViewer.CanContentScroll="True"
+                             ScrollViewer.VerticalScrollBarVisibility="Visible" 
+                         HorizontalAlignment="Center"
+                             IsReadOnly="True"
+                         Margin="30,15"/>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

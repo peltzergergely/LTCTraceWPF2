@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using System.Xml;
 
 namespace LTCTraceWPF
 {
@@ -82,10 +83,12 @@ namespace LTCTraceWPF
             QueryDb("47 Firewall", "SELECT housing_dm, pc_name, started_on, saved_on FROM firewall WHERE housing_dm = '" + HousingDm + "'");
             ImageSaver("SELECT * FROM firewall WHERE housing_dm = '" + HousingDm + "'");
             QueryDb("46 EOL", "SELECT housing_dm, pc_name, started_on, saved_on FROM eol WHERE housing_dm = '" + HousingDm + "'");
+            XmlSaver("select * from eol where housing_dm = '" + HousingDm + "'");
             QueryDb("45 HiPot II.", "SELECT housing_dm, test_result, pc_name, started_on, saved_on FROM hipot_test_two WHERE housing_dm = '" + HousingDm + "'");
             QueryDb("44 Leak Test II.", "SELECT housing_dm, leak_test_result, pc_name, created_on FROM housing_leak_test_two WHERE housing_dm = '" + HousingDm + "'");
             QueryDb("43 Final Assy II.", "SELECT housing_dm, pc_name, started_on, saved_on FROM final_assy_two WHERE housing_dm = '" + HousingDm + "'");
             QueryDb("42 Calibration ", "SELECT housing_dm, pc_name, started_on, saved_on FROM calibration WHERE housing_dm = '" + HousingDm + "'");
+            XmlSaver("select * from calibration where housing_dm = '" + HousingDm + "'");
             QueryDb("41 Final Assy I. ", "SELECT housing_dm, mb_dm, pc_name, started_on, saved_on FROM final_assy_one WHERE housing_dm = '" + HousingDm + "'");
             QueryDb("34 Housing Connector Assy ", "SELECT housing_dm, pc_name, started_on, saved_on FROM housing_connector_assy WHERE housing_dm = '" + HousingDm + "'");
             QueryDb("33 HiPot Test I. ", "SELECT housing_dm, test_result, pc_name, started_on, saved_on FROM hipot_test_one WHERE housing_dm = '" + HousingDm + "'");
@@ -108,6 +111,60 @@ namespace LTCTraceWPF
         }
 
         DataSet ds;
+
+        private void XmlSaver(string query)
+        {
+            string constr = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
+            var systemPath = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            System.IO.Directory.CreateDirectory(systemPath + "\\LTCReportFolder\\Report_" + HousingDm);
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(constr))
+                {
+                    conn.Open();
+                    using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(query, conn))
+                    {
+                        ds = new DataSet("myDataSet");
+                        adapter.Fill(ds);
+                        DataTable dt = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            try //saving the xml
+            {
+                DataTable dataTable = ds.Tables[0];
+
+                for (int j = 0; j < dataTable.Columns.Count; j++)
+                {
+                    if (dataTable.Columns[j].ColumnName == "file" || dataTable.Columns[j].ColumnName == "file1")
+                    {
+                        byte[] blob = (byte[])dataTable.Rows[0][j];
+                        string filename = (string)dataTable.Rows[0][j - 1];
+                        //MessageBox.Show(filename);
+                        //XmlDocument doc = new XmlDocument();
+                        //string xml = Encoding.UTF8.GetString(blob);
+                        //doc.LoadXml(xml);
+                        //doc.Save(@"C:\ProgramData\LTCReportFolder\" + filename);
+                        File.WriteAllBytes(systemPath + "\\LTCReportFolder\\Report_" + HousingDm + "\\" + filename, blob);
+                    }
+                    //System.Diagnostics.Process.Start("explorer.exe", @"C:\ProgramData\LTCReportFolder");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void reportGen2Btn_Click(object sender, RoutedEventArgs e)
+        {
+            XmlSaver("select * from calibration where id = '11'");
+        }
 
         private void ImageSaver(string query)
         {
@@ -167,5 +224,7 @@ namespace LTCTraceWPF
                 MessageBox.Show(ex.Message);
             }
         }
+
+
     }
 }

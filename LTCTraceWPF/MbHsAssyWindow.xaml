@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LTCTraceWPF"
         mc:Ignorable="d"
-        Title="Mainboard Heatsink Szerelés" 
+        Title="11 - Mainboard Heatsink Szerelés" 
         Height="1080" 
         Width="1920" 
         ResizeMode="NoResize"
@@ -16,12 +16,13 @@
         Background="#FDFDFD">
     <Grid>
         <StackPanel>
-            <Label Content="Mainboard Heatsink Szerelés" 
-                   Padding="10" 
-                   FontSize="25" 
+            <Label Content="11 - Ház Leak Teszt"
+                   HorizontalContentAlignment="Center" 
+                   Padding="15" 
+                   FontSize="45" 
                    Background="#00363a" 
-                   Foreground="white" />
-            <Label Content="Tölsd ki az alábbi mezőket!" 
+                   Foreground="white"/>
+            <Label Content="Csavarozás ELŐTT olvasd be a Mainboard Datamátrixot majd csavarozás után pipáld ki és mentsd el!" 
                    HorizontalContentAlignment="Center" 
                    Padding="30" 
                    FontSize="35" 

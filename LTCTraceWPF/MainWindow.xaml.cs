@@ -17,7 +17,7 @@ namespace LTCTraceWPF
             this.Close();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void FbAcdcAssyBtn_Click(object sender, RoutedEventArgs e)
         {
             var fbACDCAssy = new FbACDCAssy();
             fbACDCAssy.Show();
@@ -34,7 +34,7 @@ namespace LTCTraceWPF
             HousingLeakTestWindow.Show();
         }
 
-        private void PottingBtn_Click(object sender, RoutedEventArgs e)
+        private void HousingFbAssyBtn_Click(object sender, RoutedEventArgs e)
         {
             var PottingWindow = new HousingFbAssy();
             PottingWindow.Show();
@@ -52,18 +52,6 @@ namespace LTCTraceWPF
             HousingConnectorAssyWindow.Show();
         }
 
-        private void GwThtBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var GwThtWindow = new GwThtWindow();
-            GwThtWindow.Show();
-        }
-
-        private void HsPreAssyBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var HsPreAssyWindow = new HsPreAssyWindowxaml();
-            HsPreAssyWindow.Show();
-        }
-
         private void MbHsAssyBtn_Click(object sender, RoutedEventArgs e)
         {
             var MbHsAssyWindow = new MbHsAssyWindow();
@@ -74,12 +62,6 @@ namespace LTCTraceWPF
         {
             var MbDspAssy = new MbDspAssy();
             MbDspAssy.Show();
-        }
-
-        private void MbReworkBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var MbReworkWindow = new MbReworkWindow();
-            MbReworkWindow.Show();
         }
 
         private void FinalAssy1Btn_Click(object sender, RoutedEventArgs e)
@@ -118,12 +100,6 @@ namespace LTCTraceWPF
             DbWindow.Show();
         }
 
-        private void imgViewer_Click(object sender, RoutedEventArgs e)
-        {
-            var ImgViewer = new ImgViewer();
-            ImgViewer.Show();
-        }
-
         private void HiPotTwoBtn_Click(object sender, RoutedEventArgs e)
         {
             var HipotTestTwo = new HipotTestTwo();
@@ -134,6 +110,21 @@ namespace LTCTraceWPF
         {
             var eolTest = new EOLTest();
             eolTest.Show();
+        }
+
+        private void TransistorDateBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ReworkBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ErrorReportBtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
