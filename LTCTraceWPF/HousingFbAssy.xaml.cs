@@ -66,24 +66,29 @@ namespace LTCTraceWPF
             string errorMsg = "";
             if (IsDmValidated == true)
             {
-                PreChk("housing_leak_test_one");
+                PreChk("housing_leak_test_one", "housing_dm", HousingDmTxbx.Text);
                 if (IsPreChkPassed)
                 {
-                    if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length > 3)
+                    PreChk("fb_emc_assy", "fb_dm", FbDmTxbx.Text);
+                    if (IsPreChkPassed)
                     {
-                        AllFieldsValidated = true;
+                        if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length > 3)
+                        {
+                            AllFieldsValidated = true;
+                        }
                     }
+                    else errorMsg += "Előző munkafolyamaton nem szerepelt a Filterboard! ";
                 }
                 else
-                    errorMsg += "Előző munkafolyamaton nem szerepelt a termék!";
+                    errorMsg += " Előző munkafolyamaton nem szerepelt a Ház! ";
             }
             if (IsDmValidated == false)
             {
-                errorMsg += "DataMátrix nem megfelelő! ";
+                errorMsg += " DataMátrix nem megfelelő! ";
             }
             if (IsCameraLaunched == false)
             {
-                errorMsg += "Kamera nem volt elindítva! ";
+                errorMsg += " Kamera nem volt elindítva! ";
             }
             if (errorMsg != "")
             {
@@ -124,16 +129,16 @@ namespace LTCTraceWPF
             msgWindow.Activate();
         }
 
-        private void PreChk(string previousTable)
+        private void PreChk(string previousTable, string columnToSearch, string dataToFind)
         {
             string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
             var conn = new NpgsqlConnection(connstring);
             conn.Open();
-            var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM " + previousTable + " WHERE housing_dm = :housing_dm", conn);
-            cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
+            var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM " + previousTable + " WHERE " + columnToSearch + " = :dataToFind", conn);
+            cmd.Parameters.Add(new NpgsqlParameter("dataToFind", dataToFind));
             Int32 countProd = Convert.ToInt32(cmd.ExecuteScalar());
             conn.Close();
-            if (countProd == 1)
+            if (countProd > 0)
             {
                 IsPreChkPassed = true;
             }

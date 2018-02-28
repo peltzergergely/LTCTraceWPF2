@@ -114,17 +114,20 @@ namespace LTCTraceWPF
 
         private void TransistorDateBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            var tranzistordate = new TransistorDateWindow();
+            tranzistordate.Show();
         }
 
         private void ReworkBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            var rework = new ReworkWindow();
+            rework.Show();
         }
 
         private void ErrorReportBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            var errorReport = new ErrorReport();
+            errorReport.Show();
         }
     }
 }

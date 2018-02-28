@@ -72,8 +72,6 @@ namespace LTCTraceWPF
                 sb.AppendLine("Error or Missing: " + WoName);
             }
             sb.AppendLine();
-            sb.AppendLine("===============================================\r\n");
-
         }
 
         private void reportGenBtn_Click(object sender, RoutedEventArgs e)
@@ -86,7 +84,7 @@ namespace LTCTraceWPF
             XmlSaver("select * from eol where housing_dm = '" + HousingDm + "'");
             QueryDb("45 HiPot II.", "SELECT housing_dm, test_result, pc_name, started_on, saved_on FROM hipot_test_two WHERE housing_dm = '" + HousingDm + "'");
             QueryDb("44 Leak Test II.", "SELECT housing_dm, leak_test_result, pc_name, created_on FROM housing_leak_test_two WHERE housing_dm = '" + HousingDm + "'");
-            QueryDb("43 Final Assy II.", "SELECT housing_dm, pc_name, started_on, saved_on FROM final_assy_two WHERE housing_dm = '" + HousingDm + "'");
+            QueryDb("43 Final Assy II.", "SELECT housing_dm, gw_dm, pc_name, started_on, saved_on FROM final_assy_two WHERE housing_dm = '" + HousingDm + "'");
             QueryDb("42 Calibration ", "SELECT housing_dm, pc_name, started_on, saved_on FROM calibration WHERE housing_dm = '" + HousingDm + "'");
             XmlSaver("select * from calibration where housing_dm = '" + HousingDm + "'");
             QueryDb("41 Final Assy I. ", "SELECT housing_dm, mb_dm, pc_name, started_on, saved_on FROM final_assy_one WHERE housing_dm = '" + HousingDm + "'");
@@ -145,14 +143,8 @@ namespace LTCTraceWPF
                     {
                         byte[] blob = (byte[])dataTable.Rows[0][j];
                         string filename = (string)dataTable.Rows[0][j - 1];
-                        //MessageBox.Show(filename);
-                        //XmlDocument doc = new XmlDocument();
-                        //string xml = Encoding.UTF8.GetString(blob);
-                        //doc.LoadXml(xml);
-                        //doc.Save(@"C:\ProgramData\LTCReportFolder\" + filename);
                         File.WriteAllBytes(systemPath + "\\LTCReportFolder\\Report_" + HousingDm + "\\" + filename, blob);
                     }
-                    //System.Diagnostics.Process.Start("explorer.exe", @"C:\ProgramData\LTCReportFolder");
                 }
             }
             catch (Exception ex)
@@ -213,7 +205,7 @@ namespace LTCTraceWPF
                             ms.Seek(0, SeekOrigin.Begin);
                             bi.StreamSource = ms;
                             bi.EndInit();
-                            var complete = Path.Combine(systemPath + "\\LTCReportFolder\\Report_" + HousingDm, dataTable.Rows[i][2] + "_" + j + ".Jpeg");
+                            var complete = Path.Combine(systemPath + "\\LTCReportFolder\\Report_" + HousingDm, dataTable.Rows[i][1] + "_" + j + ".Jpeg");
                             img.Save(complete, ImageFormat.Jpeg);
                         }
                     }

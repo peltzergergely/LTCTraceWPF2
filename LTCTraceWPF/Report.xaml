@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LTCTraceWPF"
         mc:Ignorable="d"
-        Title="Adatbázis"
+        Title="Report"
         Height="1080" 
         Width="1920"
         ResizeMode="NoResize"
@@ -17,12 +17,12 @@
 
     <Grid>
         <StackPanel>
-            <Label Content="Adatbázis megjelenítése" 
+            <Label Content="Report készítése" 
                    Padding="10" 
                    FontSize="25"
                    Background="#00363a" 
                    Foreground="white" />
-            <Label Content="Adatbázis műveletek" 
+            <Label Content="Add meg a ház datamátrixát, amennyiben hiányos a termék hibaüzeneteket fogsz kapni." 
                    HorizontalContentAlignment="Center" 
                    Padding="30" 
                    FontSize="35" 
@@ -35,17 +35,18 @@
                          FontSize="25" 
                          Margin="30,15"
                          Height="50"
-                         Width="1262"
-                         Text="housing1"></TextBox>
+                         Width="608"
+                         Text="ház datamatrix"></TextBox>
                 <Button x:Name="reportGenBtn"
                         FontSize="25" 
                         HorizontalAlignment="Right" 
                         Margin="15,15" 
                         Click="reportGenBtn_Click"
-                        >Report készítése</Button>
+                        TabIndex="1">
+                    Report készítése
+                </Button>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <StackPanel Orientation="Horizontal">
                     <ItemsControl x:Name="imageItems">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -53,17 +54,16 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <TextBox x:Name="txtBlck" 
+                <TextBox x:Name="txtBlck" 
                              TextWrapping="Wrap"
                              Width="902" 
-                             Height="692" 
+                             Height="692"
                              VerticalAlignment="Top" 
                              ScrollViewer.CanContentScroll="True"
                              ScrollViewer.VerticalScrollBarVisibility="Visible" 
                          HorizontalAlignment="Center"
                              IsReadOnly="True"
                          Margin="30,15"/>
-                </StackPanel>
             </StackPanel>
         </StackPanel>
 

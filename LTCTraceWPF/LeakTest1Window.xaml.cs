@@ -190,6 +190,7 @@ namespace LTCTraceWPF
             msgWindow.Show();
             msgWindow.Activate();
         }
+
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
             if (AllFieldsValidated)

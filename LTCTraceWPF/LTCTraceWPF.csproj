@@ -129,12 +129,21 @@
     <Compile Include="EOLTest.xaml.cs">
       <DependentUpon>EOLTest.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ErrorReport.xaml.cs">
+      <DependentUpon>ErrorReport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="HipotTestTwo.xaml.cs">
       <DependentUpon>HipotTestTwo.xaml</DependentUpon>
     </Compile>
     <Compile Include="RawPrinterHelper.cs" />
     <Compile Include="Report.xaml.cs">
       <DependentUpon>Report.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ReworkWindow.xaml.cs">
+      <DependentUpon>ReworkWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TransistorDateWindow.xaml.cs">
+      <DependentUpon>TransistorDateWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Calibration.xaml">
       <SubType>Designer</SubType>
@@ -149,6 +158,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EOLTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ErrorReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -299,6 +312,14 @@
     <Page Include="Resources\IconsNonShared.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ReworkWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TransistorDateWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

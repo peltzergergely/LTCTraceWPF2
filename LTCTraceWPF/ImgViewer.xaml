@@ -47,12 +47,12 @@
         />
         </Style>
     </Window.Resources>
-    <Window.DataContext>
-        <ObjectDataProvider 
+    <!--<Window.DataContext>
+        --><!--<ObjectDataProvider 
       ObjectType="{x:Type local:ImageLoader}" 
       MethodName="LoadImages" 
-      />
-    </Window.DataContext>
+      />--><!--
+    </Window.DataContext>-->
     <Grid>
         <StackPanel>
             <Label Content="Képnézegető" 
