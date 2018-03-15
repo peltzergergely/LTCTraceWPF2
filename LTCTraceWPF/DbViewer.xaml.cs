@@ -25,21 +25,23 @@ namespace LTCTraceWPF
 
         public void FillWorkStationList()
         {
+            workSteps.Add("00 Transistor Dátumok", "transdate");
             workSteps.Add("11 MB HS Szerelés", "mb_hs_assy");
             workSteps.Add("12 MB DSP Szerelés", "mb_dsp_assy");
             workSteps.Add("21 FB ACDC Szerelés", "fb_acdc_assy");
             workSteps.Add("22 FB EMC Szerelés", "fb_emc_assy");
             workSteps.Add("31 Ház Leak Teszt I.", "housing_leak_test_one");
             workSteps.Add("32 Ház FB Szerelés", "housing_fb_assy");
-            workSteps.Add("33 HiPot Teszt I.", "hipot_test_one");
+            workSteps.Add("33 Potting után Kapton", "potting");
             workSteps.Add("34 Ház Konnektor Szerelés", "housing_connector_assy");
             workSteps.Add("41 Végszerelés I.", "housing_connector_assy");
-            workSteps.Add("42 Kalibráció", "calibration");
-            workSteps.Add("43 Végszerelés II.", "final_assy_two");
-            workSteps.Add("44 Leak Teszt II.", "housing_leak_test_two");
-            workSteps.Add("45 Hipot Teszt II.", "hipot_test_two");
-            workSteps.Add("46 EOL", "eol");
-            workSteps.Add("47 Firewall", "firewall");
+            workSteps.Add("42 HiPot Teszt I.", "hipot_test_one");
+            workSteps.Add("43 Kalibráció", "calibration");
+            workSteps.Add("44 Végszerelés II.", "final_assy_two");
+            workSteps.Add("45 Leak Teszt II.", "housing_leak_test_two");
+            workSteps.Add("46 Hipot Teszt II.", "hipot_test_two");
+            workSteps.Add("47 EOL", "eol");
+            workSteps.Add("48 Firewall", "firewall");
 
             workStationTableName.ItemsSource = workSteps;
             workStationTableName.DisplayMemberPath = "Key";

@@ -46,25 +46,25 @@
                             Padding="10,10"
                             Margin="10,30,10,10"
                             Background="#FFEBC1"
-                            Click="MbHsAssyBtn_Click">11 - Mainboard Heatszink szerelés Chk</Button>
+                            Click="MbHsAssyBtn_Click">11 - Mainboard Heatszink szerelés</Button>
                     <Button x:Name="MbThtBtn" 
                             FontSize="25"
                             Padding="10,10"
                             Margin="10,30,10,10"
                             Background="#F2C66C" 
-                            Click="MbThtBtn_Click">12 - Mainboard DSP Trace/Szer. Cam</Button>
+                            Click="MbThtBtn_Click">12 - Mainboard DSP Trace/Szer.</Button>
                     <Button x:Name="FbAcdcAssyBtn"
                             FontSize="25" 
                             Padding="10,10" 
                             Margin="10,30,10,10" 
                             Background="#FFEBC1" 
-                            Click="FbAcdcAssyBtn_Click">21 - Filterboard AC DC Konnektor Szer. chk</Button>
+                            Click="FbAcdcAssyBtn_Click">21 - Filterboard AC DC Szer.</Button>
                     <Button x:Name="FbEmcBtn"
                             FontSize="25"
                             Padding="10,10" 
                             Margin="10,30,10,10" 
                             Background="#F2C66C" 
-                            Click="FbEmcBtn_Click">22 - Filterboard EMC Shield Szer. Cam</Button>
+                            Click="FbEmcBtn_Click">22 - Filterboard EMC Shield Szer.</Button>
                     <Button x:Name="ErrorReportBtn" 
                             FontSize="25" 
                             Padding="10,10" 
@@ -90,16 +90,15 @@
                             Margin="10,30,10,10" 
                             Background="#F2C66C" 
                             Click="HousingFbAssyBtn_Click">
-                        32 - Ház Filterboard Szer. Cam
+                        32 - Ház Filterboard Szer.
                     </Button>
-                    <Button x:Name="HipotBtn" 
+                    <Button x:Name="Potting" 
                             FontSize="25" 
                             Padding="10,10" 
                             Margin="10,30,10,10" 
-                            Background="#AEBCDE" 
-                            Click="HipotBtn_Click" 
-                            IsEnabled="True">
-                        33 - Hipot I. Gen
+                            Background="#F2C66C" 
+                            Click="Potting_Click">
+                        33 - Potting után kaptonozás
                     </Button>
                     <Button x:Name="HousingConnectorAssyBtn" 
                             FontSize="25" 
@@ -107,7 +106,7 @@
                             Margin="10,30,10,10" 
                             Background="#F2C66C" 
                             Click="HousingConnectorAssyBtn_Click">
-                        34 - Ház konnektor szerelés Chk
+                        34 - Ház konnektor szerelés
                     </Button>
                     <Button x:Name="ReworkBtn" 
                             FontSize="25" 
@@ -126,45 +125,60 @@
                             Margin="10,30,10,10" 
                             Background="#F26F6C" 
                             Click="FinalAssy1Btn_Click">41 - Végszerelés I.</Button>
+                    <Button x:Name="HipotBtn" 
+                            FontSize="25" 
+                            Padding="10,10" 
+                            Margin="10,30,10,10" 
+                            Background="#AEBCDE" 
+                            Click="HipotBtn_Click" 
+                            IsEnabled="True">
+                        42 - Hipot I. Gen
+                    </Button>
                     <Button x:Name="CalibBtn" 
                             FontSize="25"
                             Padding="10,10" 
                             Margin="10,30,10,10"
                             Background="#AEBCDE" 
                             Click="CalibBtn_Click" 
-                            IsEnabled="True">42 - Kalibráció Gen</Button>
+                            IsEnabled="True">
+                        43 - Kalibráció Gen</Button>
                     <Button x:Name="FinalAssy2Btn" 
                             FontSize="25"
                             Padding="10,10" 
                             Margin="10,30,10,10" 
                             Background="#F26F6C"
-                            Click="FinalAssy2Btn_Click">43 - Végszerelés II.</Button>
+                            Click="FinalAssy2Btn_Click">
+                        44 - Végszerelés II.</Button>
                     <Button x:Name="LeakTest2Btn" 
                             FontSize="25" 
                             Padding="10,10" 
                             Margin="10,30,10,10" 
                             Background="#AEBCDE" 
-                            Click="LeakTest2btn_Click">44 - Leak Teszt Végszerelés II. után</Button>
+                            Click="LeakTest2btn_Click">
+                        45 - Leak Teszt Végszerelés II. után</Button>
                     <Button x:Name="HiPotTwoBtn" 
                             FontSize="25" 
                             Padding="10,10" 
                             Margin="10,30,10,10" 
                             Background="#AEBCDE" 
                             Click="HiPotTwoBtn_Click" 
-                            IsEnabled="True">45 - HiPot II.</Button>
+                            IsEnabled="True">
+                        46 - HiPot II.</Button>
                     <Button x:Name="EolBtn" 
                             FontSize="25" 
                             Padding="10,10" 
                             Margin="10,30,10,10" 
                             Background="#AEBCDE" 
                             Click="EolBtn_Click" 
-                            IsEnabled="True">46 - EOL</Button>
+                            IsEnabled="True">
+                        47 - EOL</Button>
                     <Button x:Name="FirewallBtn" 
                             FontSize="25"
                             Padding="10,10" 
                             Margin="10,30,10,10"
                             Background="#F26F6C"
-                            Click="FirewallBtn_Click">47 - Firewall Cam</Button>
+                            Click="FirewallBtn_Click">
+                        48 - Firewall</Button>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

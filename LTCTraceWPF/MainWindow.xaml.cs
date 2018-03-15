@@ -129,5 +129,11 @@ namespace LTCTraceWPF
             var errorReport = new ErrorReport();
             errorReport.Show();
         }
+
+        private void Potting_Click(object sender, RoutedEventArgs e)
+        {
+            var pottingwindow = new PottingWindow();
+            pottingwindow.Show();
+        }
     }
 }

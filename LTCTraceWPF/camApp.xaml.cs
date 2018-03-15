@@ -33,7 +33,8 @@ namespace LTCTraceWPF
             Loaded += (sender, e) => MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             this.DataContext = this;
             VideoDevices = EncoderDevices.FindDevices(EncoderDeviceType.Video);
-            VidDevices.SelectedIndex = 1;
+            VidDevices.SelectedItem = "C922 Pro Stream Webcam";
+            VidDevices.SelectedIndex = 0;
             StartCapture();
         }
 

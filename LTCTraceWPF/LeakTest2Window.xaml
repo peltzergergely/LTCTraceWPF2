@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LTCTraceWPF"
         mc:Ignorable="d"
-        Title="44 - Ház Leak Teszt II." 
+        Title="Ház Leak Teszt II." 
         Height="1080"
         Width="1920" 
         ResizeMode="NoResize"
@@ -16,7 +16,7 @@
         Background="#FDFDFD">
     <Grid>
         <StackPanel>
-            <Label Content="44 - Ház Leak Teszt"
+            <Label Content="Ház Leak Teszt"
                    HorizontalContentAlignment="Center" 
                    Padding="15" 
                    FontSize="45" 

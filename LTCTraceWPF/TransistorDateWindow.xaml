@@ -68,19 +68,18 @@
                            FontSize="35"
                            HorizontalAlignment="Right"
                            Margin="30,15">Tranzisztor dátum:</TextBlock>
-                <Border BorderBrush="Black" BorderThickness="2" Grid.Column="1" Width="300" HorizontalAlignment="Left">
-                    <DatePicker 
-                    CalendarStyle="{StaticResource styleCalendar}"
-                    HorizontalAlignment="Left"
-                    Width="300"
-                    Name="datePicker1" 
-                    FontSize="35" Style="{DynamicResource DatePickerStyle1}"
-                    IsTabStop="True"
-                    TabIndex="0"
-                    BorderThickness="1" ClipToBounds="True"
-                    KeyUp="OnKeyUpEvent"
-                    />
+                <Viewbox Width="400" Height="70" Grid.Column="1" HorizontalAlignment="Left">
+                <Border BorderThickness="1" BorderBrush="Black">
+                    <DatePicker BorderThickness="0" 
+                                Background="White" 
+                                VerticalContentAlignment="Center"
+                                HorizontalContentAlignment="Center" 
+                                SelectedDateFormat="Short"
+                                x:Name="datePicker1" 
+                                FirstDayOfWeek="Monday"
+                                />
                 </Border>
+                </Viewbox>
             </Grid>
         </StackPanel>
 

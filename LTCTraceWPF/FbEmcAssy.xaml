@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LTCTraceWPF"
         mc:Ignorable="d"
-        Title="22 - FB EMC Szerelés" 
+        Title="FB EMC Szerelés" 
         Height="1080"
         Width="1920" 
         ResizeMode="NoResize"
@@ -16,7 +16,7 @@
         Background="#FDFDFD">
     <Grid>
         <StackPanel>
-            <Label Content="22 - Filterboard EMC Szerelés"
+            <Label Content="Filterboard EMC Shield Szerelés"
                    HorizontalContentAlignment="Center" 
                    Padding="15" 
                    FontSize="45" 

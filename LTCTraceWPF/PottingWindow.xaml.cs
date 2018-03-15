@@ -11,11 +11,13 @@ namespace LTCTraceWPF
     /// <summary>
     /// Interaction logic for PottingWindow.xaml
     /// </summary>
-    public partial class HousingFbAssy : Window
+    public partial class PottingWindow : Window
     {
         public bool IsDmValidated { get; set; } = false;
 
         public bool AllFieldsValidated { get; set; } = false;
+
+        public bool IsCameraLaunched { get; set; } = false;
 
         public DateTime? StartedOn { get; set; } = null;
 
@@ -23,7 +25,7 @@ namespace LTCTraceWPF
 
         public string[] FilePathStr { get; set; }//Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
 
-        public HousingFbAssy()
+        public PottingWindow()
         {
             Loaded += (sender, e) => MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             InitializeComponent();
@@ -64,15 +66,13 @@ namespace LTCTraceWPF
             string errorMsg = "";
             if (IsDmValidated == true)
             {
-                PreChk("housing_leak_test_one", "housing_dm", HousingDmTxbx.Text);
+                PreChk("housing_fb_assy", "housing_dm", HousingDmTxbx.Text);
                 if (IsPreChkPassed)
                 {
-                    PreChk("fb_emc_assy", "fb_dm", FbDmTxbx.Text);
-                    if (IsPreChkPassed)
-                    {
-                        AllFieldsValidated = true;
-                    }
-                    else errorMsg += "Előző munkafolyamaton nem szerepelt a Filterboard! ";
+                        if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length > 3)
+                        {
+                            AllFieldsValidated = true;
+                        }
                 }
                 else
                     errorMsg += " Előző munkafolyamaton nem szerepelt a Ház! ";
@@ -80,6 +80,10 @@ namespace LTCTraceWPF
             if (IsDmValidated == false)
             {
                 errorMsg += " DataMátrix nem megfelelő! ";
+            }
+            if (IsCameraLaunched == false)
+            {
+                errorMsg += " Kamera nem volt elindítva! ";
             }
             if (errorMsg != "")
             {
@@ -95,8 +99,7 @@ namespace LTCTraceWPF
 
         private void DmValidator()
         {
-            if (RegexValidation(HousingDmTxbx.Text, "HousingDmRegEx") == true
-                && RegexValidation(FbDmTxbx.Text, "FbDmRegEx") == true)
+            if (RegexValidation(HousingDmTxbx.Text, "HousingDmRegEx") == true)
                 IsDmValidated = true;
             else
                 IsDmValidated = false;
@@ -106,8 +109,8 @@ namespace LTCTraceWPF
         {
             IsDmValidated = false;
             AllFieldsValidated = false;
+            IsCameraLaunched = false;
             HousingDmTxbx.Text = "";
-            FbDmTxbx.Text = "";
             HousingDmTxbx.Focus();
         }
 
@@ -140,31 +143,67 @@ namespace LTCTraceWPF
 
         private void DbInsert(string table)
         {
-            try
+            System.IO.Directory.CreateDirectory(@"c:\TraceImages\");
+            FilePathStr = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
+            int imgArrayLimit = 9;
+            if (FilePathStr.Length > imgArrayLimit)
             {
-                using (NpgsqlConnection conn = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["ltctrace.dbconnectionstring"].ConnectionString))
-                {
-                    conn.Open();
-                    var cmd = new NpgsqlCommand("insert into " + table + " (housing_dm, fb_dm, pc_name, started_on, saved_on) " +
-                    "values(:housing_dm, :fb_dm, :pc_name, :started_on, :saved_on)", conn);
-                    cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
-                    cmd.Parameters.Add(new NpgsqlParameter("fb_dm", FbDmTxbx.Text));
-                    cmd.Parameters.Add(new NpgsqlParameter("pc_name", Environment.MachineName));
-                    cmd.Parameters.Add(new NpgsqlParameter("started_on", StartedOn));
-                    cmd.Parameters.Add(new NpgsqlParameter("saved_on", DateTime.Now));
-                    //uploading the pictures
-
-                    int result = cmd.ExecuteNonQuery();
-                    if (result == 1)
-                    {
-                        CallMessageForm("Adatok elmentve!");
-                    }
-                    conn.Close();
-                }
+                MessageBox.Show("A készített képek száma meghaladja a maximum 9 képes limitet! Töröld ki a fölösleget a TraceImages mappából!'");
+                System.Diagnostics.Process.Start("explorer.exe", "C:\\TraceImages\\");
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show(ex.Message);
+                imgArrayLimit = FilePathStr.Length;
+                try
+                {
+                    byte[][] imgByteArray = new byte[9][];
+                    for (int i = 0; i < imgArrayLimit; i++)
+                    {
+                        FileStream fs = new FileStream(FilePathStr[i], FileMode.Open, FileAccess.Read);
+                        imgByteArray[i] = new byte[fs.Length];
+                        fs.Read(imgByteArray[i], 0, Convert.ToInt32(fs.Length));
+                        fs.Close();
+                    }
+
+                    using (NpgsqlConnection conn = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["ltctrace.dbconnectionstring"].ConnectionString))
+                    {
+                        conn.Open();
+                        var cmd = new NpgsqlCommand("insert into " + table + " (housing_dm, pc_name, started_on, saved_on, pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8, pic9) " +
+                        "values(:housing_dm, :pc_name, :started_on, :saved_on, :pic1, :pic2, :pic3, :pic4, :pic5, :pic6, :pic7, :pic8, :pic9)", conn);
+                        cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
+                        cmd.Parameters.Add(new NpgsqlParameter("pc_name", Environment.MachineName));
+                        cmd.Parameters.Add(new NpgsqlParameter("started_on", StartedOn));
+                        cmd.Parameters.Add(new NpgsqlParameter("saved_on", DateTime.Now));
+                        //uploading the pictures
+                        for (int i = 0; i < 9; i++)
+                        {
+                            if (i < FilePathStr.Length)
+                                cmd.Parameters.Add(new NpgsqlParameter("pic" + (i + 1).ToString(), imgByteArray[i]));
+                            else //making them empty
+                            {
+                                imgByteArray[i] = new byte[0];
+                                cmd.Parameters.Add(new NpgsqlParameter("pic" + (i + 1).ToString(), imgByteArray[i]));
+                            }
+                        }
+
+                        int result = cmd.ExecuteNonQuery();
+                        if (result == 1)
+                        {
+                            FilePathStr = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
+                            Directory.CreateDirectory("C:\\TraceImagesArchive\\" + "HOUSINGDM_" + HousingDmTxbx.Text);
+                            for (int i = 0; i < FilePathStr.Length; i++)
+                            {
+                                File.Move(FilePathStr[i], "C:\\TraceImagesArchive\\" + "HOUSINGDM_" + HousingDmTxbx.Text + "\\" + Path.GetFileName(FilePathStr[i]));
+                            }
+                            CallMessageForm("Adatok elmentve!");
+                        }
+                        conn.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 
@@ -183,6 +222,7 @@ namespace LTCTraceWPF
             SaveBtn.Focus();
             var webCam = new camApp();
             webCam.Show();
+            IsCameraLaunched = true;
         }
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
@@ -190,7 +230,7 @@ namespace LTCTraceWPF
             FormValidator();
             if (AllFieldsValidated)
             {
-                DbInsert("housing_fb_assy");
+                DbInsert("potting");
             }
         }
     }

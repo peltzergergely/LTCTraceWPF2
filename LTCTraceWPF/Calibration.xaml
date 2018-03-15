@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LTCTraceWPF"
         mc:Ignorable="d"
-        Title="Mainboard Heatsink Szerelés" 
-        Height="1080" 
+        Title="Kalibráció"
+        Height="1080"
         Width="1920" 
-        ResizeMode="NoResize"
+        ResizeMode="NoResize" 
         WindowState="Maximized" 
         WindowStartupLocation="CenterScreen" 
         WindowStyle="None" 
@@ -16,12 +16,13 @@
         Background="#FDFDFD">
     <Grid>
         <StackPanel>
-            <Label Content="Kalibráció" 
-                   Padding="10" 
-                   FontSize="25" 
+            <Label Content="Kalibráció"
+                   HorizontalContentAlignment="Center" 
+                   Padding="15" 
+                   FontSize="45" 
                    Background="#00363a" 
-                   Foreground="white" />
-            <Label Content="Tölsd ki az alábbi mezőket!" 
+                   Foreground="white"/>
+            <Label Content="Olvasd be a ház datamátrixát majd pipáld ki, ha a termék a teszten megfelelt" 
                    HorizontalContentAlignment="Center" 
                    Padding="30" 
                    FontSize="35" 
@@ -51,7 +52,7 @@
                            Grid.Column="0"
                            FontSize="35"
                            HorizontalAlignment="Right"
-                           Margin="30,15">Kalibráció kész</TextBlock>
+                           Margin="30,15">Teszten megfelelt</TextBlock>
                 <TextBox x:Name="HousingDmTxbx" 
                          Grid.Row="0" 
                          Grid.Column="1" 

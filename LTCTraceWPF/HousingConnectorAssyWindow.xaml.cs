@@ -61,7 +61,7 @@ namespace LTCTraceWPF
         {
             if (IsDmValidated == true && screwChkbx.IsChecked == true)
             {
-                PreChk("hipot_test_one");
+                PreChk("potting");
                 if (IsPreChkPassed)
                 {
                     AllFieldsValidated = true;

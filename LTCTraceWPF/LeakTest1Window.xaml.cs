@@ -116,12 +116,13 @@ namespace LTCTraceWPF
 
         private void PrintDMC(int number)
         {
-            string runningtext = "LTCOBCVSP";
+            string runningtext = "LTC";
             if (number > 0)
             {
                 HousingDM = runningtext + number.ToString();
                 CounterTxbx.Text = HousingDM;
-                string s = @"^XA^MMT^PW406^LL0280^LS0^FT67,240^A0N,28,28^FH\^" + HousingDM + @"^FS^BY154,154^FT123,209^BXN,7,200,0,0,1,~^FH\^FDLTC1E0002187ADB2.5\0D\0A" + HousingDM + "^FS^PQ1,0,1,Y^XZ";
+                //string s = @"^XA^MMT^PW406^LL0280^LS0^FT67,240^A0N,28,28^FH\^" + HousingDM + @"^FS^BY154,154^FT123,209^BXN,7,200,0,0,1,~^FH\^FDLTC1E0002187ADB2.5\0D\0A" + HousingDM + "^FS^PQ1,0,1,Y^XZ";
+                string s = @"^XA^MMT^PW406^LL0280^LS0^BY192,192^FT107,205^BXN,16,200,0,0,1,~^FH\^FD" + HousingDM + @"^FS^FT69,239^A0N,28,28^FH\^FDLTC 1E0002187 AD B2.5^FS^FT69,273^A0N,28,28^FH\^FD" + HousingDM + "^FS^PQ1,0,1,Y^XZ";
                 PrintDialog pd = new PrintDialog();
                 if (pd.ShowDialog() == true)
                 {
