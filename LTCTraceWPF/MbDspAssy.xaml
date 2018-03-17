@@ -22,12 +22,15 @@
                    FontSize="45" 
                    Background="#00363a" 
                    Foreground="white"/>
-            <Label Content="Olvasd be a Mainboard és a DSP-k vonalkódjait majd fotózd körbe a terméket!" 
-                   HorizontalContentAlignment="Center" 
+            <TextBlock
                    Padding="30" 
-                   FontSize="35"
+                   FontSize="35" 
                    Background="#006064" 
-                   Foreground="white"/>
+                   Foreground="white"
+                TextWrapping="Wrap"
+                TextAlignment="Center"
+                   >Olvasd be a Mainboard és a DSP-k vonalkódjait majd fotózd körbe a terméket!
+            </TextBlock>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" 

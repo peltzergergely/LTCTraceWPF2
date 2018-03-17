@@ -22,11 +22,15 @@
                    FontSize="45" 
                    Background="#00363a" 
                    Foreground="white"/>
-            <Label Content="Csavarozás ELŐTT olvasd be a Filterboard Datamátrixot majd csavarozás után pipáld ki és mentsd el!"
-                   HorizontalContentAlignment="Center" 
+            <TextBlock
                    Padding="30" 
                    FontSize="35" 
-                   Background="#006064" Foreground="white"/>
+                   Background="#006064" 
+                   Foreground="white"
+                TextWrapping="Wrap"
+                TextAlignment="Center"
+                   >Csavarozás ELŐTT olvasd be a Filterboard Datamátrixát, majd csavarozás végeztével nyomj Entert VAGY olvasd be újra a kódot.
+            </TextBlock>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" 

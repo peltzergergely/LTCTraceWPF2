@@ -16,18 +16,21 @@
         Background="#FDFDFD">
     <Grid>
         <StackPanel>
-            <Label Content="Ház Leak Teszt"
+            <Label Content="Mainboard Heatsink Szerelés"
                    HorizontalContentAlignment="Center" 
                    Padding="15" 
                    FontSize="45" 
                    Background="#00363a" 
                    Foreground="white"/>
-            <Label Content="Csavarozás ELŐTT olvasd be a Mainboard Datamátrixot majd csavarozás után pipáld ki és mentsd el!" 
-                   HorizontalContentAlignment="Center" 
+            <TextBlock
                    Padding="30" 
                    FontSize="35" 
                    Background="#006064" 
-                   Foreground="white"/>
+                   Foreground="white"
+                TextWrapping="Wrap"
+                TextAlignment="Center"
+                   >Csavarozás ELŐTT olvasd be a Mainboard Datamátrixát, majd csavarozás végeztével nyomj Entert VAGY olvasd be újra a kódot.
+            </TextBlock>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" 
@@ -48,7 +51,7 @@
                            FontSize="35" 
                            HorizontalAlignment="Right" 
                            Margin="30,15">Mainboard DataMatrix</TextBlock>
-                <TextBlock Grid.Row="5" 
+                <TextBlock Grid.Row="1" 
                            Grid.Column="0"
                            FontSize="35"
                            HorizontalAlignment="Right"
@@ -63,7 +66,7 @@
                          KeyUp="OnKeyUpEvent"
                          LostFocus="FbDmTxbx_LostFocus"></TextBox>
                 <CheckBox x:Name="screwChkbx"
-                          Grid.Row="3"
+                          Grid.Row="1"
                           Grid.Column="1"
                           HorizontalAlignment="left" 
                           Margin="30,15" 

@@ -79,7 +79,7 @@
                          IsTabStop="True"
                          TabIndex="0"
                          KeyUp="OnKeyUpEvent"
-                         LostFocus="HousingDmTxbx_LostFocus"></TextBox>
+                         LostFocus="MbDmTxbx_LostFocus"></TextBox>
                 <CheckBox x:Name="screwChkbx"
                           Grid.Row="3"
                           Grid.Column="1"

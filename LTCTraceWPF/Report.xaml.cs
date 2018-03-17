@@ -113,8 +113,8 @@ namespace LTCTraceWPF
         private void XmlSaver(string query)
         {
             string constr = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
-            var systemPath = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            System.IO.Directory.CreateDirectory(systemPath + "\\LTCReportFolder\\Report_" + HousingDm);
+            var systemPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            Directory.CreateDirectory(systemPath + "\\LTCReportFolder\\Report_" + HousingDm);
             try
             {
                 using (NpgsqlConnection conn = new NpgsqlConnection(constr))
@@ -216,7 +216,5 @@ namespace LTCTraceWPF
                 MessageBox.Show(ex.Message);
             }
         }
-
-
     }
 }

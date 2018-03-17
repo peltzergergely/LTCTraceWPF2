@@ -14,8 +14,6 @@ namespace LTCTraceWPF
     {
         public bool IsDmValidated { get; set; } = false;
 
-        public bool IsPreChkPassed { get; set; } = false;
-
         public bool AllFieldsValidated { get; set; } = false;
 
         public DateTime? StartedOn { get; set; } = null;
@@ -48,11 +46,15 @@ namespace LTCTraceWPF
                     keyboardFocus.MoveFocus(tRequest);
                 }
                 e.Handled = true;
+
+                if (Keyboard.FocusedElement == PFGenChkbx)
+                {
+                    PFGenChkbx.IsChecked = true;
+                }
             }
 
             if (Keyboard.FocusedElement == SaveBtn)
             {
-                PreChk("housing_leak_test_one");
                 FormValidator();
                 SaveBtn_Click(sender, e);
             }
@@ -62,17 +64,13 @@ namespace LTCTraceWPF
 
         private void FormValidator()
         {
-            if (IsDmValidated == true && IsPreChkPassed == true)
+            if (IsDmValidated == true)
             {
                 AllFieldsValidated = true;
             }
-            else if (IsDmValidated == false)
+            else
             {
                 CallMessageForm("HIBA: DataMátrix nem megfelelő!");
-            }
-            else if (IsPreChkPassed == false)
-            {
-                CallMessageForm("HIBA: Előző munkafolyamaton nem szerepelt a termék!");
             }
         }
 
@@ -106,29 +104,6 @@ namespace LTCTraceWPF
             msgWindow.Activate();
         }
 
-        //precheck if previous table have current datamatrix
-        //housing_fb_assy housing_dm fb_dm
-        private void PreChk(string previousTable)
-        {
-            string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
-            // Making connection
-            var conn = new NpgsqlConnection(connstring);
-            conn.Open();
-            // building query
-            var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM " + previousTable + " WHERE housing_dm = :housing_dm", conn);
-            cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
-            Int32 countProd = Convert.ToInt32(cmd.ExecuteScalar());
-            conn.Close();
-            if (countProd == 1)
-            {
-                IsPreChkPassed = true;
-            }
-            else
-            {                   
-                IsPreChkPassed = false;
-            }
-        }
-
         private void DbInsert(string table) //DB insert
         {
             try
@@ -160,7 +135,6 @@ namespace LTCTraceWPF
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-
             if (AllFieldsValidated)
             {
                 DbInsert("hipot_test_one");
@@ -169,7 +143,15 @@ namespace LTCTraceWPF
 
         private void FbDmTxbx_LostFocus(object sender, RoutedEventArgs e)
         {
-            StartedOn = DateTime.Now;
+            if (HousingDmTxbx.Text.Length > 0)
+            {
+                var preCheck = new DatabaseHelper();
+                if (preCheck.CountRowInDB("final_assy_one", "housing_dm", HousingDmTxbx.Text) == 0)
+                {
+                    CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
+                }
+                StartedOn = DateTime.Now;
+            }
         }
 
         private void MainMenuBtn_Click(object sender, RoutedEventArgs e)

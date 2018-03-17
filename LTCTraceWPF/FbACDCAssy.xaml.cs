@@ -46,6 +46,11 @@ namespace LTCTraceWPF
                     keyboardFocus.MoveFocus(tRequest);
                 }
                 e.Handled = true;
+
+                if (Keyboard.FocusedElement == screwChkbx)
+                {
+                    screwChkbx.IsChecked = true;
+                }
             }
 
             if (Keyboard.FocusedElement == SaveBtn)

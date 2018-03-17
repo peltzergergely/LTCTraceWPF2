@@ -21,11 +21,9 @@ namespace LTCTraceWPF
 
         public bool IsCameraLaunched { get; set; } = false;
 
-        public bool IsPreChkPassed { get; set; } = false;
-
         public DateTime? StartedOn { get; set; } = null;
 
-        public string[] FilePathStr = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
+        public string[] FilePathStr;
 
         public FbEmcWindow()
         {
@@ -65,27 +63,24 @@ namespace LTCTraceWPF
             {
                 SaveBtn_Click(sender, e);
             }
-
-            DmValidator();
         }
 
 
         //fb_acdc_assy
         private void FormValidator()
         {
+            Directory.CreateDirectory(@"c:\TraceImages\");
             string errorMsg = "";
             if (IsDmValidated == true)
             {
-                PreChk("fb_acdc_assy");
-                if (IsPreChkPassed)
+                if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length > 2)
                 {
-                    if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length > 3)
-                    {
-                        AllFieldsValidated = true;
-                    }
+                    AllFieldsValidated = true;
                 }
                 else
-                    errorMsg += "Előző munkafolyamaton nem szerepelt a termék!";
+                {
+                    errorMsg += "Nem készült elég kép! ";
+                }
             }
             if (IsDmValidated == false)
             {
@@ -123,40 +118,12 @@ namespace LTCTraceWPF
             FbDmTxbx.Focus();
         }
 
-
         private void CallMessageForm(string msgToShow)
         {
             ResetForm();
             var msgWindow = new MessageForm(msgToShow);
             msgWindow.Show();
             msgWindow.Activate();
-        }
-
-        private void WebCamLaunchClick(object sender, RoutedEventArgs e)
-        {
-            SaveBtn.Focus();
-            IsCameraLaunched = true;
-            var webCam = new camApp();
-            webCam.Show();
-        }
-
-        private void PreChk(string previousTable)
-        {
-            string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
-            var conn = new NpgsqlConnection(connstring);
-            conn.Open();
-            var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM " + previousTable + " WHERE fb_dm = :fb_dm", conn);
-            cmd.Parameters.Add(new NpgsqlParameter("fb_dm", FbDmTxbx.Text));
-            Int32 countProd = Convert.ToInt32(cmd.ExecuteScalar());
-            conn.Close();
-            if (countProd == 1)
-            {
-                IsPreChkPassed = true;
-            }
-            else
-            {
-                IsPreChkPassed = false;
-            }
         }
 
         private void DbInsert(string table)
@@ -210,7 +177,7 @@ namespace LTCTraceWPF
                             System.IO.Directory.CreateDirectory("C:\\TraceImagesArchive\\" + "FBDM_" + FbDmTxbx.Text);
                             for (int i = 0; i < FilePathStr.Length; i++)
                             {
-                                File.Move(FilePathStr[i], "C:\\TraceImagesArchive\\" + "FBDM_"+ FbDmTxbx.Text + "\\" + Path.GetFileName(FilePathStr[i]));
+                                File.Move(FilePathStr[i], "C:\\TraceImagesArchive\\" + "FBDM_" + FbDmTxbx.Text + "\\" + Path.GetFileName(FilePathStr[i]));
                             }
                             CallMessageForm("Adatok elmentve!");
                         }
@@ -224,6 +191,36 @@ namespace LTCTraceWPF
             }
         }
 
+        private void FbDmTxbx_LostFocus(object sender, RoutedEventArgs e)
+        {
+            DmValidator();
+            if (FbDmTxbx.Text.Length > 0)
+            {
+                var preCheck = new DatabaseHelper();
+                if (preCheck.CountRowInDB("fb_acdc_assy", "fb_dm", FbDmTxbx.Text) == 0)
+                {
+                    CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
+                }
+                else
+                {
+                    StartedOn = DateTime.Now;
+                    WebCamLaunchClick(sender, e);
+                }
+            }
+        }
+
+        private void WebCamLaunchClick(object sender, RoutedEventArgs e)
+        {
+            using (new WaitCursor())
+            {
+                // very long task
+                SaveBtn.Focus();
+                var webCam = new camApp();
+                webCam.Show();
+                IsCameraLaunched = true;
+            }
+        }
+
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
             FormValidator();
@@ -231,11 +228,6 @@ namespace LTCTraceWPF
             {
                 DbInsert("fb_emc_assy");
             }
-        }
-
-        private void FbDmTxbx_LostFocus(object sender, RoutedEventArgs e)
-        {
-            StartedOn = DateTime.Now;
         }
     }
 }

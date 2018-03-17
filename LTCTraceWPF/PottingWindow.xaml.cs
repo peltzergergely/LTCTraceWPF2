@@ -66,16 +66,10 @@ namespace LTCTraceWPF
             string errorMsg = "";
             if (IsDmValidated == true)
             {
-                PreChk("housing_fb_assy", "housing_dm", HousingDmTxbx.Text);
-                if (IsPreChkPassed)
+                if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length > 3)
                 {
-                        if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length > 3)
-                        {
-                            AllFieldsValidated = true;
-                        }
+                    AllFieldsValidated = true;
                 }
-                else
-                    errorMsg += " Előző munkafolyamaton nem szerepelt a Ház! ";
             }
             if (IsDmValidated == false)
             {
@@ -120,25 +114,6 @@ namespace LTCTraceWPF
             var msgWindow = new MessageForm(msgToShow);
             msgWindow.Show();
             msgWindow.Activate();
-        }
-
-        private void PreChk(string previousTable, string columnToSearch, string dataToFind)
-        {
-            string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
-            var conn = new NpgsqlConnection(connstring);
-            conn.Open();
-            var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM " + previousTable + " WHERE " + columnToSearch + " = :dataToFind", conn);
-            cmd.Parameters.Add(new NpgsqlParameter("dataToFind", dataToFind));
-            Int32 countProd = Convert.ToInt32(cmd.ExecuteScalar());
-            conn.Close();
-            if (countProd > 0)
-            {
-                IsPreChkPassed = true;
-            }
-            else
-            {
-                IsPreChkPassed = false;
-            }
         }
 
         private void DbInsert(string table)
@@ -209,7 +184,15 @@ namespace LTCTraceWPF
 
         private void HousingDmTxbx_LostFocus(object sender, RoutedEventArgs e)
         {
-            StartedOn = DateTime.Now;
+            if (HousingDmTxbx.Text.Length > 0)
+            {
+                var preCheck = new DatabaseHelper();
+                if (preCheck.CountRowInDB("housing_fb_assy", "housing_dm", HousingDmTxbx.Text) == 0)
+                {
+                    CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
+                }
+                StartedOn = DateTime.Now;
+            }
         }
 
         private void MainMenuBtn_Click(object sender, RoutedEventArgs e)

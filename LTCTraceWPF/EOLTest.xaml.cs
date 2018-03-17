@@ -16,8 +16,6 @@ namespace LTCTraceWPF
     {
         public bool IsDmValidated { get; set; } = false;
 
-        public bool IsPreChkPassed { get; set; } = false;
-
         public bool AllFieldsValidated { get; set; } = false;
 
         public DateTime? StartedOn { get; set; } = null;
@@ -59,7 +57,6 @@ namespace LTCTraceWPF
 
             if (Keyboard.FocusedElement == SaveBtn)
             {
-                PreChk("hipot_test_two");
                 FormValidator();
                 SaveBtn_Click(sender, e);
             }
@@ -69,7 +66,7 @@ namespace LTCTraceWPF
 
         private void FormValidator()
         {
-            if (IsDmValidated == true && IsPreChkPassed == true)
+            if (IsDmValidated == true)
             {
                 AllFieldsValidated = true;
             }
@@ -77,10 +74,7 @@ namespace LTCTraceWPF
             {
                 CallMessageForm("HIBA: DataMátrix nem megfelelő!");
             }
-            else if (IsPreChkPassed == false)
-            {
-                CallMessageForm("HIBA: Előző munkafolyamaton nem szerepelt a termék!");
-            }
+            
         }
 
         public bool RegexValidation(string dataToValidate, string datafieldName)
@@ -113,25 +107,6 @@ namespace LTCTraceWPF
             msgWindow.Activate();
         }
 
-        private void PreChk(string previousTable)
-        {
-            string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
-            var conn = new NpgsqlConnection(connstring);
-            conn.Open();
-            var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM " + previousTable + " WHERE housing_dm = :housing_dm", conn);
-            cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
-            Int32 countProd = Convert.ToInt32(cmd.ExecuteScalar());
-            conn.Close();
-            if (countProd == 1)
-            {
-                IsPreChkPassed = true;
-            }
-            else
-            {
-                IsPreChkPassed = false;
-            }
-        }
-
         private void DbInsert(string table) //DB insert
         {
             try
@@ -150,11 +125,10 @@ namespace LTCTraceWPF
                 DateTime UploadMoment = DateTime.Now;
                 conn.Open();
                 // building SQL query
-                var cmd = new NpgsqlCommand("INSERT INTO " + table + " (housing_dm, test_result, pc_name, started_on, saved_on, filename, file, filename1, file1) " +
-                    "VALUES(:housing_dm, :test_result, :pc_name, :started_on, :saved_on, :filename, :file, :filename1, :file1)", conn);
+                var cmd = new NpgsqlCommand("INSERT INTO " + table + " (housing_dm, pc_name, started_on, saved_on, filename, file, filename1, file1) " +
+                    "VALUES(:housing_dm, :pc_name, :started_on, :saved_on, :filename, :file, :filename1, :file1)", conn);
                 cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
-                cmd.Parameters.Add(new NpgsqlParameter("test_result", PFGenChkbx.IsChecked));
-                cmd.Parameters.Add(new NpgsqlParameter("pc_name", System.Environment.MachineName));
+                cmd.Parameters.Add(new NpgsqlParameter("pc_name", Environment.MachineName));
                 cmd.Parameters.Add(new NpgsqlParameter("started_on", StartedOn));
                 cmd.Parameters.Add(new NpgsqlParameter("saved_on", DateTime.Now));
                 cmd.Parameters.Add(new NpgsqlParameter("filename", openFileDialog.SafeFileName));
@@ -171,14 +145,13 @@ namespace LTCTraceWPF
             catch (Exception msg)
             {
                 MessageBox.Show(msg.ToString());
-                ResetForm();
             }
         }
 
         private void LaunchFiledialog()
         {
             openFileDialog.Filter = "All files (*.*)|*.*";
-            openFileDialog.InitialDirectory = @"D:\";
+            openFileDialog.InitialDirectory = @"C:\";
             openFileDialog.ShowDialog();
         }
 
@@ -192,7 +165,15 @@ namespace LTCTraceWPF
 
         private void FbDmTxbx_LostFocus(object sender, RoutedEventArgs e)
         {
-            StartedOn = DateTime.Now;
+            if (HousingDmTxbx.Text.Length > 0)
+            {
+                var preCheck = new DatabaseHelper();
+                if (preCheck.CountRowInDB("hipot_test_two", "housing_dm", HousingDmTxbx.Text) == 0)
+                {
+                    CallMessageForm("Előző munkafolyamaton nem szerepelt a Ház!");
+                }
+                StartedOn = DateTime.Now;
+            }
         }
 
         private void MainMenuBtn_Click(object sender, RoutedEventArgs e)

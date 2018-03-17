@@ -20,13 +20,13 @@ namespace LTCTraceWPF
     public partial class MessageForm : Window
     {
 
-        public MessageForm(string mmsgToDisplay)
+        public MessageForm(string msgToDisplay)
         {
             Loaded += (sender, e) => MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             InitializeComponent();
             this.Focus();
             OkBtn.Focus();
-            msgToShow.Content = mmsgToDisplay;
+            msgToShow.Content = msgToDisplay;
             this.SizeToContent = SizeToContent.WidthAndHeight;
         }
 

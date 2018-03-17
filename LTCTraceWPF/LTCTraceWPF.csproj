@@ -145,6 +145,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DatabaseHelper.cs" />
     <Compile Include="EOLTest.xaml.cs">
       <DependentUpon>EOLTest.xaml</DependentUpon>
     </Compile>
@@ -167,6 +168,7 @@
     <Compile Include="TransistorDateWindow.xaml.cs">
       <DependentUpon>TransistorDateWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WaitCursor.cs" />
     <Page Include="Calibration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

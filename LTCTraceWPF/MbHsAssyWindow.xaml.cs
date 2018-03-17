@@ -48,23 +48,30 @@ namespace LTCTraceWPF
                     keyboardFocus.MoveFocus(tRequest);
                 }
                 e.Handled = true;
+
+                if (Keyboard.FocusedElement == screwChkbx)
+                {
+                    screwChkbx.IsChecked = true;
+                }
             }
 
             if (Keyboard.FocusedElement == SaveBtn)
             {
-                FormValidator();
                 SaveBtn_Click(sender, e);
             }
-
             DmValidator();
         }
 
         private void FormValidator()
         {
             if (IsDmValidated == true && screwChkbx.IsChecked == true)
+            {
                 AllFieldsValidated = true;
+            }
             else
+            {
                 CallMessageForm("Hibás kitöltés");
+            }
         }
 
         public bool RegexValidation(string dataToValidate, string datafieldName)
@@ -129,6 +136,7 @@ namespace LTCTraceWPF
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
+            FormValidator();
             if (AllFieldsValidated)
             {
                 DbInsert("mb_hs_assy");

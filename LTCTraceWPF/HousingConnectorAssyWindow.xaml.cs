@@ -48,6 +48,11 @@ namespace LTCTraceWPF
                     keyboardFocus.MoveFocus(tRequest);
                 }
                 e.Handled = true;
+
+                if (Keyboard.FocusedElement == screwChkbx)
+                {
+                    screwChkbx.IsChecked = true;
+                }
             }
 
             if (Keyboard.FocusedElement == SaveBtn)
@@ -61,13 +66,7 @@ namespace LTCTraceWPF
         {
             if (IsDmValidated == true && screwChkbx.IsChecked == true)
             {
-                PreChk("potting");
-                if (IsPreChkPassed)
-                {
-                    AllFieldsValidated = true;
-                }
-                else
-                    CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
+                AllFieldsValidated = true;
             }
             else
             {
@@ -165,7 +164,15 @@ namespace LTCTraceWPF
 
         private void FbDmTxbx_LostFocus(object sender, RoutedEventArgs e)
         {
-            StartedOn = DateTime.Now;
+            if (HousingDmTxbx.Text.Length > 0)
+            {
+                var preCheck = new DatabaseHelper();
+                if (preCheck.CountRowInDB("potting", "housing_dm", HousingDmTxbx.Text) == 0)
+                {
+                    CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
+                }
+                StartedOn = DateTime.Now;
+            }
         }
 
         private void MainMenuBtn_Click(object sender, RoutedEventArgs e)

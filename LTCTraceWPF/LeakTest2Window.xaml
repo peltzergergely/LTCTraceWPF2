@@ -63,7 +63,8 @@
                          Margin="30,15"
                          IsTabStop="True"
                          TabIndex="0"
-                         KeyUp="OnKeyUpEvent" ></TextBox>
+                         KeyUp="OnKeyUpEvent" 
+                         LostFocus="housingDmTxbx_LostFocus"></TextBox>
                 <TextBox x:Name="leakTestTxbx"
                          Grid.Row="1" 
                          Grid.Column="1" 

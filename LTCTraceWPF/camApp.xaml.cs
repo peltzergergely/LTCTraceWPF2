@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 
 using Microsoft.Expression.Encoder.Devices;
 using System.Collections.ObjectModel;
-
+using System.IO;
 
 namespace LTCTraceWPF
 {
@@ -33,9 +33,32 @@ namespace LTCTraceWPF
             Loaded += (sender, e) => MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             this.DataContext = this;
             VideoDevices = EncoderDevices.FindDevices(EncoderDeviceType.Video);
+
+            CheckIfImgFolderEmpty();
+
             VidDevices.SelectedItem = "C922 Pro Stream Webcam";
             VidDevices.SelectedIndex = 0;
             StartCapture();
+
+            this.PreviewKeyDown += new KeyEventHandler(HandleEsc);
+        }
+
+        private void CheckIfImgFolderEmpty()
+        {
+            if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length > 0)
+            {
+                var msgToShow = "A képek mappa nem üres, töröld a felesleges képeket!";
+                var msgWindow = new MessageForm(msgToShow);
+                msgWindow.Show();
+                msgWindow.Activate();
+                System.Diagnostics.Process.Start("explorer.exe", @"c:\TraceImages\");
+            }
+        }
+
+        private void HandleEsc(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+                Close();
         }
 
         private void StartCapture()

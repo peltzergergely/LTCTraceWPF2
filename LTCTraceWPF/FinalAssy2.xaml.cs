@@ -46,6 +46,11 @@ namespace LTCTraceWPF
                     keyboardFocus.MoveFocus(tRequest);
                 }
                 e.Handled = true;
+
+                if (Keyboard.FocusedElement == screwChkbx)
+                {
+                    screwChkbx.IsChecked = true;
+                }
             }
 
             if (Keyboard.FocusedElement == SaveBtn)
@@ -61,13 +66,7 @@ namespace LTCTraceWPF
         {
             if (IsDmValidated == true)
             {
-                PreChk("calibration", "housing_dm", HousingDmTxbx.Text);
-                if (IsPreChkPassed)
-                {
-                    AllFieldsValidated = true;
-                }
-                else
-                    CallMessageForm("Előző munkafolyamaton nem szerepelt a Ház!");
+                AllFieldsValidated = true;
             }
             else
             {
@@ -84,8 +83,8 @@ namespace LTCTraceWPF
         private void DmValidator()
         {
             if (RegexValidation(HousingDmTxbx.Text, "MbDmRegEx"))
-               // if (RegexValidation(GwDmTxbx.Text, "MbDmRegEx"))
-                    IsDmValidated = true;
+                // if (RegexValidation(GwDmTxbx.Text, "MbDmRegEx"))
+                IsDmValidated = true;
             else
                 IsDmValidated = false;
         }
@@ -107,25 +106,6 @@ namespace LTCTraceWPF
             var msgWindow = new MessageForm(msgToShow);
             msgWindow.Show();
             msgWindow.Activate();
-        }
-
-        private void PreChk(string previousTable, string columnToSearch, string dataToFind)
-        {
-            string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
-            var conn = new NpgsqlConnection(connstring);
-            conn.Open();
-            var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM " + previousTable + " WHERE " + columnToSearch + " = :dataToFind", conn);
-            cmd.Parameters.Add(new NpgsqlParameter("dataToFind", dataToFind));
-            Int32 countProd = Convert.ToInt32(cmd.ExecuteScalar());
-            conn.Close();
-            if (countProd > 0)
-            {
-                IsPreChkPassed = true;
-            }
-            else
-            {
-                IsPreChkPassed = false;
-            }
         }
 
         private void DbInsert(string table) //DB insert
@@ -159,7 +139,15 @@ namespace LTCTraceWPF
 
         private void HousingDmTxbx_LostFocus(object sender, RoutedEventArgs e)
         {
-            StartedOn = DateTime.Now;
+            if (HousingDmTxbx.Text.Length > 0)
+            {
+                var preCheck = new DatabaseHelper();
+                if (preCheck.CountRowInDB("calibration", "housing_dm", HousingDmTxbx.Text) == 0)
+                {
+                    CallMessageForm("Előző munkafolyamaton nem szerepelt a Ház!");
+                }
+                StartedOn = DateTime.Now;
+            }
         }
 
         private void MainMenuBtn_Click(object sender, RoutedEventArgs e)
