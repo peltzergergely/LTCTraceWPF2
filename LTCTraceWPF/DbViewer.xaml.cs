@@ -16,6 +16,10 @@ namespace LTCTraceWPF
         public DbWindow()
         {
             Loaded += (sender, e) => MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+            if (ConfigurationManager.AppSettings["DBQueryBox"] == "false")
+            {
+                costumquery.Visibility = Visibility.Hidden;
+            }
             InitializeComponent();
             FillWorkStationList();
             FillProductNames();
@@ -97,22 +101,15 @@ namespace LTCTraceWPF
                 dataSet.Reset();
                 dataAdapter.Fill(dataSet);
                 dataTable = dataSet.Tables[0];
-                dataGridView1.ItemsSource = dataTable.AsDataView();
+                dataGridView.ItemsSource = dataTable.AsDataView();
                 conn.Close();
             }
             catch (Exception msg)
             {
-                MessageBox.Show(msg.ToString());
+                MessageBox.Show(msg.Message);
             }
-            dataGridView1.Columns[0].Width = 70;
+            dataGridView.Columns[0].Width = 70;
         }
-
-        //select * from firewall where housing_dm = ###
-        //select * from eol where housing_dm = ###
-        //select * from hipot_test_two where housing_dm = ###
-        //select * from leak_test_two where housing_dm = ###
-        //select * from firewall where housing_dm = ###
-        //select * from firewall where housing_dm = ###
 
         private void MainMenuBtn_Click(object sender, RoutedEventArgs e)
         {

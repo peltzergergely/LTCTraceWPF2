@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Configuration;
+using System.Windows;
 
 namespace LTCTraceWPF
 {
@@ -10,6 +12,83 @@ namespace LTCTraceWPF
         public MainWindow()
         {
             InitializeComponent();
+
+            if (ConfigurationManager.AppSettings["transistordate"] == "false")
+            {
+                TransistorDateBtn.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["MbHsAssy"] == "false")
+            {
+                MbHsAssyBtn.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["MbDspAssy"] == "false")
+            {
+                MbDspAssyBtn.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["FbAcdcAssy"] == "false")
+            {
+                FbAcdcAssyBtn.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["FbEmcAssy"] == "false")
+            {
+                FbEmcAssyBtn.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["LeakTestOne"] == "false")
+            {
+                LeakTestOne.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["HousingFbAssy"] == "false")
+            {
+                HousingFbAssyBtn.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["Potting"] == "false")
+            {
+                PottingBtn.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["HousingConnectorAssy"] == "false")
+            {
+                HousingConnectorAssyBtn.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["FinalAssyOne"] == "false")
+            {
+                FinalAssyOneBtn.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["HiPotTestOne"] == "false")
+            {
+                HiPotTestOneBtn.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["Calibration"] == "false")
+            {
+                CalibrationBtn.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["FinalAssyTwo"] == "false")
+            {
+                FinalAssyTwoBtn.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["LeakTestTwo"] == "false")
+            {
+                LeakTestTwoBtn.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["HiPotTestTwo"] == "false")
+            {
+                HiPotTestTwoBtn.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["EOL"] == "false")
+            {
+                EolBtn.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["Firewall"] == "false")
+            {
+                FirewallBtn.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["ErrorReport"] == "false")
+            {
+                ErrorReportBtn.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["Rework"] == "false")
+            {
+                ReworkBtn.IsEnabled = false;
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -58,7 +137,7 @@ namespace LTCTraceWPF
             MbHsAssyWindow.Show();
         }
 
-        private void MbThtBtn_Click(object sender, RoutedEventArgs e)
+        private void MbDspAssyBtn_Click(object sender, RoutedEventArgs e)
         {
             var MbDspAssy = new MbDspAssy();
             MbDspAssy.Show();

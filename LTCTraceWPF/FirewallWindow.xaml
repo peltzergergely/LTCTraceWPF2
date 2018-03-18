@@ -56,12 +56,26 @@
                            Margin="30,15">
                     Ház DataMátrix
                 </TextBlock>
+                <TextBlock Grid.Row="1" 
+                           Grid.Column="0" 
+                           FontSize="35" 
+                           HorizontalAlignment="Right"
+                           Margin="30,15">
+                    Címke adat 1
+                </TextBlock>
+                <TextBlock Grid.Row="2" 
+                           Grid.Column="0" 
+                           FontSize="35" 
+                           HorizontalAlignment="Right"
+                           Margin="30,15">
+                    Címke adat 2
+                </TextBlock>
                 <TextBlock Grid.Row="3" 
                            Grid.Column="0" 
                            FontSize="35"
                            HorizontalAlignment="Right" 
                            Margin="30,15">
-                    Kapton fotózása / Képek száma
+                    Fénykép készítése
                 </TextBlock>
                 <TextBox x:Name="HousingDmTxbx" 
                          Grid.Row="0" 
@@ -71,8 +85,25 @@
                          LostFocus="HousingDmTxbx_LostFocus"
                          KeyUp="OnKeyUpEvent"
                          IsTabStop="True"
-                         TabIndex="0">
-                </TextBox>
+                         TabIndex="0"/>
+                <TextBox x:Name="Label1Txbx" 
+                         Grid.Row="1" 
+                         Grid.Column="1" 
+                         FontSize="35" 
+                         Margin="30,15"
+                         LostFocus="HousingDmTxbx_LostFocus"
+                         KeyUp="OnKeyUpEvent"
+                         IsTabStop="True"
+                         TabIndex="0"/>
+                <TextBox x:Name="Label2Txbx" 
+                         Grid.Row="2" 
+                         Grid.Column="1" 
+                         FontSize="35" 
+                         Margin="30,15"
+                         LostFocus="HousingDmTxbx_LostFocus"
+                         KeyUp="OnKeyUpEvent"
+                         IsTabStop="True"
+                         TabIndex="0"/>
                 <Button x:Name="WebCamLaunchBtn"
                             Grid.Row="3" 
                             Grid.Column="1"

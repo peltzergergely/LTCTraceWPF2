@@ -80,7 +80,7 @@
                         >Report készítése</Button>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-            <DataGrid x:Name="dataGridView1"
+            <DataGrid x:Name="dataGridView"
                       Height="500"
                       Width="1594" 
                       FontSize="20" 

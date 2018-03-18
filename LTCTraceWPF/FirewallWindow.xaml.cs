@@ -21,9 +21,7 @@ namespace LTCTraceWPF
 
         public DateTime? StartedOn { get; set; } = null;
 
-        public bool IsPreChkPassed { get; set; } = false;
-
-        public string[] FilePathStr = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
+        public string[] FilePathStr; // = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
 
         public FirewallWindow()
         {
@@ -67,17 +65,11 @@ namespace LTCTraceWPF
             string errorMsg = "";
             if (IsDmValidated == true)
             {
-                PreChk("eol");
-                if (IsPreChkPassed)
+                if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length > 2)
                 {
-                    if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length > 2)
-                    {
-                        AllFieldsValidated = true;
-                    }
-                    else errorMsg += "Legalább 3 képnek kell készülnie";
+                    AllFieldsValidated = true;
                 }
-                else
-                    errorMsg += "Előző munkafolyamaton nem szerepelt a termék!";
+                else errorMsg += "Legalább 3 képnek kell készülnie";
             }
             if (IsDmValidated == false)
             {
@@ -124,25 +116,6 @@ namespace LTCTraceWPF
             msgWindow.Activate();
         }
 
-        private void PreChk(string previousTable)
-        {
-            string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
-            var conn = new NpgsqlConnection(connstring);
-            conn.Open();
-            var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM " + previousTable + " WHERE housing_dm = :housing_dm", conn);
-            cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
-            Int32 countProd = Convert.ToInt32(cmd.ExecuteScalar());
-            conn.Close();
-            if (countProd == 1)
-            {
-                IsPreChkPassed = true;
-            }
-            else
-            {
-                IsPreChkPassed = false;
-            }
-        }
-
         private void DbInsert(string table)
         {
             FilePathStr = Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
@@ -169,12 +142,14 @@ namespace LTCTraceWPF
                     using (NpgsqlConnection conn = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["ltctrace.dbconnectionstring"].ConnectionString))
                     {
                         conn.Open();
-                        var cmd = new NpgsqlCommand("insert into " + table + " (housing_dm, pc_name, started_on, saved_on, pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8, pic9) " +
-                        "values(:housing_dm, :pc_name, :started_on, :saved_on, :pic1, :pic2, :pic3, :pic4, :pic5, :pic6, :pic7, :pic8, :pic9)", conn);
+                        var cmd = new NpgsqlCommand("insert into " + table + " (housing_dm, pc_name, started_on, saved_on, label_one, label_two, pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8, pic9) " +
+                        "values(:housing_dm, :pc_name, :started_on, :saved_on, :label_one, :label_two, :pic1, :pic2, :pic3, :pic4, :pic5, :pic6, :pic7, :pic8, :pic9)", conn);
                         cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
                         cmd.Parameters.Add(new NpgsqlParameter("pc_name", System.Environment.MachineName));
                         cmd.Parameters.Add(new NpgsqlParameter("started_on", StartedOn));
                         cmd.Parameters.Add(new NpgsqlParameter("saved_on", DateTime.Now));
+                        cmd.Parameters.Add(new NpgsqlParameter("label_one", Label1Txbx.Text));
+                        cmd.Parameters.Add(new NpgsqlParameter("label_two", Label2Txbx.Text));
                         //uploading the pictures
                         for (int i = 0; i < 9; i++)
                         {
@@ -210,7 +185,15 @@ namespace LTCTraceWPF
 
         private void HousingDmTxbx_LostFocus(object sender, RoutedEventArgs e)
         {
-            StartedOn = DateTime.Now;
+            if (HousingDmTxbx.Text.Length > 0)
+            {
+                var preCheck = new DatabaseHelper();
+                if (preCheck.CountRowInDB("eol", "housing_dm", HousingDmTxbx.Text) == 0)
+                {
+                    CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
+                }
+                StartedOn = DateTime.Now;
+            }
         }
 
         private void MainMenuBtn_Click(object sender, RoutedEventArgs e)

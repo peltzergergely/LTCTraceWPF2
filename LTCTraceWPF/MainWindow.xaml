@@ -47,19 +47,19 @@
                             Margin="10,30,10,10"
                             Background="#FFEBC1"
                             Click="MbHsAssyBtn_Click">11 - Mainboard Heatszink szerelés</Button>
-                    <Button x:Name="MbThtBtn" 
+                    <Button x:Name="MbDspAssyBtn" 
                             FontSize="25"
                             Padding="10,10"
                             Margin="10,30,10,10"
                             Background="#F2C66C" 
-                            Click="MbThtBtn_Click">12 - Mainboard DSP Trace/Szer.</Button>
+                            Click="MbDspAssyBtn_Click">12 - Mainboard DSP Trace/Szer.</Button>
                     <Button x:Name="FbAcdcAssyBtn"
                             FontSize="25" 
                             Padding="10,10" 
                             Margin="10,30,10,10" 
                             Background="#FFEBC1" 
                             Click="FbAcdcAssyBtn_Click">21 - Filterboard AC DC Szer.</Button>
-                    <Button x:Name="FbEmcBtn"
+                    <Button x:Name="FbEmcAssyBtn"
                             FontSize="25"
                             Padding="10,10" 
                             Margin="10,30,10,10" 
@@ -70,13 +70,14 @@
                             Padding="10,10" 
                             Margin="10,125,10,10" 
                             Background="#bf6fd1" 
-                            Click="ErrorReportBtn_Click">
+                            Click="ErrorReportBtn_Click"
+                            >
                         XX - HIBA BEJELENTŐ
                     </Button>
                 </StackPanel>
                 <StackPanel Margin="40,0"
                             Width="550">
-                    <Button x:Name="HouseLeakTestBtn" 
+                    <Button x:Name="LeakTestOne" 
                             FontSize="25" 
                             Padding="10,10" 
                             Margin="10,30,10,10" 
@@ -92,7 +93,7 @@
                             Click="HousingFbAssyBtn_Click">
                         32 - Ház Filterboard Szer.
                     </Button>
-                    <Button x:Name="Potting" 
+                    <Button x:Name="PottingBtn" 
                             FontSize="25" 
                             Padding="10,10" 
                             Margin="10,30,10,10" 
@@ -119,13 +120,13 @@
                 </StackPanel>
                 <StackPanel Margin="40,0" 
                             Width="550">
-                    <Button x:Name="FinalAssy1Btn" 
+                    <Button x:Name="FinalAssyOneBtn" 
                             FontSize="25" 
                             Padding="10,10" 
                             Margin="10,30,10,10" 
                             Background="#F26F6C" 
                             Click="FinalAssy1Btn_Click">41 - Végszerelés I.</Button>
-                    <Button x:Name="HipotBtn" 
+                    <Button x:Name="HiPotTestOneBtn" 
                             FontSize="25" 
                             Padding="10,10" 
                             Margin="10,30,10,10" 
@@ -134,7 +135,7 @@
                             IsEnabled="True">
                         42 - Hipot I. Gen
                     </Button>
-                    <Button x:Name="CalibBtn" 
+                    <Button x:Name="CalibrationBtn" 
                             FontSize="25"
                             Padding="10,10" 
                             Margin="10,30,10,10"
@@ -142,21 +143,21 @@
                             Click="CalibBtn_Click" 
                             IsEnabled="True">
                         43 - Kalibráció Gen</Button>
-                    <Button x:Name="FinalAssy2Btn" 
+                    <Button x:Name="FinalAssyTwoBtn" 
                             FontSize="25"
                             Padding="10,10" 
                             Margin="10,30,10,10" 
                             Background="#F26F6C"
                             Click="FinalAssy2Btn_Click">
                         44 - Végszerelés II.</Button>
-                    <Button x:Name="LeakTest2Btn" 
+                    <Button x:Name="LeakTestTwoBtn" 
                             FontSize="25" 
                             Padding="10,10" 
                             Margin="10,30,10,10" 
                             Background="#AEBCDE" 
                             Click="LeakTest2btn_Click">
                         45 - Leak Teszt Végszerelés II. után</Button>
-                    <Button x:Name="HiPotTwoBtn" 
+                    <Button x:Name="HiPotTestTwoBtn" 
                             FontSize="25" 
                             Padding="10,10" 
                             Margin="10,30,10,10" 
