@@ -62,7 +62,7 @@
                          TabIndex="0"
                          KeyUp="OnKeyUpEvent"
                          LostFocus="FbDmTxbx_LostFocus"></TextBox>
-                <CheckBox x:Name="PFGenChkbx"
+                <CheckBox x:Name="TestResultCkhbx"
                           Grid.Row="3"
                           Grid.Column="1"
                           HorizontalAlignment="left" 

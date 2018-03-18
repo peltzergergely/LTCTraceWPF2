@@ -34,7 +34,7 @@ namespace LTCTraceWPF
         private string MbDm;
         private string FbDm;
 
-        private StringBuilder sb = new StringBuilder();
+        private StringBuilder strbuilder = new StringBuilder();
 
         private void QueryDb(string WoName, string query)
         {
@@ -51,10 +51,10 @@ namespace LTCTraceWPF
                 conn.Close();
                 for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
-                    sb.AppendFormat(WoName + "\r\n");
+                    strbuilder.AppendFormat(WoName + "\r\n");
                     for (int j = 0; j < dataTable.Columns.Count; j++)
                     {
-                        sb.AppendFormat("   {0, -25}\t{1}\r\n", dataTable.Columns[j].ColumnName, dataTable.Rows[i][j]);
+                        strbuilder.AppendFormat("   {0, -25}\t{1}\r\n", dataTable.Columns[j].ColumnName, dataTable.Rows[i][j]);
                         if (dataTable.Columns[j].ColumnName == "mb_dm")
                         {
                             MbDm = dataTable.Rows[i][j].ToString();
@@ -66,46 +66,51 @@ namespace LTCTraceWPF
                     }
                 }
             }
-            catch (Exception msg)
+            catch (Exception)
             {
-                //MessageBox.Show(msg.ToString());
-                sb.AppendLine("Error or Missing: " + WoName);
+                strbuilder.AppendLine("Error or Missing: " + WoName);
             }
-            sb.AppendLine();
+            strbuilder.AppendLine();
         }
 
         private void reportGenBtn_Click(object sender, RoutedEventArgs e)
         {
             //QueryDb(costumquery.Text);
             HousingDm = searchedDM.Text;
-            QueryDb("47 Firewall", "SELECT housing_dm, pc_name, started_on, saved_on FROM firewall WHERE housing_dm = '" + HousingDm + "'");
+            QueryDb("48 Firewall", "SELECT housing_dm, pc_name, started_on, saved_on FROM firewall WHERE housing_dm = '" + HousingDm + "'");
             ImageSaver("SELECT * FROM firewall WHERE housing_dm = '" + HousingDm + "'");
-            QueryDb("46 EOL", "SELECT housing_dm, pc_name, started_on, saved_on FROM eol WHERE housing_dm = '" + HousingDm + "'");
+            QueryDb("47 EOL", "SELECT housing_dm, test_result, pc_name, started_on, saved_on FROM eol WHERE housing_dm = '" + HousingDm + "'");
             XmlSaver("select * from eol where housing_dm = '" + HousingDm + "'");
-            QueryDb("45 HiPot II.", "SELECT housing_dm, test_result, pc_name, started_on, saved_on FROM hipot_test_two WHERE housing_dm = '" + HousingDm + "'");
-            QueryDb("44 Leak Test II.", "SELECT housing_dm, leak_test_result, pc_name, created_on FROM housing_leak_test_two WHERE housing_dm = '" + HousingDm + "'");
-            QueryDb("43 Final Assy II.", "SELECT housing_dm, gw_dm, pc_name, started_on, saved_on FROM final_assy_two WHERE housing_dm = '" + HousingDm + "'");
-            QueryDb("42 Calibration ", "SELECT housing_dm, pc_name, started_on, saved_on FROM calibration WHERE housing_dm = '" + HousingDm + "'");
+            QueryDb("46 HiPot II.", "SELECT housing_dm, test_result, pc_name, started_on, saved_on FROM hipot_test_two WHERE housing_dm = '" + HousingDm + "'");
+            QueryDb("45 Leak Test II.", "SELECT housing_dm, leak_test_result, pc_name, saved_on FROM housing_leak_test_two WHERE housing_dm = '" + HousingDm + "'");
+            QueryDb("44 Final Assy II.", "SELECT housing_dm, gw_dm, pc_name, started_on, saved_on FROM final_assy_two WHERE housing_dm = '" + HousingDm + "'");
+            QueryDb("43 Calibration ", "SELECT housing_dm, test_result, pc_name, started_on, saved_on FROM calibration WHERE housing_dm = '" + HousingDm + "'");
             XmlSaver("select * from calibration where housing_dm = '" + HousingDm + "'");
+            QueryDb("32 HiPot Test I. ", "SELECT housing_dm, test_result, pc_name, started_on, saved_on FROM hipot_test_one WHERE housing_dm = '" + HousingDm + "'");
             QueryDb("41 Final Assy I. ", "SELECT housing_dm, mb_dm, pc_name, started_on, saved_on FROM final_assy_one WHERE housing_dm = '" + HousingDm + "'");
             QueryDb("34 Housing Connector Assy ", "SELECT housing_dm, pc_name, started_on, saved_on FROM housing_connector_assy WHERE housing_dm = '" + HousingDm + "'");
-            QueryDb("33 HiPot Test I. ", "SELECT housing_dm, test_result, pc_name, started_on, saved_on FROM hipot_test_one WHERE housing_dm = '" + HousingDm + "'");
+            QueryDb("33 Potting ", "SELECT housing_dm, pc_name, started_on, saved_on FROM housing_fb_assy WHERE housing_dm = '" + HousingDm + "'");
+            ImageSaver("SELECT * FROM potting WHERE housing_dm = '" + HousingDm + "'");
             QueryDb("32 Housing FB Assy ", "SELECT housing_dm, fb_dm, pc_name, started_on, saved_on FROM housing_fb_assy WHERE housing_dm = '" + HousingDm + "'");
-            ImageSaver("SELECT * FROM housing_fb_assy WHERE housing_dm = '" + HousingDm + "'");
-            QueryDb("31 Leak Test I. ", "SELECT housing_dm, leak_test_result, pc_name, created_on FROM housing_leak_test_one WHERE housing_dm = '" + HousingDm + "'");
+            QueryDb("31 Leak Test I. ", "SELECT housing_dm, leak_test_result, pc_name, saved_on FROM housing_leak_test_one WHERE housing_dm = '" + HousingDm + "'");
             QueryDb("22 Filterboard EMC Assy ", "SELECT fb_dm, pc_name, started_on, saved_on FROM fb_emc_assy WHERE fb_dm = '" + FbDm + "'");
             ImageSaver("SELECT * FROM fb_emc_assy WHERE fb_dm = '" + FbDm + "'");
             QueryDb("21 Filterboard ACDC Assy ", "SELECT fb_dm, pc_name, started_on, saved_on FROM fb_acdc_assy WHERE fb_dm = '" + FbDm + "'");
             QueryDb("12 Mainboard DSP Assy ", "SELECT mb_dm, dsp_one_one, dsp_one_two, dsp_one_three, dsp_two_one, dsp_two_two, dsp_two_three, pc_name, started_on, saved_on FROM mb_dsp_assy WHERE mb_dm = '" + MbDm + "'");
             ImageSaver("SELECT * FROM mb_dsp_assy WHERE mb_dm = '" + MbDm + "'");
             QueryDb("11 Mainboard Heatsink Assy ", "SELECT mb_dm, pc_name, started_on, saved_on FROM mb_dsp_assy WHERE mb_dm = '" + MbDm + "'");
-            txtBlck.Text = sb.ToString();
-            var systemPath = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            System.IO.Directory.CreateDirectory(systemPath + "\\LTCReportFolder\\Report_" + HousingDm);
+            txtBlck.Text = strbuilder.ToString();
+            var systemPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            Directory.CreateDirectory(systemPath + "\\LTCReportFolder\\Report_" + HousingDm);
             var complete = Path.Combine(systemPath + "\\LTCReportFolder\\Report_" + HousingDm, HousingDm + ".txt");
-            System.IO.StreamWriter file = new System.IO.StreamWriter(complete);
+            //StreamWriter file = new StreamWriter(complete);
             System.Diagnostics.Process.Start("explorer.exe", systemPath + "\\LTCReportFolder");
-            file.Write(sb.ToString()); // "sb" is the StringBuilder
+
+            using (StreamWriter writetext = new StreamWriter(complete))
+            {
+                writetext.WriteLine(strbuilder);
+            }
+            //file.Write(strbuilder.ToString()); // "sb" is the StringBuilder
         }
 
         DataSet ds;
@@ -153,11 +158,6 @@ namespace LTCTraceWPF
             }
         }
 
-        private void reportGen2Btn_Click(object sender, RoutedEventArgs e)
-        {
-            XmlSaver("select * from calibration where id = '11'");
-        }
-
         private void ImageSaver(string query)
         {
             string constr = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
@@ -187,7 +187,8 @@ namespace LTCTraceWPF
                 int i = 0;
                 for (int j = 0; j < dataTable.Columns.Count; j++)
                 {
-                    if (dataTable.Columns[j].ColumnName.Contains("pic"))
+
+                        if (dataTable.Columns[j].ColumnName.Contains("pic"))
                     {
                         byte[] blob = (byte[])dataTable.Rows[i][j];
                         if (blob.Length > 10)
@@ -205,7 +206,7 @@ namespace LTCTraceWPF
                             ms.Seek(0, SeekOrigin.Begin);
                             bi.StreamSource = ms;
                             bi.EndInit();
-                            var complete = Path.Combine(systemPath + "\\LTCReportFolder\\Report_" + HousingDm, dataTable.Rows[i][1] + "_" + j + ".Jpeg");
+                            var complete = Path.Combine(systemPath + "\\LTCReportFolder\\Report_" + HousingDm, dataTable.Rows[i][1] + "" +  dataTable.Rows[i][0] + "_" + j + ".Jpeg");
                             img.Save(complete, ImageFormat.Jpeg);
                         }
                     }

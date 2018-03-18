@@ -59,7 +59,7 @@ namespace LTCTraceWPF
                 var conn = new NpgsqlConnection(connstring);
                 conn.Open();
                 // building SQL query
-                var cmd = new NpgsqlCommand("INSERT INTO " + table + " (trans_date, created_on) " +
+                var cmd = new NpgsqlCommand("INSERT INTO " + table + " (trans_date, saved_on) " +
                     "VALUES(:trans_date, :created_on)", conn);
                 cmd.Parameters.Add(new NpgsqlParameter("trans_date", datePicker1.SelectedDate));
                 cmd.Parameters.Add(new NpgsqlParameter("created_on", DateTime.Now));

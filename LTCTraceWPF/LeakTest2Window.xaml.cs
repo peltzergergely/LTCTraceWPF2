@@ -101,7 +101,7 @@ namespace LTCTraceWPF
                 var UploadMoment = DateTime.Now;
                 conn.Open();
                 // building SQL query
-                var cmd = new NpgsqlCommand("INSERT INTO " + table + " (housing_dm, leak_test_result, pc_name, created_on) " +
+                var cmd = new NpgsqlCommand("INSERT INTO " + table + " (housing_dm, leak_test_result, pc_name, saved_on) " +
                     "VALUES(:housing_dm, :leak_test_result, :pc_name, :timestamp)", conn);
                 cmd.Parameters.Add(new NpgsqlParameter("housing_dm", housingDmTxbx.Text));
                 cmd.Parameters.Add(new NpgsqlParameter("leak_test_result", float.Parse(leakTestTxbx.Text, System.Globalization.CultureInfo.InvariantCulture.NumberFormat)));

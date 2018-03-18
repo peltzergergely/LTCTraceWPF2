@@ -21,8 +21,6 @@ namespace LTCTraceWPF
 
         public DateTime? StartedOn { get; set; } = null;
 
-        public bool IsPreChkPassed { get; set; } = false;
-
         public string[] FilePathStr { get; set; }//Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg");
 
         public PottingWindow()
@@ -66,7 +64,7 @@ namespace LTCTraceWPF
             string errorMsg = "";
             if (IsDmValidated == true)
             {
-                if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length > 3)
+                if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length > 2)
                 {
                     AllFieldsValidated = true;
                 }

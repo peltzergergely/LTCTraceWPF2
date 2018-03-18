@@ -1,9 +1,13 @@
-﻿using Npgsql;
+﻿using Microsoft.Win32;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Globalization;
+using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace LTCTraceWPF
@@ -18,7 +22,7 @@ namespace LTCTraceWPF
             Loaded += (sender, e) => MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             if (ConfigurationManager.AppSettings["DBQueryBox"] == "false")
             {
-                costumquery.Visibility = Visibility.Hidden;
+                //costumquery.Visibility = Visibility.Hidden;
             }
             InitializeComponent();
             FillWorkStationList();
@@ -47,10 +51,19 @@ namespace LTCTraceWPF
             workSteps.Add("47 EOL", "eol");
             workSteps.Add("48 Firewall", "firewall");
 
-            workStationTableName.ItemsSource = workSteps;
-            workStationTableName.DisplayMemberPath = "Key";
-            workStationTableName.SelectedValuePath = "Value";
-            workStationTableName.SelectedIndex = 0;
+            workStationCbx.ItemsSource = workSteps;
+            workStationCbx.DisplayMemberPath = "Key";
+            workStationCbx.SelectedValuePath = "Value";
+            workStationCbx.SelectedIndex = 0;
+
+            // set back the short date pattern to dd-MM-yyyy after lacquer load (MM-yyyy)
+            CultureInfo ci = CultureInfo.CreateSpecificCulture(CultureInfo.CurrentCulture.Name);
+            ci.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
+            Thread.CurrentThread.CurrentCulture = ci;
+
+            // Starting and Ending date
+            startDate.SelectedDate = new DateTime(2017, 10, 01);
+            endDate.SelectedDate = DateTime.Today;
 
             //megmutatja a hozzá tartozó értéket - a tábla nevét
             //MessageBox.Show(cbox.SelectedValue.ToString());
@@ -66,49 +79,81 @@ namespace LTCTraceWPF
             columnName.Add("Mainboard DM", "mb_dm");
             columnName.Add("Gateway DM", "gw_dm");
 
-            searchedField.ItemsSource = columnName;
-            searchedField.DisplayMemberPath = "Key";
-            searchedField.SelectedValuePath = "Value";
-            searchedField.SelectedIndex = 0;
+            prodCbx.ItemsSource = columnName;
+            prodCbx.DisplayMemberPath = "Key";
+            prodCbx.SelectedValuePath = "Value";
+            prodCbx.SelectedIndex = 0;
+        }
+
+        private string getSQLcommand()
+        {
+
+            string start = "'" + startDate.SelectedDate.Value.Year.ToString() + "-" + startDate.SelectedDate.Value.Month.ToString() + "-" + startDate.SelectedDate.Value.Day.ToString() + "'";
+            string end = "'" + endDate.SelectedDate.Value.Year.ToString() + "-" + endDate.SelectedDate.Value.Month.ToString() + "-" + endDate.SelectedDate.Value.Day.ToString() + "'";
+
+            string Querycmd = "SELECT * FROM " + workStationCbx.SelectedValue.ToString() + " WHERE date(saved_on) >= " + start + " and date(saved_on) <= " + end;
+
+            if (prodDmTbx.Text.Length > 0 && prodCbx.SelectedIndex != 0)
+            {
+                Querycmd = Querycmd + " AND " + prodCbx.SelectedValue.ToString() + " = '" + prodDmTbx.Text + "'";
+            }
+
+
+            return Querycmd;
         }
 
         private void QueryGen()
         {
-            string query = "";
-            if (queryTb.Text == "" || queryTb.Text == "*")
-            {
-                query = "SELECT * FROM " + workStationTableName.SelectedValue.ToString();
-            }
-            else
-            {
-                query = "SELECT * FROM " + workStationTableName.SelectedValue.ToString() + " WHERE " + searchedField.SelectedValue.ToString() + " = '" + queryTb.Text + "'";
-            }
-            table_select(query);
+            //string query = "";
+            //if (queryTb.Text == "" || queryTb.Text == "*")
+            //{
+            //    query = "SELECT * FROM " + workStationTableName.SelectedValue.ToString();
+            //}
+            //else
+            //{
+            //    query = "SELECT * FROM " + workStationTableName.SelectedValue.ToString() + " WHERE " + searchedField.SelectedValue.ToString() + " = '" + queryTb.Text + "'";
+            //}
+            //table_select(query);
         }
 
         private DataSet dataSet = new DataSet();
         private DataTable dataTable = new DataTable();
 
-        private void table_select(string query)
+
+        private void ListBtn_Click(object sender, RoutedEventArgs e)
         {
-            try
+            using (new WaitCursor())
             {
-                string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
-                var conn = new NpgsqlConnection(connstring);
-                conn.Open();
-                string sql = query;
-                var dataAdapter = new NpgsqlDataAdapter(sql, conn);
-                dataSet.Reset();
-                dataAdapter.Fill(dataSet);
-                dataTable = dataSet.Tables[0];
-                dataGridView.ItemsSource = dataTable.AsDataView();
-                conn.Close();
+                try
+                {
+                    string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
+                    var conn = new NpgsqlConnection(connstring);
+                    conn.Open();
+                    string sql = getSQLcommand();//query;
+                    var dataAdapter = new NpgsqlDataAdapter(sql, conn);
+                    dataSet.Reset();
+                    dataAdapter.Fill(dataSet);
+                    dataTable = dataSet.Tables[0];
+                    resultDataGrid.ItemsSource = dataTable.AsDataView();
+                    conn.Close();
+
+                }
+                catch (Exception msg)
+                {
+                    MessageBox.Show(msg.Message);
+                }
+                resultDataGrid.Columns[0].Width = 70;
+
+                for (int i = 0; i < resultDataGrid.Columns.Count; i++)
+                {
+                    if ((resultDataGrid.Columns[i].Header).ToString().Contains("pic"))
+                    {
+                        resultDataGrid.Columns[i].Visibility = Visibility.Hidden;
+                    }
+                }
             }
-            catch (Exception msg)
-            {
-                MessageBox.Show(msg.Message);
-            }
-            dataGridView.Columns[0].Width = 70;
+                resultRowCount.Content = resultDataGrid.Items.Count;
+
         }
 
         private void MainMenuBtn_Click(object sender, RoutedEventArgs e)
@@ -131,6 +176,31 @@ namespace LTCTraceWPF
         {
             var report = new Report();
             report.Show();
+        }
+
+        private void ExportBtn_Click(object sender, EventArgs e)
+        {
+            resultDataGrid.SelectAllCells();
+            resultDataGrid.ClipboardCopyMode = DataGridClipboardCopyMode.IncludeHeader;
+            ApplicationCommands.Copy.Execute(null, resultDataGrid);
+            String resultat = (string)Clipboard.GetData(DataFormats.CommaSeparatedValue);
+            String result = (string)Clipboard.GetData(DataFormats.Text);
+            resultDataGrid.UnselectAllCells();
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Excel |*.xls";
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                System.IO.StreamWriter file1 = new System.IO.StreamWriter(saveFileDialog.FileName);
+                file1.WriteLine(result.Replace(',', ' '));
+                file1.Close();
+            }
+        }
+
+        private void ReportBtn_Click_1(object sender, RoutedEventArgs e)
+        {
+            var reportWindow = new Report();
+            reportWindow.Show();
         }
     }
 }
