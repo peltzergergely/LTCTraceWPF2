@@ -125,16 +125,21 @@ namespace LTCTraceWPF
                 DateTime UploadMoment = DateTime.Now;
                 conn.Open();
                 // building SQL query
-                var cmd = new NpgsqlCommand("INSERT INTO " + table + " (housing_dm, test_result, pc_name, started_on, saved_on, filename, file, filename1, file1) " +
-                    "VALUES(:housing_dm, :test_result, :pc_name, :started_on, :saved_on, :filename, :file, :filename1, :file1)", conn);
+                var cmd = new NpgsqlCommand("INSERT INTO " + table + " (housing_dm, test_result, internal_id, pc_name, started_on, saved_on, filename, file, filename1, file1) " +
+                    "VALUES(:housing_dm, :test_result, :internal_id, :pc_name, :started_on, :saved_on, :filename, :file, :filename1, :file1)", conn);
                 cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
                 cmd.Parameters.Add(new NpgsqlParameter("test_result", TestResultCkhbx.IsChecked));
+                cmd.Parameters.Add(new NpgsqlParameter("internal_id", InternalDmTxbx.Text));
                 cmd.Parameters.Add(new NpgsqlParameter("pc_name", Environment.MachineName));
                 cmd.Parameters.Add(new NpgsqlParameter("started_on", StartedOn));
                 cmd.Parameters.Add(new NpgsqlParameter("saved_on", DateTime.Now));
                 cmd.Parameters.Add(new NpgsqlParameter("filename", openFileDialog.SafeFileName));
                 cmd.Parameters.Add(new NpgsqlParameter("file", fileToByteArr));
                 LaunchFiledialog();
+                FileStream file2 = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
+                var fileToByteArr2 = new byte[file2.Length];
+                file2.Read(fileToByteArr, 0, Convert.ToInt32(file2.Length));
+                file2.Close();
                 cmd.Parameters.Add(new NpgsqlParameter("filename1", openFileDialog.SafeFileName));
                 cmd.Parameters.Add(new NpgsqlParameter("file1", fileToByteArr));
 

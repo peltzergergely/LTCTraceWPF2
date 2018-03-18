@@ -52,6 +52,11 @@
                            Grid.Column="0"
                            FontSize="35"
                            HorizontalAlignment="Right"
+                           Margin="30,15">Tesztes azonosító</TextBlock>
+                <TextBlock Grid.Row="2" 
+                           Grid.Column="0"
+                           FontSize="35"
+                           HorizontalAlignment="Right"
                            Margin="30,15">Teszten megfelelt</TextBlock>
                 <TextBox x:Name="HousingDmTxbx" 
                          Grid.Row="0" 
@@ -62,8 +67,17 @@
                          TabIndex="0"
                          KeyUp="OnKeyUpEvent"
                          LostFocus="FbDmTxbx_LostFocus"></TextBox>
+                <TextBox x:Name="InternalDmTxbx" 
+                         Grid.Row="1" 
+                         Grid.Column="1" 
+                         FontSize="35" 
+                         Margin="30,15"
+                         IsTabStop="True"
+                         TabIndex="0"
+                         KeyUp="OnKeyUpEvent"
+                         />
                 <CheckBox x:Name="TestResultChkbx"
-                          Grid.Row="1"
+                          Grid.Row="2"
                           Grid.Column="1"
                           HorizontalAlignment="left" 
                           Margin="30,15" 

@@ -79,12 +79,12 @@ namespace LTCTraceWPF
             HousingDm = searchedDM.Text;
             QueryDb("48 Firewall", "SELECT housing_dm, pc_name, started_on, saved_on FROM firewall WHERE housing_dm = '" + HousingDm + "'");
             ImageSaver("SELECT * FROM firewall WHERE housing_dm = '" + HousingDm + "'");
-            QueryDb("47 EOL", "SELECT housing_dm, test_result, pc_name, started_on, saved_on FROM eol WHERE housing_dm = '" + HousingDm + "'");
+            QueryDb("47 EOL", "SELECT housing_dm, test_result, internal_id, pc_name, started_on, saved_on FROM eol WHERE housing_dm = '" + HousingDm + "'");
             XmlSaver("select * from eol where housing_dm = '" + HousingDm + "'");
             QueryDb("46 HiPot II.", "SELECT housing_dm, test_result, pc_name, started_on, saved_on FROM hipot_test_two WHERE housing_dm = '" + HousingDm + "'");
             QueryDb("45 Leak Test II.", "SELECT housing_dm, leak_test_result, pc_name, saved_on FROM housing_leak_test_two WHERE housing_dm = '" + HousingDm + "'");
             QueryDb("44 Final Assy II.", "SELECT housing_dm, gw_dm, pc_name, started_on, saved_on FROM final_assy_two WHERE housing_dm = '" + HousingDm + "'");
-            QueryDb("43 Calibration ", "SELECT housing_dm, test_result, pc_name, started_on, saved_on FROM calibration WHERE housing_dm = '" + HousingDm + "'");
+            QueryDb("43 Calibration ", "SELECT housing_dm, test_result, internal_id, pc_name, started_on, saved_on FROM calibration WHERE housing_dm = '" + HousingDm + "'");
             XmlSaver("select * from calibration where housing_dm = '" + HousingDm + "'");
             QueryDb("32 HiPot Test I. ", "SELECT housing_dm, test_result, pc_name, started_on, saved_on FROM hipot_test_one WHERE housing_dm = '" + HousingDm + "'");
             QueryDb("41 Final Assy I. ", "SELECT housing_dm, mb_dm, pc_name, started_on, saved_on FROM final_assy_one WHERE housing_dm = '" + HousingDm + "'");
@@ -138,17 +138,19 @@ namespace LTCTraceWPF
                 MessageBox.Show(ex.Message);
             }
 
-            try //saving the xml
+            try //saving the xml(s)
             {
                 DataTable dataTable = ds.Tables[0];
-
-                for (int j = 0; j < dataTable.Columns.Count; j++)
+                for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
-                    if (dataTable.Columns[j].ColumnName == "file" || dataTable.Columns[j].ColumnName == "file1")
+                    for (int j = 0; j < dataTable.Columns.Count; j++)
                     {
-                        byte[] blob = (byte[])dataTable.Rows[0][j];
-                        string filename = (string)dataTable.Rows[0][j - 1];
-                        File.WriteAllBytes(systemPath + "\\LTCReportFolder\\Report_" + HousingDm + "\\" + filename, blob);
+                        if (dataTable.Columns[j].ColumnName == "file" || dataTable.Columns[j].ColumnName == "file1")
+                        {
+                            byte[] blob = (byte[])dataTable.Rows[i][j];
+                            string filename = (string)dataTable.Rows[i][j - 1];
+                            File.WriteAllBytes(systemPath + "\\LTCReportFolder\\Report_" + HousingDm + "\\" + filename, blob);
+                        }
                     }
                 }
             }
@@ -161,8 +163,8 @@ namespace LTCTraceWPF
         private void ImageSaver(string query)
         {
             string constr = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
-            var systemPath = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            System.IO.Directory.CreateDirectory(systemPath + "\\LTCReportFolder\\Report_" + HousingDm);
+            var systemPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            Directory.CreateDirectory(systemPath + "\\LTCReportFolder\\Report_" + HousingDm);
             try
             {
                 using (NpgsqlConnection conn = new NpgsqlConnection(constr))
@@ -178,7 +180,7 @@ namespace LTCTraceWPF
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error with imagesaver SQL: " + ex.Message);
             }
 
             try //saving the images
@@ -188,7 +190,7 @@ namespace LTCTraceWPF
                 for (int j = 0; j < dataTable.Columns.Count; j++)
                 {
 
-                        if (dataTable.Columns[j].ColumnName.Contains("pic"))
+                    if (dataTable.Columns[j].ColumnName.Contains("pic"))
                     {
                         byte[] blob = (byte[])dataTable.Rows[i][j];
                         if (blob.Length > 10)
@@ -206,7 +208,7 @@ namespace LTCTraceWPF
                             ms.Seek(0, SeekOrigin.Begin);
                             bi.StreamSource = ms;
                             bi.EndInit();
-                            var complete = Path.Combine(systemPath + "\\LTCReportFolder\\Report_" + HousingDm, dataTable.Rows[i][1] + "" +  dataTable.Rows[i][0] + "_" + j + ".Jpeg");
+                            var complete = Path.Combine(systemPath + "\\LTCReportFolder\\Report_" + HousingDm, dataTable.Rows[i][1] + "" + dataTable.Rows[i][0] + "_" + j + ".Jpeg");
                             img.Save(complete, ImageFormat.Jpeg);
                         }
                     }
@@ -214,7 +216,7 @@ namespace LTCTraceWPF
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error with image saving: " + ex.Message);
             }
         }
     }
