@@ -110,7 +110,8 @@ namespace LTCTraceWPF
                 cmd.ExecuteNonQuery();
                 //closing connection ASAP
                 conn.Close();
-                CallMessageForm("Adatok feltöltve!");
+                Resultlbl.Text = "Adatok elmentve! " + DateTime.Now;
+                ResetForm();
             }
             catch (Exception msg)
             {

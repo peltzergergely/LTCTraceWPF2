@@ -89,6 +89,12 @@
                          IsTabStop="True"
                          TabIndex="1"
                          KeyUp="OnKeyUpEvent"></TextBox>
+                <TextBlock Name ="Resultlbl"
+                    Grid.Row="3"
+                           Grid.ColumnSpan="2" 
+                           FontSize="35"
+                           HorizontalAlignment="Center"
+                           Margin="30,15">eredmény</TextBlock>
 
             </Grid>
         </StackPanel>

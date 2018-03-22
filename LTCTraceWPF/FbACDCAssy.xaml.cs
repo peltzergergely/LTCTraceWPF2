@@ -120,7 +120,8 @@ namespace LTCTraceWPF
                 cmd.Parameters.Add(new NpgsqlParameter("saved_on", DateTime.Now));
                 cmd.ExecuteNonQuery();
                 conn.Close();
-                CallMessageForm("Adatok feltöltve!");
+                Resultlbl.Text = "Adatok elmentve! " + DateTime.Now;
+                ResetForm();
             }
             catch (Exception msg)
             {

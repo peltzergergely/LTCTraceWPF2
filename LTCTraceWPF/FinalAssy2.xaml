@@ -41,6 +41,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="700" />
@@ -81,7 +82,7 @@
                          KeyUp="OnKeyUpEvent"
                          ></TextBox>
                 <CheckBox x:Name="screwChkbx"
-                          Grid.Row="3"
+                          Grid.Row="2"
                           Grid.Column="1"
                           HorizontalAlignment="left" 
                           Margin="30,15" 
@@ -93,6 +94,12 @@
                                         ></ScaleTransform>
                     </CheckBox.LayoutTransform>
                 </CheckBox>
+                <TextBlock Name ="Resultlbl"
+                    Grid.Row="3"
+                           Grid.ColumnSpan="2" 
+                           FontSize="35"
+                           HorizontalAlignment="Center"
+                           Margin="0,70, 0, 15">eredmény</TextBlock>
             </Grid>
         </StackPanel>
 

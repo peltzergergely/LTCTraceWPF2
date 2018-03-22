@@ -114,6 +114,13 @@
                         Click="WebCamLaunchClick"
                         KeyUp="OnKeyUpEvent" >
                     Kamera indítása</Button>
+
+                <TextBlock Name ="Resultlbl"
+                    Grid.Row="4"
+                           Grid.ColumnSpan="2" 
+                           FontSize="35"
+                           HorizontalAlignment="Center"
+                           Margin="0,70, 0, 15">eredmény</TextBlock>
             </Grid>
         </StackPanel>
 

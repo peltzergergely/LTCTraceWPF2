@@ -35,15 +35,31 @@
                          FontSize="25" 
                          Margin="30,15"
                          Height="50"
-                         Width="608"
-                         Text="ház datamatrix"></TextBox>
-                <Button x:Name="reportGenBtn"
+                         Width="484"
+                         ></TextBox>
+                <Button x:Name="FullReportGenBtn"
                         FontSize="25" 
                         HorizontalAlignment="Right" 
                         Margin="15,15" 
                         Click="reportGenBtn_Click"
                         TabIndex="1">
-                    Report készítése
+                    Teljes Report készítése
+                </Button>
+                <Button x:Name="FBReportGenBtn"
+                        FontSize="25" 
+                        HorizontalAlignment="Right" 
+                        Margin="15,15" 
+                        Click="FBReportGenBtn_Click"
+                        TabIndex="1">
+                    FB Report készítése
+                </Button>
+                <Button x:Name="MBReportGenBtn"
+                        FontSize="25" 
+                        HorizontalAlignment="Right" 
+                        Margin="15,15" 
+                        Click="MBReportGenBtn_Click"
+                        TabIndex="1">
+                    MB Report készítése
                 </Button>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
@@ -64,6 +80,13 @@
                          HorizontalAlignment="Center"
                              IsReadOnly="True"
                          Margin="30,15"/>
+                <TextBlock
+                    Name="ErrorLog"
+                    TextWrapping="Wrap"
+                    Margin="30,15"
+                    FontSize="20"
+                    Width="890"
+                    />
             </StackPanel>
         </StackPanel>
 

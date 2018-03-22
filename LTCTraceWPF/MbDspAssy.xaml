@@ -46,6 +46,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="700" />
@@ -152,7 +153,7 @@
                          TabIndex="6"
                          KeyUp="OnKeyUpEvent"></TextBox>
                 <Button x:Name="WebCamLaunchBtn"
-                        Grid.Row="8" 
+                        Grid.Row="7" 
                         Grid.Column="1"
                         FontSize="25" 
                         HorizontalAlignment="Left" 
@@ -161,6 +162,12 @@
                         Click="WebCamLaunchClick"
                         KeyUp="OnKeyUpEvent" >
                     Kamera indítása</Button>
+                <TextBlock Name ="Resultlbl"
+                    Grid.Row="9"
+                           Grid.ColumnSpan="2" 
+                           FontSize="35"
+                           HorizontalAlignment="Center"
+                           Margin="0,0, 0, 0">eredmény</TextBlock>
             </Grid>
         </StackPanel>
         <Button x:Name="MainMenuBtn"

@@ -78,6 +78,12 @@
                          IsTabStop="True"
                          TabIndex="1">
                 </TextBox>
+                <TextBlock Name ="Resultlbl"
+                    Grid.Row="3"
+                           Grid.ColumnSpan="2" 
+                           FontSize="35"
+                           HorizontalAlignment="Center"
+                           Margin="0,70, 0, 15">eredmény</TextBlock>
             </Grid>
         </StackPanel>
 

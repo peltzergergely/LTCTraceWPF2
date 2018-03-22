@@ -40,6 +40,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="700" />
@@ -51,7 +52,7 @@
                            FontSize="35" 
                            HorizontalAlignment="Right"
                            Margin="30,15">Filterboard DataMatrix</TextBlock>
-                <TextBlock Grid.Row="3" 
+                <TextBlock Grid.Row="1" 
                            Grid.Column="0" 
                            FontSize="35"
                            HorizontalAlignment="Right" 
@@ -66,7 +67,7 @@
                          KeyUp="OnKeyUpEvent"
                          LostFocus="FbDmTxbx_LostFocus"></TextBox>
                 <CheckBox x:Name="screwChkbx"
-                          Grid.Row="3"
+                          Grid.Row="1"
                           Grid.Column="1"
                           HorizontalAlignment="left" 
                           Margin="30,15" 
@@ -79,6 +80,12 @@
                                         ></ScaleTransform>
                     </CheckBox.LayoutTransform>
                 </CheckBox>
+                <TextBlock Name ="Resultlbl"
+                    Grid.Row="3"
+                           Grid.ColumnSpan="2" 
+                           FontSize="35"
+                           HorizontalAlignment="Center"
+                           Margin="0,70, 0, 15">eredmény</TextBlock>
             </Grid>
         </StackPanel>
 

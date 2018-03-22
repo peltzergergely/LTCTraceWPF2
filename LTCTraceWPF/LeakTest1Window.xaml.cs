@@ -77,9 +77,16 @@ namespace LTCTraceWPF
 
         private void FormValidator()
         {
-            if (IsDmValidated == true && float.Parse(leakTestTxbx.Text, CultureInfo.InvariantCulture.NumberFormat) < 5 && float.Parse(leakTestTxbx.Text, CultureInfo.InvariantCulture.NumberFormat) > 0)
+            float Num;
+            //leakTestTxbx.Text = leakTestTxbx.Text.Replace(",", ".");
+            bool isNum = float.TryParse(leakTestTxbx.Text, out Num);
+
+            if (isNum)
             {
-                AllFieldsValidated = true;
+                if (Num < 5)
+                {
+                    AllFieldsValidated = true;
+                }
             }
             else
             {
@@ -106,7 +113,9 @@ namespace LTCTraceWPF
                 cmd.ExecuteNonQuery();
                 //closing connection ASAP
                 conn.Close();
-                CallMessageForm("Adatok feltöltve!");
+                //CallMessageForm("Adatok feltöltve!");
+                Resultlbl.Text = "Adatok feltöltve! " + UploadMoment;
+                ResetForm();
             }
             catch (Exception msg)
             {
@@ -122,12 +131,16 @@ namespace LTCTraceWPF
                 HousingDM = runningtext + number.ToString();
                 CounterTxbx.Text = HousingDM;
                 //string s = @"^XA^MMT^PW406^LL0280^LS0^FT67,240^A0N,28,28^FH\^" + HousingDM + @"^FS^BY154,154^FT123,209^BXN,7,200,0,0,1,~^FH\^FDLTC1E0002187ADB2.5\0D\0A" + HousingDM + "^FS^PQ1,0,1,Y^XZ";
-                string s = @"^XA^MMT^PW406^LL0280^LS0^BY192,192^FT107,205^BXN,16,200,0,0,1,~^FH\^FD" + HousingDM + @"^FS^FT69,239^A0N,28,28^FH\^FDLTC 1E0002187 AD B2.5^FS^FT69,273^A0N,28,28^FH\^FD" + HousingDM + "^FS^PQ1,0,1,Y^XZ";
-                PrintDialog pd = new PrintDialog();
-                if (pd.ShowDialog() == true)
-                {
-                    RawPrinterHelper.SendStringToPrinter(pd.PrintQueue.FullName, s);
-                }
+                //string s1 = @"^XA^MMT^PW406^LL0280^LS0^BY192,192^FT107,205^BXN,16,200,0,0,1,~^FH\^FD" + HousingDM + @"^FS^FT69,239^A0N,28,28^FH\^FDLTC 1E0002187 AD B2.5^FS^FT69,273^A0N,28,28^FH\^FD" + HousingDM + @"^FS^PQ1,0,1,Y^XZ\n";
+                string s = @"^XA^MMT^PW406^LL0280^LS0^BY252,252^FT16,266^BXN,18,200,0,0,1,~^FH\^FD" + @HousingDM + @"^FS^FT345,274^A0B,25,26^FH\^FDLTC 1E0002187 AD B2.5^FS^FT376,274^A0B,25,26^FH\^FD" + @HousingDM + @"^FS^PQ1,0,1,Y^XZ";
+                string printerName = "ZDesigner ZT420-203dpi ZPL";
+                RawPrinterHelper.SendStringToPrinter(printerName, s);
+                //PrintDialog pd = new PrintDialog();
+                //if (pd.ShowDialog() == true)
+                //{
+                //    //MessageBox.Show(pd.PrintQueue.FullName);
+                //    RawPrinterHelper.SendStringToPrinter(pd.PrintQueue.FullName, s);
+                //}
             }
             else
             {
@@ -190,6 +203,11 @@ namespace LTCTraceWPF
             var msgWindow = new MessageForm(msgToShow);
             msgWindow.Show();
             msgWindow.Activate();
+            Resultlbl.Text = "HIBA!";
+            for (int i = 0; i < 5; i++)
+            {
+                Console.Beep(5000, 500);
+            }
         }
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)

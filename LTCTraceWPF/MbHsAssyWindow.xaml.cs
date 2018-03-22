@@ -125,7 +125,9 @@ namespace LTCTraceWPF
                 cmd.ExecuteNonQuery();
                 //closing connection ASAP
                 conn.Close();
-                CallMessageForm("Adatok feltöltve!");
+
+                Resultlbl.Text = "Adatok feltöltve! " + UploadMoment;
+                ResetForm();
             }
             catch (Exception msg)
             {

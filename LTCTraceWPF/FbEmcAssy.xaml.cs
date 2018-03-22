@@ -179,7 +179,8 @@ namespace LTCTraceWPF
                             {
                                 File.Move(FilePathStr[i], "C:\\TraceImagesArchive\\" + "FBDM_" + FbDmTxbx.Text + "\\" + Path.GetFileName(FilePathStr[i]));
                             }
-                            CallMessageForm("Adatok elmentve!");
+                            Resultlbl.Text = "Adatok elmentve! " + DateTime.Now;
+                            ResetForm();
                         }
                         conn.Close();
                     }

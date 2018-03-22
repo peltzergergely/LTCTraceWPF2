@@ -157,7 +157,8 @@ namespace LTCTraceWPF
                     int result = cmd.ExecuteNonQuery();
                     if (result == 1)
                     {
-                        CallMessageForm("Adatok elmentve!");
+                        Resultlbl.Text = "Adatok elmentve! " + DateTime.Now;
+                        ResetForm();
                     }
                     conn.Close();
                 }
