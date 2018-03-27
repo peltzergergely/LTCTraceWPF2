@@ -3,6 +3,7 @@ using System;
 using System.Configuration;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -25,6 +26,9 @@ namespace LTCTraceWPF
         public string HousingDM { get; set; }
 
         public int SerialNumber { get; set; }
+
+        public decimal Number { get; set; } = 0;
+
 
         public LeakTest1Win()
         {
@@ -62,6 +66,8 @@ namespace LTCTraceWPF
             }
         }
 
+
+
         public bool RegexValidation(string dataToValidate, string datafieldName)
         {
             string rgx = ConfigurationManager.AppSettings[datafieldName];
@@ -77,14 +83,15 @@ namespace LTCTraceWPF
 
         private void FormValidator()
         {
-            float Num;
-            //leakTestTxbx.Text = leakTestTxbx.Text.Replace(",", ".");
-            bool isNum = float.TryParse(leakTestTxbx.Text, out Num);
+            decimal Num;
+            //leakTestTxbx.Text = leakTestTxbx.Text.Replace(".", ",");
+            bool isNum = decimal.TryParse(leakTestTxbx.Text, out Num);
 
             if (isNum)
             {
                 if (Num < 5)
                 {
+                    this.Number = Num;
                     AllFieldsValidated = true;
                 }
             }
@@ -107,7 +114,7 @@ namespace LTCTraceWPF
                 var cmd = new NpgsqlCommand("INSERT INTO " + table + " (housing_dm, leak_test_result, pc_name, saved_on) " +
                     "VALUES(:housing_dm, :leak_test_result, :pc_name, :timestamp)", conn);
                 cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDM));
-                cmd.Parameters.Add(new NpgsqlParameter("leak_test_result", float.Parse(leakTestTxbx.Text, CultureInfo.InvariantCulture.NumberFormat)));
+                cmd.Parameters.Add(new NpgsqlParameter("leak_test_result", Number));
                 cmd.Parameters.Add(new NpgsqlParameter("pc_name", Environment.MachineName));
                 cmd.Parameters.Add(new NpgsqlParameter("timestamp", UploadMoment));
                 cmd.ExecuteNonQuery();
@@ -204,10 +211,6 @@ namespace LTCTraceWPF
             msgWindow.Show();
             msgWindow.Activate();
             Resultlbl.Text = "HIBA!";
-            for (int i = 0; i < 5; i++)
-            {
-                Console.Beep(5000, 500);
-            }
         }
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
