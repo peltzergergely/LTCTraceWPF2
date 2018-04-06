@@ -27,7 +27,7 @@ namespace LTCTraceWPF
 
         public int SerialNumber { get; set; }
 
-        public decimal Number { get; set; } = 0;
+        public double Number { get; set; } = 0;
 
 
         public LeakTest1Win()
@@ -66,14 +66,6 @@ namespace LTCTraceWPF
             }
         }
 
-
-
-        public bool RegexValidation(string dataToValidate, string datafieldName)
-        {
-            string rgx = ConfigurationManager.AppSettings[datafieldName];
-            return (Regex.IsMatch(dataToValidate, rgx));
-        }
-
         private void ResetForm()
         {
             AllFieldsValidated = false;
@@ -83,9 +75,7 @@ namespace LTCTraceWPF
 
         private void FormValidator()
         {
-            decimal Num;
-            //leakTestTxbx.Text = leakTestTxbx.Text.Replace(".", ",");
-            bool isNum = decimal.TryParse(leakTestTxbx.Text, out Num);
+            bool isNum = double.TryParse(leakTestTxbx.Text, out double Num);
 
             if (isNum)
             {
@@ -94,6 +84,7 @@ namespace LTCTraceWPF
                     this.Number = Num;
                     AllFieldsValidated = true;
                 }
+                else Resultlbl.Text = "Hiba a bevitelben: " + Num.ToString(); 
             }
             else
             {
@@ -137,17 +128,9 @@ namespace LTCTraceWPF
             {
                 HousingDM = runningtext + number.ToString();
                 CounterTxbx.Text = HousingDM;
-                //string s = @"^XA^MMT^PW406^LL0280^LS0^FT67,240^A0N,28,28^FH\^" + HousingDM + @"^FS^BY154,154^FT123,209^BXN,7,200,0,0,1,~^FH\^FDLTC1E0002187ADB2.5\0D\0A" + HousingDM + "^FS^PQ1,0,1,Y^XZ";
-                //string s1 = @"^XA^MMT^PW406^LL0280^LS0^BY192,192^FT107,205^BXN,16,200,0,0,1,~^FH\^FD" + HousingDM + @"^FS^FT69,239^A0N,28,28^FH\^FDLTC 1E0002187 AD B2.5^FS^FT69,273^A0N,28,28^FH\^FD" + HousingDM + @"^FS^PQ1,0,1,Y^XZ\n";
                 string s = @"^XA^MMT^PW406^LL0280^LS0^BY252,252^FT16,266^BXN,18,200,0,0,1,~^FH\^FD" + @HousingDM + @"^FS^FT345,274^A0B,25,26^FH\^FDLTC 1E0002187 AD B2.5^FS^FT376,274^A0B,25,26^FH\^FD" + @HousingDM + @"^FS^PQ1,0,1,Y^XZ";
                 string printerName = "ZDesigner ZT420-203dpi ZPL";
                 RawPrinterHelper.SendStringToPrinter(printerName, s);
-                //PrintDialog pd = new PrintDialog();
-                //if (pd.ShowDialog() == true)
-                //{
-                //    //MessageBox.Show(pd.PrintQueue.FullName);
-                //    RawPrinterHelper.SendStringToPrinter(pd.PrintQueue.FullName, s);
-                //}
             }
             else
             {
@@ -181,16 +164,13 @@ namespace LTCTraceWPF
             try
             {
                 string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
-                // Making connection with Npgsql provider
                 var conn = new NpgsqlConnection(connstring);
                 var UploadMoment = DateTime.Now;
                 conn.Open();
-                // building SQL query
                 var cmd = new NpgsqlCommand("INSERT INTO counter (created_at) " +
                                             "VALUES(:timestamp)", conn);
                 cmd.Parameters.Add(new NpgsqlParameter("timestamp", UploadMoment));
                 cmd.ExecuteNonQuery();
-                //closing connection ASAP
                 conn.Close();
             }
             catch (Exception msg)
