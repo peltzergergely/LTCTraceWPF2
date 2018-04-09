@@ -18,6 +18,8 @@ namespace LTCTraceWPF
 
         public DateTime? StartedOn { get; set; } = null;
 
+        public double Number { get; set; } = 0;
+
         public LeakTest2Window()
         {
             Loaded += (sender, e) => MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
@@ -81,9 +83,16 @@ namespace LTCTraceWPF
 
         private void FormValidator()
         {
-            if (IsDmValidated == true && float.Parse(leakTestTxbx.Text, System.Globalization.CultureInfo.InvariantCulture.NumberFormat) < 5 && float.Parse(leakTestTxbx.Text, System.Globalization.CultureInfo.InvariantCulture.NumberFormat) > 0)
+            bool isNum = double.TryParse(leakTestTxbx.Text, out double Num);
+
+            if (isNum)
             {
-                AllFieldsValidated = true;
+                if (Num < 5)
+                {
+                    this.Number = Num;
+                    AllFieldsValidated = true;
+                }
+                else Resultlbl.Text = "Hiba a bevitelben: " + Num.ToString();
             }
             else
             {
@@ -104,7 +113,7 @@ namespace LTCTraceWPF
                 var cmd = new NpgsqlCommand("INSERT INTO " + table + " (housing_dm, leak_test_result, pc_name, saved_on) " +
                     "VALUES(:housing_dm, :leak_test_result, :pc_name, :timestamp)", conn);
                 cmd.Parameters.Add(new NpgsqlParameter("housing_dm", housingDmTxbx.Text));
-                cmd.Parameters.Add(new NpgsqlParameter("leak_test_result", float.Parse(leakTestTxbx.Text, System.Globalization.CultureInfo.InvariantCulture.NumberFormat)));
+                cmd.Parameters.Add(new NpgsqlParameter("leak_test_result", Number));
                 cmd.Parameters.Add(new NpgsqlParameter("pc_name", System.Environment.MachineName));
                 cmd.Parameters.Add(new NpgsqlParameter("timestamp", UploadMoment));
                 cmd.ExecuteNonQuery();
