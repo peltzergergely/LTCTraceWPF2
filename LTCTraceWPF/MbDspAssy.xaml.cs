@@ -207,15 +207,17 @@ namespace LTCTraceWPF
 
         private void MbDmTxbx_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (MbDmTxbx.Text.Length > 0)
+            if (ConfigurationManager.AppSettings["MbHsAssy"] == "true" && MbDmTxbx.Text.Length > 0 )
             {
                 var preCheck = new DatabaseHelper();
                 if (preCheck.CountRowInDB("mb_hs_assy", "mb_dm", MbDmTxbx.Text) == 0)
                 {
                     CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
                 }
-                StartedOn = DateTime.Now;
+                
             }
+
+            StartedOn = DateTime.Now;
         }
 
         private void MainMenuBtn_Click(object sender, RoutedEventArgs e)

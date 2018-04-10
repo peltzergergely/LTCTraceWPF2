@@ -2,6 +2,7 @@
 using System;
 using System.Configuration;
 using System.Globalization;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
@@ -141,36 +142,34 @@ namespace LTCTraceWPF
         private int GetNextNumber()
         {
             IncreaseCounterDB();
-            int counter;
-            try
-            {
-                string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
-                var conn = new NpgsqlConnection(connstring);
-                conn.Open();
-                var cmd = new NpgsqlCommand("SELECT id FROM counter order by id desc limit 1", conn);
-                counter = Convert.ToInt16(cmd.ExecuteScalar());
-                conn.Close();
-                return counter;
-            }
-            catch (Exception msg)
-            {
-                MessageBox.Show(msg.ToString());
-                return counter = 0;
-            }
+            return int.Parse(StartingIdTxbx.Text);
         }
 
         private void IncreaseCounterDB()
         {
             try
             {
+                int ID = int.Parse(StartingIdTxbx.Text);
+
                 string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
                 var conn = new NpgsqlConnection(connstring);
                 var UploadMoment = DateTime.Now;
                 conn.Open();
-                var cmd = new NpgsqlCommand("INSERT INTO counter (created_at) " +
-                                            "VALUES(:timestamp)", conn);
+
+                var cmd = new NpgsqlCommand("INSERT INTO counter (id,created_at) " +
+                                            "VALUES(:id,:timestamp)", conn);
+                cmd.Parameters.Add(new NpgsqlParameter("id", ID));
                 cmd.Parameters.Add(new NpgsqlParameter("timestamp", UploadMoment));
                 cmd.ExecuteNonQuery();
+
+                ////solution 1
+                //var execute = new NpgsqlCommand("SELECT id FROM counter where id < 10000 order by id desc limit 1", conn);
+                //ID = int.Parse(execute.ExecuteScalar().ToString());
+                //StartingIdTxbx.Text = (ID+1).ToString();
+
+                //solution 2
+                StartingIdTxbx.Text = (ID + 1).ToString();
+
                 conn.Close();
             }
             catch (Exception msg)
@@ -200,12 +199,73 @@ namespace LTCTraceWPF
                 SerialNumber = GetNextNumber();
                 PrintDMC(SerialNumber);
                 DbInsert("housing_leak_test_one");
+                CheckStartingIdValidity(sender, e);
             }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             PrintDMC(SerialNumber);
+        }
+
+        private void RefreshStartingID(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
+                var conn = new NpgsqlConnection(connstring);
+                conn.Open();
+                var cmd = new NpgsqlCommand("SELECT id FROM counter where id < 10000 order by id desc limit 1", conn);
+                StartingIdTxbx.Text = (int.Parse(cmd.ExecuteScalar().ToString())+1).ToString();
+                conn.Close();
+            }catch(Exception msg)
+            {
+                MessageBox.Show(msg.ToString());
+            }
+        }
+
+        private void CheckStartingIdValidity(object sender, RoutedEventArgs e)
+        {
+            if (StartingIdTxbx.Text.Length > 0)
+            {
+                if (Regex.IsMatch(StartingIdTxbx.Text, "^[0-9]+$"))
+                {
+                    try
+                    {
+                        string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
+                        var conn = new NpgsqlConnection(connstring);
+                        conn.Open();
+
+                        var countID = new NpgsqlCommand("SELECT count(id) FROM counter where id ='" + StartingIdTxbx.Text + "'", conn);
+                        if (Int32.Parse(countID.ExecuteScalar().ToString()) > 0)
+                        {
+                            CallMessageForm("A "+StartingIdTxbx.Text+" kezdő sorszám már létezik az adatbázisban!");
+                            RefreshStartingID(sender, e);
+                        }
+                        conn.Close();
+                    }
+                    catch (Exception msg)
+                    {
+                        MessageBox.Show(msg.ToString());
+                    }
+                }
+                else
+                {
+                    CallMessageForm("Nem megfelelő a kezdő sorszám formátuma!");
+                    RefreshStartingID(sender, e);
+                }
+            }
+            else
+            {
+                CallMessageForm("A kezdő sorszám nem lehet üres!");
+                RefreshStartingID(sender, e);
+            }
+        }
+
+        private void MoveFocus(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                leakTestTxbx.Focus();
         }
     }
 }

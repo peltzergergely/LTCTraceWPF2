@@ -195,7 +195,7 @@ namespace LTCTraceWPF
         private void FbDmTxbx_LostFocus(object sender, RoutedEventArgs e)
         {
             DmValidator();
-            if (FbDmTxbx.Text.Length > 0)
+            if (ConfigurationManager.AppSettings["FbAcdcAssy"] == "true" && FbDmTxbx.Text.Length > 0)
             {
                 var preCheck = new DatabaseHelper();
                 if (preCheck.CountRowInDB("fb_acdc_assy", "fb_dm", FbDmTxbx.Text) == 0)
@@ -204,10 +204,11 @@ namespace LTCTraceWPF
                 }
                 else
                 {
-                    StartedOn = DateTime.Now;
                     WebCamLaunchClick(sender, e);
                 }
             }
+
+            StartedOn = DateTime.Now;
         }
 
         private void WebCamLaunchClick(object sender, RoutedEventArgs e)

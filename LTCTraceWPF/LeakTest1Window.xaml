@@ -50,6 +50,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="700" />
@@ -70,17 +71,31 @@
                            FontSize="35"
                            HorizontalAlignment="Left" 
                            Margin="30,15">LTC1E0002187AD B2.5</TextBlock>
+
                 <TextBlock Grid.Row="2"
+                           Grid.Column="0" 
+                           FontSize="35"
+                           HorizontalAlignment="Right" 
+                           Margin="30,15">Kezdő sorszám:</TextBlock>
+                <TextBox Name ="StartingIdTxbx"
+                           Grid.Row="2"
+                           Grid.Column="1" 
+                           FontSize="35"
+                           HorizontalAlignment="Left" 
+                           Margin="30,15" Loaded="RefreshStartingID" LostFocus="CheckStartingIdValidity" KeyUp="MoveFocus">0000</TextBox>
+
+                <TextBlock Grid.Row="3"
                            Grid.Column="0" 
                            FontSize="35"
                            HorizontalAlignment="Right" 
                            Margin="30,15">Sorszám:</TextBlock>
                 <TextBlock Name ="CounterTxbx"
-                    Grid.Row="2"
+                           Grid.Row="3"
                            Grid.Column="1" 
                            FontSize="35"
                            HorizontalAlignment="Left" 
                            Margin="30,15">szám</TextBlock>
+
                 <TextBox x:Name="leakTestTxbx"
                          Grid.Row="0" 
                          Grid.Column="1" 
@@ -90,7 +105,7 @@
                          TabIndex="1"
                          KeyUp="OnKeyUpEvent"></TextBox>
                 <TextBlock Name ="Resultlbl"
-                    Grid.Row="3"
+                    Grid.Row="4"
                            Grid.ColumnSpan="2" 
                            FontSize="35"
                            HorizontalAlignment="Center"

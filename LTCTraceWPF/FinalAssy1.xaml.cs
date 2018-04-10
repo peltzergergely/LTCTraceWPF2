@@ -140,10 +140,17 @@ namespace LTCTraceWPF
 
         private void HousingDmTxbx_LostFocus(object sender, RoutedEventArgs e)
         {
+            string table = "";
+
+            if (ConfigurationManager.AppSettings["HousingConnectorAssy"] == "true")
+                table = "housing_connector_assy";
+            else
+                table = "potting";
+
             if (HousingDmTxbx.Text.Length > 0)
             {
                 var preCheck = new DatabaseHelper();
-                if (preCheck.CountRowInDB("housing_connector_assy", "housing_dm", HousingDmTxbx.Text) == 0)
+                if (preCheck.CountRowInDB(table, "housing_dm", HousingDmTxbx.Text) == 0)
                 {
                     CallMessageForm("Előző munkafolyamaton nem szerepelt a Ház!");
                 }
