@@ -162,12 +162,6 @@ namespace LTCTraceWPF
                 cmd.Parameters.Add(new NpgsqlParameter("timestamp", UploadMoment));
                 cmd.ExecuteNonQuery();
 
-                ////solution 1
-                //var execute = new NpgsqlCommand("SELECT id FROM counter where id < 10000 order by id desc limit 1", conn);
-                //ID = int.Parse(execute.ExecuteScalar().ToString());
-                //StartingIdTxbx.Text = (ID+1).ToString();
-
-                //solution 2
                 StartingIdTxbx.Text = (ID + 1).ToString();
 
                 conn.Close();
