@@ -8,7 +8,8 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
+using System.Windows.Media;
+using System.Xml;
 
 namespace LTCTraceWPF
 {
@@ -21,20 +22,41 @@ namespace LTCTraceWPF
     public partial class LeakTest1Win : Window
     {
         public bool IsDmValidated { get; set; } = true;
-
         public bool AllFieldsValidated { get; set; } = false;
-
         public string HousingDM { get; set; }
-
         public int SerialNumber { get; set; }
-
         public double Number { get; set; } = 0;
+        public bool AutoID { get; set; }
 
 
         public LeakTest1Win()
         {
             Loaded += (sender, e) => MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             InitializeComponent();
+            GetAutoID();
+            CheckAutoIdSetting();
+        }
+
+        private void GetAutoID()
+        {
+            if (ConfigurationManager.AppSettings["AutoGenerateId"] == "true")
+                AutoID = true;
+            else
+                AutoID = false;
+        }
+
+        private void CheckAutoIdSetting()
+        {
+            if (AutoID)
+            {
+                autoIdBtn.Background = new SolidColorBrush(Colors.LightGreen);
+                autoIdBtnIcon.Text = "\xE73E";
+            }
+            else
+            {
+                autoIdBtn.Background = new SolidColorBrush(Colors.LightGray);
+                autoIdBtnIcon.Text = "\xE711";
+            }
         }
 
         private void OnKeyUpEvent(object sender, KeyEventArgs e)
@@ -71,7 +93,10 @@ namespace LTCTraceWPF
         {
             AllFieldsValidated = false;
             leakTestTxbx.Text = "";
-            leakTestTxbx.Focus();
+            if (AutoID)
+                leakTestTxbx.Focus();
+            else
+                StartingIdTxbx.Focus();
         }
 
         private void FormValidator()
@@ -142,7 +167,14 @@ namespace LTCTraceWPF
         private int GetNextNumber()
         {
             IncreaseCounterDB();
-            return int.Parse(StartingIdTxbx.Text);
+            int ID = int.Parse(StartingIdTxbx.Text);
+
+            if (AutoID)
+            {
+                StartingIdTxbx.Text = (ID + 1).ToString();
+            }
+
+            return ID;
         }
 
         private void IncreaseCounterDB()
@@ -161,8 +193,6 @@ namespace LTCTraceWPF
                 cmd.Parameters.Add(new NpgsqlParameter("id", ID));
                 cmd.Parameters.Add(new NpgsqlParameter("timestamp", UploadMoment));
                 cmd.ExecuteNonQuery();
-
-                StartingIdTxbx.Text = (ID + 1).ToString();
 
                 conn.Close();
             }
@@ -193,7 +223,14 @@ namespace LTCTraceWPF
                 SerialNumber = GetNextNumber();
                 PrintDMC(SerialNumber);
                 DbInsert("housing_leak_test_one");
-                CheckStartingIdValidity(sender, e);
+
+                if (AutoID)
+                    CheckStartingIdValidity(sender, e);
+                else
+                {
+                    StartingIdTxbx.Text = "";
+                    StartingIdTxbx.Focus();
+                }
             }
         }
 
@@ -234,8 +271,9 @@ namespace LTCTraceWPF
                         if (Int32.Parse(countID.ExecuteScalar().ToString()) > 0)
                         {
                             CallMessageForm("A "+StartingIdTxbx.Text+" kezdő sorszám már létezik az adatbázisban!");
-                            RefreshStartingID(sender, e);
-                        }
+                            SetStartingIdTextOnError(sender, e);
+                        }                            
+
                         conn.Close();
                     }
                     catch (Exception msg)
@@ -246,20 +284,63 @@ namespace LTCTraceWPF
                 else
                 {
                     CallMessageForm("Nem megfelelő a kezdő sorszám formátuma!");
-                    RefreshStartingID(sender, e);
+                    SetStartingIdTextOnError(sender, e);
                 }
             }
             else
             {
-                CallMessageForm("A kezdő sorszám nem lehet üres!");
+                //simple error handling because of focus jumps
                 RefreshStartingID(sender, e);
+            }
+        }
+
+        private void SetStartingIdTextOnError(object sender, RoutedEventArgs e)
+        {
+            if (AutoID)
+                RefreshStartingID(sender, e);
+            else
+            {
+                StartingIdTxbx.Text = "";
             }
         }
 
         private void MoveFocus(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter && StartingIdTxbx.Text != "")
                 leakTestTxbx.Focus();
+        }
+
+        private void autoIdBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (AutoID)
+            {
+                AutoID = false;
+                CheckAutoIdSetting();
+            }
+            else
+            {
+                AutoID = true;
+                CheckAutoIdSetting();
+            }
+        }
+
+        private void SaveAppConfig(object sender, EventArgs e)
+        {
+            //ConfigurationManager.AppSettings["AutoGenerateId"] == "true"
+            if (AutoID)
+            {
+                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+                config.AppSettings.Settings["AutoGenerateId"].Value = "true";
+                config.Save(ConfigurationSaveMode.Modified);
+            }
+            else
+            {
+                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+                config.AppSettings.Settings["AutoGenerateId"].Value = "false";
+                config.Save(ConfigurationSaveMode.Modified);
+            }
         }
     }
 }

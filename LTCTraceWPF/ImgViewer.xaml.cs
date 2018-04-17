@@ -102,6 +102,7 @@ namespace LTCTraceWPF
                             ms.Seek(0, SeekOrigin.Begin);
                             bi.StreamSource = ms;
                             bi.EndInit();
+
                             if (picCounter == 1)
                                 image0.Source = bi;
                             if (picCounter == 2)

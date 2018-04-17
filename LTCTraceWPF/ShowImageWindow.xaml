@@ -1,0 +1,17 @@
+﻿<Window x:Class="LTCTraceWPF.ShowImageWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LTCTraceWPF"
+        mc:Ignorable="d"
+        Title="Kép" Height="600" Width="800" Closing="hide" Topmost="True">
+    <Grid>
+        <Image 
+                Name="img" 
+                Stretch="Fill" 
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                />
+    </Grid>
+</Window>

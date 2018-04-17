@@ -1,14 +1,22 @@
 ﻿using Microsoft.Win32;
 using Npgsql;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Globalization;
+using System.IO;
+using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Markup;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace LTCTraceWPF
 {
@@ -17,6 +25,9 @@ namespace LTCTraceWPF
     /// </summary>
     public partial class DbWindow : Window
     {
+        public IDictionary<string, string> workSteps = new Dictionary<string, string>();
+        public ShowImageWindow w;
+
         public DbWindow()
         {
             Loaded += (sender, e) => MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
@@ -27,9 +38,9 @@ namespace LTCTraceWPF
             InitializeComponent();
             FillWorkStationList();
             FillProductNames();
-        }
 
-        public IDictionary<string, string> workSteps = new Dictionary<string, string>();
+            w = new ShowImageWindow();
+        }
 
         public void FillWorkStationList()
         {
@@ -62,7 +73,8 @@ namespace LTCTraceWPF
             Thread.CurrentThread.CurrentCulture = ci;
 
             // Starting and Ending date
-            startDate.SelectedDate = new DateTime(2017, 10, 01);
+            //startDate.SelectedDate = new DateTime(2017, 10, 01);
+            startDate.SelectedDate = DateTime.Today;
             endDate.SelectedDate = DateTime.Today;
 
             //megmutatja a hozzá tartozó értéket - a tábla nevét
@@ -119,8 +131,7 @@ namespace LTCTraceWPF
         private DataSet dataSet = new DataSet();
         private DataTable dataTable = new DataTable();
 
-
-        private void ListBtn_Click(object sender, RoutedEventArgs e)
+        private  void ListBtn_Click(object sender, RoutedEventArgs e)
         {
             using (new WaitCursor())
             {
@@ -135,6 +146,39 @@ namespace LTCTraceWPF
                     dataAdapter.Fill(dataSet);
                     dataTable = dataSet.Tables[0];
                     resultDataGrid.ItemsSource = dataTable.AsDataView();
+
+                    for (int i = 0; i < dataTable.Columns.Count; i++)
+                    {
+                        if (dataTable.Columns[i].ColumnName.Contains("pic"))
+                        {
+                            for (int j = 0; j < dataTable.Rows.Count; j++)
+                            {
+                                byte[] blob = (byte[])dataTable.Rows[j][i];
+                                MemoryStream stream = new MemoryStream();
+                                if (blob.Length > 10)
+                                {
+                                    //dataTable.Rows[j][i] = 99;
+                                    //MessageBox.Show(resultDataGrid.Items[1].ToString());
+                                }
+                                else
+                                {
+                                    dataTable.Rows[j][i] = null;
+                                }
+                            }
+
+                        }
+                    }
+
+
+                    for (int i = 0; i < resultDataGrid.Columns.Count; i++)
+                    {
+                        if ((resultDataGrid.Columns[i].Header).ToString().Contains("pic"))
+                        {
+                            //resultDataGrid.Columns[i].Visibility = Visibility.Hidden;
+                            //dataTable.Columns.Add("xxx"+i, typeof(string));
+                        }
+                    }
+
                     conn.Close();
 
                 }
@@ -144,17 +188,13 @@ namespace LTCTraceWPF
                 }
                 resultDataGrid.Columns[0].Width = 70;
 
-                for (int i = 0; i < resultDataGrid.Columns.Count; i++)
-                {
-                    if ((resultDataGrid.Columns[i].Header).ToString().Contains("pic"))
-                    {
-                        resultDataGrid.Columns[i].Visibility = Visibility.Hidden;
-                    }
-                }
             }
-                resultRowCount.Content = resultDataGrid.Items.Count;
-
+            resultRowCount.Content = resultDataGrid.Items.Count;
         }
+
+        #region datagrid helper functions
+       
+        #endregion
 
         private void MainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -201,6 +241,46 @@ namespace LTCTraceWPF
         {
             var reportWindow = new Report();
             reportWindow.Show();
+        }
+
+        private void ShowImage(object sender, SelectedCellsChangedEventArgs e)
+        {
+            if (resultDataGrid.Items.Count > 0) // there is row in datagrid
+            {
+                //get the indexes
+                int column = resultDataGrid.CurrentColumn.DisplayIndex;
+                int row = resultDataGrid.Items.IndexOf(resultDataGrid.CurrentItem);
+
+                //check if the focused cell is a picture
+                if (dataTable.Columns[column].ColumnName.Contains("pic") && !(dataTable.Rows[row][column] is DBNull))
+                {
+                    byte[] blob = (byte[])dataTable.Rows[row][column];
+                    MemoryStream stream = new MemoryStream();
+                    if (blob.Length > 10)
+                    {
+                        stream.Write(blob, 0, blob.Length);
+                        stream.Position = 0;
+                        System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
+                        BitmapImage bi = new BitmapImage();
+                        bi.BeginInit();
+                        MemoryStream ms = new MemoryStream();
+                        img.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                        ms.Seek(0, SeekOrigin.Begin);
+                        bi.StreamSource = ms;
+                        bi.EndInit();
+
+                        w.SetImg(bi);
+                    }
+                    else
+                    {
+                        w.Visibility = Visibility.Hidden;
+                    }
+                }
+                else
+                {
+                    w.Visibility = Visibility.Hidden;
+                }
+            }
         }
     }
 }

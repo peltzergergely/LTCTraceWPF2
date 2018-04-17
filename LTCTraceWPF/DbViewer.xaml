@@ -181,8 +181,9 @@
                       VerticalGridLinesBrush="white"
                       HorizontalGridLinesBrush="white"
                       SelectionUnit="Cell"
-                      HorizontalScrollBarVisibility="Visible">
-            </DataGrid>
+                      HorizontalScrollBarVisibility="Visible" 
+                      SelectedCellsChanged="ShowImage"
+                      />
         </StackPanel>
         <Button x:Name="BackBtn"
                     HorizontalAlignment="Left"
@@ -280,5 +281,14 @@
                                Padding="2"><Run Text="Report Készítése"/></TextBlock>
             </StackPanel>
         </Button>
+
+        <Image Height="110" 
+                        HorizontalAlignment="Center"
+                        Name="kep" 
+                        Stretch="Fill" 
+                         VerticalAlignment="Bottom"
+                         Margin="0 0 550 0"
+                         Width="110"
+                         />
     </Grid>
 </Window>

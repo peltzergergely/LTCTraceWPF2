@@ -72,9 +72,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>learn_more_traceability_eta_icon.ico</ApplicationIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
-
   <ItemGroup>
     <Reference Include="MahApps.Metro, Version=1.5.0.23, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\MahApps.Metro.dll</HintPath>
@@ -171,6 +170,9 @@
     </Compile>
     <Compile Include="ReworkWindow.xaml.cs">
       <DependentUpon>ReworkWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ShowImageWindow.xaml.cs">
+      <DependentUpon>ShowImageWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TransistorDateWindow.xaml.cs">
       <DependentUpon>TransistorDateWindow.xaml</DependentUpon>
@@ -352,6 +354,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ShowImageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TransistorDateWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -422,10 +428,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\learn_more_traceability_eta_icon.ico" />
+    <Resource Include="learn_more_traceability_eta_icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="learn_more_traceability_eta_icon.ico" />
+    <Resource Include="Images\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

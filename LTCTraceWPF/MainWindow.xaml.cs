@@ -93,7 +93,8 @@ namespace LTCTraceWPF
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Application.Current.Shutdown();
+            //this.Close();
         }
 
         private void FbAcdcAssyBtn_Click(object sender, RoutedEventArgs e)
