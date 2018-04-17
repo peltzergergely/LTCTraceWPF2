@@ -34,7 +34,7 @@ namespace LTCTraceWPF
             Loaded += (sender, e) => MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             InitializeComponent();
             GetAutoID();
-            CheckAutoIdSetting();
+            RefreshAutoIdSetting();
         }
 
         private void GetAutoID()
@@ -45,7 +45,7 @@ namespace LTCTraceWPF
                 AutoID = false;
         }
 
-        private void CheckAutoIdSetting()
+        private void RefreshAutoIdSetting()
         {
             if (AutoID)
             {
@@ -315,32 +315,32 @@ namespace LTCTraceWPF
             if (AutoID)
             {
                 AutoID = false;
-                CheckAutoIdSetting();
+                RefreshAutoIdSetting();
             }
             else
             {
                 AutoID = true;
-                CheckAutoIdSetting();
+                RefreshAutoIdSetting();
             }
         }
 
         private void SaveAppConfig(object sender, EventArgs e)
         {
-            //ConfigurationManager.AppSettings["AutoGenerateId"] == "true"
-            if (AutoID)
-            {
-                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            ////not working because of the permission on the PC
+            //if (AutoID)
+            //{
+            //    Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
-                config.AppSettings.Settings["AutoGenerateId"].Value = "true";
-                config.Save(ConfigurationSaveMode.Modified);
-            }
-            else
-            {
-                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            //    config.AppSettings.Settings["AutoGenerateId"].Value = "true";
+            //    config.Save(ConfigurationSaveMode.Modified);
+            //}
+            //else
+            //{
+            //    Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
-                config.AppSettings.Settings["AutoGenerateId"].Value = "false";
-                config.Save(ConfigurationSaveMode.Modified);
-            }
+            //    config.AppSettings.Settings["AutoGenerateId"].Value = "false";
+            //    config.Save(ConfigurationSaveMode.Modified);
+            //}
         }
     }
 }

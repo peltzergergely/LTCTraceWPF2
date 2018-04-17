@@ -157,8 +157,7 @@ namespace LTCTraceWPF
                                 MemoryStream stream = new MemoryStream();
                                 if (blob.Length > 10)
                                 {
-                                    //dataTable.Rows[j][i] = 99;
-                                    //MessageBox.Show(resultDataGrid.Items[1].ToString());
+                                    // change the "byte [] array" text to something more readable.
                                 }
                                 else
                                 {
@@ -166,16 +165,6 @@ namespace LTCTraceWPF
                                 }
                             }
 
-                        }
-                    }
-
-
-                    for (int i = 0; i < resultDataGrid.Columns.Count; i++)
-                    {
-                        if ((resultDataGrid.Columns[i].Header).ToString().Contains("pic"))
-                        {
-                            //resultDataGrid.Columns[i].Visibility = Visibility.Hidden;
-                            //dataTable.Columns.Add("xxx"+i, typeof(string));
                         }
                     }
 
@@ -193,7 +182,7 @@ namespace LTCTraceWPF
         }
 
         #region datagrid helper functions
-       
+        
         #endregion
 
         private void MainMenuBtn_Click(object sender, RoutedEventArgs e)
@@ -251,8 +240,7 @@ namespace LTCTraceWPF
                 int column = resultDataGrid.CurrentColumn.DisplayIndex;
                 int row = resultDataGrid.Items.IndexOf(resultDataGrid.CurrentItem);
 
-                //check if the focused cell is a picture
-                if (dataTable.Columns[column].ColumnName.Contains("pic") && !(dataTable.Rows[row][column] is DBNull))
+                if (dataTable.Columns[column].ColumnName.Contains("pic") && !(dataTable.Rows[row][column] is DBNull)) //check if the focused cell is a picture
                 {
                     byte[] blob = (byte[])dataTable.Rows[row][column];
                     MemoryStream stream = new MemoryStream();
