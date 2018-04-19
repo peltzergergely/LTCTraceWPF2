@@ -84,7 +84,6 @@ namespace LTCTraceWPF
 
             if (Keyboard.FocusedElement == SaveBtn)
             {
-                FormValidator();
                 SaveBtn_Click(sender, e);
             }
         }
@@ -341,6 +340,15 @@ namespace LTCTraceWPF
             //    config.AppSettings.Settings["AutoGenerateId"].Value = "false";
             //    config.Save(ConfigurationSaveMode.Modified);
             //}
+        }
+
+        private void CheckValidate(object sender, RoutedEventArgs e)
+        {
+            if (leakTestTxbx.Text.Length > 0)
+            {
+                //since the operator not always jump with enter, the FormValidor called when the textbox lost the focus.
+                FormValidator();
+            }
         }
     }
 }
