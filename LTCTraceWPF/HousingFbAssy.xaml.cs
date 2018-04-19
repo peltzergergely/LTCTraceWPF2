@@ -62,25 +62,68 @@ namespace LTCTraceWPF
         private void FormValidator()
         {
             string errorMsg = "";
+
             if (IsDmValidated == true)
             {
-                PreChk("housing_leak_test_one", "housing_dm", HousingDmTxbx.Text);
-                if (IsPreChkPassed)
+
+                if (ConfigurationManager.AppSettings["PreCheckMode"] == "hard")
                 {
-                    PreChk("fb_emc_assy", "fb_dm", FbDmTxbx.Text);
+                    PreChk("housing_leak_test_one", "housing_dm", HousingDmTxbx.Text);
+
                     if (IsPreChkPassed)
                     {
-                        AllFieldsValidated = true;
+                        PreChk("fb_emc_assy", "fb_dm", FbDmTxbx.Text);
+                        if (IsPreChkPassed)
+                        {
+                            AllFieldsValidated = true;
+                        }
+                        else errorMsg += "Előző munkafolyamaton nem szerepelt a Filterboard! ";
                     }
-                    else errorMsg += "Előző munkafolyamaton nem szerepelt a Filterboard! ";
+                    else
+                        errorMsg += " Előző munkafolyamaton nem szerepelt a Ház! ";
                 }
                 else
-                    errorMsg += " Előző munkafolyamaton nem szerepelt a Ház! ";
+                {
+                    PreChk("housing_leak_test_one", "housing_dm", HousingDmTxbx.Text);
+
+                    if(!IsPreChkPassed)
+                    {
+                        MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a Ház! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        if (messageBoxResult == MessageBoxResult.Yes)
+                        {
+                            IsPreChkPassed = true;
+                        }
+                    }
+
+                    if (IsPreChkPassed)
+                    {
+                        PreChk("fb_emc_assy", "fb_dm", FbDmTxbx.Text);
+
+                        if (!IsPreChkPassed)
+                        {
+                            MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a Filterboard! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                            if (messageBoxResult == MessageBoxResult.Yes)
+                            {
+                                IsPreChkPassed = true;
+                            }
+                        }
+
+                        if (IsPreChkPassed)
+                        {
+                            AllFieldsValidated = true;
+                        }
+                        else errorMsg += "Előző munkafolyamaton nem szerepelt a Filterboard! ";
+                    }
+                    else
+                        errorMsg += " Előző munkafolyamaton nem szerepelt a Ház! ";
+                }
             }
+
             if (IsDmValidated == false)
             {
                 errorMsg += " DataMátrix nem megfelelő! ";
             }
+
             if (errorMsg != "")
             {
                 CallMessageForm(errorMsg);

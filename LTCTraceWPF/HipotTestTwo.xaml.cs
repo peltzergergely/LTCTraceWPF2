@@ -145,7 +145,18 @@ namespace LTCTraceWPF
                 var preCheck = new DatabaseHelper();
                 if (preCheck.CountRowInDB("housing_leak_test_two", "housing_dm", HousingDmTxbx.Text) == 0)
                 {
-                    CallMessageForm("Előző munkafolyamaton nem szerepelt a Ház!");
+                    if (ConfigurationManager.AppSettings["PreCheckMode"] == "hard")
+                    {
+                        CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
+                    }
+                    else
+                    {
+                        MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a termék! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        if (messageBoxResult == MessageBoxResult.No)
+                        {
+                            CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
+                        }
+                    }
                 }
                 StartedOn = DateTime.Now;
             }

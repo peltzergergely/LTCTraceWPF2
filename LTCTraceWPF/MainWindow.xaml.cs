@@ -23,7 +23,7 @@ namespace LTCTraceWPF
             }
             if (ConfigurationManager.AppSettings["MbDspAssy"] == "false")
             {
-                MbDspAssyBtn.IsEnabled = false;
+                HousingConnectorAssyBtn.IsEnabled = false;
             }
             if (ConfigurationManager.AppSettings["FbAcdcAssy"] == "false")
             {

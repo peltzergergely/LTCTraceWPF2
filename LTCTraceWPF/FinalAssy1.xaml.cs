@@ -16,6 +16,8 @@ namespace LTCTraceWPF
 
         public bool IsDmValidated { get; set; } = false;
 
+        public bool IsHousingDmValidated { get; set; } = false;
+
         public DateTime? StartedOn { get; set; } = null;
 
         public bool IsPreChkPassed { get; set; } = false;
@@ -65,7 +67,7 @@ namespace LTCTraceWPF
         private void FormValidator()
         {
             var preChecker = new DatabaseHelper();
-            if (IsDmValidated == true && screwChkbx.IsChecked == true)
+            if (IsDmValidated == true && IsHousingDmValidated == true && screwChkbx.IsChecked == true)
             {
                 AllFieldsValidated = true;
             }
@@ -83,10 +85,15 @@ namespace LTCTraceWPF
 
         private void DmValidator()
         {
-            if (RegexValidation(HousingDmTxbx.Text, "MbDmRegEx"))
+            if (RegexValidation(HousingDmTxbx.Text, "HousingDmRegEx"))
+                IsHousingDmValidated = true;
+            else
+                IsHousingDmValidated = false;
+
+            if (RegexValidation(MbDmTxbx.Text, "MbDmRegEx"))
                 IsDmValidated = true;
             else
-                IsDmValidated = false;
+                IsDmValidated = false;  
         }
 
         private void ResetForm()
@@ -152,7 +159,18 @@ namespace LTCTraceWPF
                 var preCheck = new DatabaseHelper();
                 if (preCheck.CountRowInDB(table, "housing_dm", HousingDmTxbx.Text) == 0)
                 {
-                    CallMessageForm("Előző munkafolyamaton nem szerepelt a Ház!");
+                    if (ConfigurationManager.AppSettings["PreCheckMode"] == "hard")
+                    {
+                        CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
+                    }
+                    else
+                    {
+                        MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a termék! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        if (messageBoxResult == MessageBoxResult.No)
+                        {
+                            CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
+                        }
+                    }
                 }
                 StartedOn = DateTime.Now;
             }
@@ -165,7 +183,18 @@ namespace LTCTraceWPF
                 var preCheck = new DatabaseHelper();
                 if (preCheck.CountRowInDB("mb_dsp_assy", "mb_dm", MbDmTxbx.Text) == 0)
                 {
-                    CallMessageForm("Előző munkafolyamaton nem szerepelt a Mainboard!");
+                    if (ConfigurationManager.AppSettings["PreCheckMode"] == "hard")
+                    {
+                        CallMessageForm("Előző munkafolyamaton nem szerepelt a Mainboard!");
+                    }
+                    else
+                    {
+                        MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a Mainboard! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        if (messageBoxResult == MessageBoxResult.No)
+                        {
+                            CallMessageForm("Előző munkafolyamaton nem szerepelt a Mainboard!");
+                        }
+                    }
                 }
             }
         }

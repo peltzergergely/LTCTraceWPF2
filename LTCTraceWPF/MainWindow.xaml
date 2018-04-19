@@ -51,7 +51,7 @@
                             FontSize="25"
                             Padding="10,10"
                             Margin="10,30,10,10"
-                            Background="#F2C66C" 
+                            Background="HotPink" 
                             Click="MbDspAssyBtn_Click">12 - Mainboard DSP Trace/Szer.</Button>
                     <Button x:Name="FbAcdcAssyBtn"
                             FontSize="25" 
@@ -63,7 +63,7 @@
                             FontSize="25"
                             Padding="10,10" 
                             Margin="10,30,10,10" 
-                            Background="#F2C66C" 
+                            Background="HotPink" 
                             Click="FbEmcBtn_Click">22 - Filterboard EMC Shield Szer.</Button>
                     <Button x:Name="ErrorReportBtn" 
                             FontSize="25" 
@@ -97,7 +97,7 @@
                             FontSize="25" 
                             Padding="10,10" 
                             Margin="10,30,10,10" 
-                            Background="#F2C66C" 
+                            Background="HotPink" 
                             Click="Potting_Click">
                         33 - Potting után kaptonozás
                     </Button>
@@ -177,7 +177,7 @@
                             FontSize="25"
                             Padding="10,10" 
                             Margin="10,30,10,10"
-                            Background="#F26F6C"
+                            Background="HotPink"
                             Click="FirewallBtn_Click">
                         48 - Firewall</Button>
                 </StackPanel>
