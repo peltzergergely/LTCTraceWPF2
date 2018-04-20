@@ -155,6 +155,7 @@
     <Compile Include="EOLTest.xaml.cs">
       <DependentUpon>EOLTest.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ErrorLog.cs" />
     <Compile Include="ErrorReport.xaml.cs">
       <DependentUpon>ErrorReport.xaml</DependentUpon>
     </Compile>

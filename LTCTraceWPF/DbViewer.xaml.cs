@@ -61,6 +61,7 @@ namespace LTCTraceWPF
             workSteps.Add("46 Hipot Teszt II.", "hipot_test_two");
             workSteps.Add("47 EOL", "eol");
             workSteps.Add("48 Firewall", "firewall");
+            workSteps.Add("   INTERLOCK HIBÁK", "interlock_log");
 
             workStationCbx.ItemsSource = workSteps;
             workStationCbx.DisplayMemberPath = "Key";
@@ -105,7 +106,7 @@ namespace LTCTraceWPF
 
             string Querycmd = "SELECT * FROM " + workStationCbx.SelectedValue.ToString() + " WHERE date(saved_on) >= " + start + " and date(saved_on) <= " + end;
 
-            if (prodDmTbx.Text.Length > 0 && prodCbx.SelectedIndex != 0)
+            if (prodDmTbx.Text.Length > 0 && prodCbx.SelectedIndex != 0 && workStationCbx.SelectedValue.ToString() != "interlock_log")
             {
                 Querycmd = Querycmd + " AND " + prodCbx.SelectedValue.ToString() + " = '" + prodDmTbx.Text + "'";
             }

@@ -1,7 +1,9 @@
-﻿using Npgsql;
+﻿using ErrorLogging;
+using Npgsql;
 using System;
 using System.Configuration;
 using System.IO;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
@@ -88,11 +90,13 @@ namespace LTCTraceWPF
 
                     if(!IsPreChkPassed)
                     {
-                        MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a Ház! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        if (messageBoxResult == MessageBoxResult.Yes)
-                        {
-                            IsPreChkPassed = true;
-                        }
+                        //MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a Ház! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        //if (messageBoxResult == MessageBoxResult.Yes)
+                        //{
+                        //    IsPreChkPassed = true;
+                        //}
+                        ErrorLog.Create("housing_leak_test_one", "housing_dm", HousingDmTxbx.Text,MethodBase.GetCurrentMethod().Name.ToString(), "Előző munkafolyamaton nem szerepelt a Ház!");
+                        IsPreChkPassed = true;
                     }
 
                     if (IsPreChkPassed)
@@ -101,11 +105,13 @@ namespace LTCTraceWPF
 
                         if (!IsPreChkPassed)
                         {
-                            MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a Filterboard! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                            if (messageBoxResult == MessageBoxResult.Yes)
-                            {
-                                IsPreChkPassed = true;
-                            }
+                            //MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a Filterboard! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                            //if (messageBoxResult == MessageBoxResult.Yes)
+                            //{
+                            //    IsPreChkPassed = true;
+                            //}
+                            ErrorLog.Create("fb_emc_assy", "fb_dm", FbDmTxbx.Text,MethodBase.GetCurrentMethod().Name.ToString(), "Előző munkafolyamaton nem szerepelt a Filterboard!");
+                            IsPreChkPassed = true;
                         }
 
                         if (IsPreChkPassed)

@@ -138,7 +138,8 @@
                          Margin="30,15"
                          IsTabStop="True"
                          TabIndex="1"
-                         KeyUp="OnKeyUpEvent" LostFocus="CheckValidate"></TextBox>
+                         KeyUp="OnKeyUpEvent" 
+                         LostFocus="CheckValidate"></TextBox>
                 <TextBlock Name ="Resultlbl"
                     Grid.Row="4"
                            Grid.ColumnSpan="2" 

@@ -1,6 +1,8 @@
-﻿using Npgsql;
+﻿using ErrorLogging;
+using Npgsql;
 using System;
 using System.Configuration;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
@@ -83,8 +85,10 @@ namespace LTCTraceWPF
         private void DmValidator()
         {
             if (RegexValidation(HousingDmTxbx.Text, "MbDmRegEx"))
-                // if (RegexValidation(GwDmTxbx.Text, "MbDmRegEx"))
+            {
+                if (RegexValidation(GwDmTxbx.Text, "MbDmRegEx"))
                 IsDmValidated = true;
+            }
             else
                 IsDmValidated = false;
         }
@@ -151,11 +155,12 @@ namespace LTCTraceWPF
                     }
                     else
                     {
-                        MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a termék! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        if (messageBoxResult == MessageBoxResult.No)
-                        {
-                            CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
-                        }
+                        //MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a termék! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        //if (messageBoxResult == MessageBoxResult.No)
+                        //{
+                        //    CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
+                        //}
+                        ErrorLog.Create("calibration", "housing_dm", HousingDmTxbx.Text,MethodBase.GetCurrentMethod().Name.ToString(), "Előző munkafolyamaton nem szerepelt a termék!");
                     }
                 }
                 StartedOn = DateTime.Now;

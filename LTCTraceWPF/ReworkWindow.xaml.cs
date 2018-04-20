@@ -1,6 +1,8 @@
-﻿using Npgsql;
+﻿using ErrorLogging;
+using Npgsql;
 using System;
 using System.Configuration;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
@@ -68,7 +70,17 @@ namespace LTCTraceWPF
                         AllFieldsValidated = true;
                 }
                 else
-                    CallMessageForm("Mainboard Heatsink Szerelés folyamaton nem szerepelt a Mainboard!");
+                {
+                    if (ConfigurationManager.AppSettings["PreCheckMode"] == "hard")
+                    {
+                        CallMessageForm("Mainboard Heatsink Szerelés folyamaton nem szerepelt a Mainboard!");
+                    }
+                    else
+                    {
+                        ErrorLog.Create("mb_hs_assy", "mb_dm", MbDmTxbx.Text, MethodBase.GetCurrentMethod().Name.ToString(), "Mainboard Heatsink Szerelés folyamaton nem szerepelt a Mainboard!");
+                        AllFieldsValidated = true;
+                    }
+                }
             }
             else
             {

@@ -1,6 +1,8 @@
-﻿using Npgsql;
+﻿using ErrorLogging;
+using Npgsql;
 using System;
 using System.Configuration;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
@@ -165,11 +167,12 @@ namespace LTCTraceWPF
                     }
                     else
                     {
-                        MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a termék! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        if (messageBoxResult == MessageBoxResult.No)
-                        {
-                            CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
-                        }
+                        //MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a termék! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        //if (messageBoxResult == MessageBoxResult.No)
+                        //{
+                        //    CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
+                        //}
+                        ErrorLog.Create(table, "housing_dm", HousingDmTxbx.Text,MethodBase.GetCurrentMethod().Name.ToString(), "Előző munkafolyamaton nem szerepelt a termék!");
                     }
                 }
                 StartedOn = DateTime.Now;
@@ -189,11 +192,12 @@ namespace LTCTraceWPF
                     }
                     else
                     {
-                        MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a Mainboard! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        if (messageBoxResult == MessageBoxResult.No)
-                        {
-                            CallMessageForm("Előző munkafolyamaton nem szerepelt a Mainboard!");
-                        }
+                        //MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a Mainboard! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        //if (messageBoxResult == MessageBoxResult.No)
+                        //{
+                        //    CallMessageForm("Előző munkafolyamaton nem szerepelt a Mainboard!");
+                        //}
+                        ErrorLog.Create("mb_dsp_assy", "mb_dm", MbDmTxbx.Text,MethodBase.GetCurrentMethod().Name.ToString(), "Előző munkafolyamaton nem szerepelt a Mainboard!");
                     }
                 }
             }
