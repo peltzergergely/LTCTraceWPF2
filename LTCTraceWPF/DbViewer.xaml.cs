@@ -53,7 +53,7 @@ namespace LTCTraceWPF
             workSteps.Add("32 Ház FB Szerelés", "housing_fb_assy");
             workSteps.Add("33 Potting után Kapton", "potting");
             workSteps.Add("34 Ház Konnektor Szerelés", "housing_connector_assy");
-            workSteps.Add("41 Végszerelés I.", "housing_connector_assy");
+            workSteps.Add("41 Végszerelés I.", "final_assy_one");
             workSteps.Add("42 HiPot Teszt I.", "hipot_test_one");
             workSteps.Add("43 Kalibráció", "calibration");
             workSteps.Add("44 Végszerelés II.", "final_assy_two");

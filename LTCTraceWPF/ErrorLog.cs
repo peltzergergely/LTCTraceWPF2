@@ -9,7 +9,7 @@ namespace ErrorLogging
 {
     class ErrorLog
     {
-        public static void Create(string tableToSearch, string columnToSearch, string dataToFind, string methodname,string msgToShow)
+        public static void Create(string tableToSearch, string columnToSearch, string dataToFind, string methodname,string msgToShow,string errorlocation)
         {
             try
             {
@@ -17,8 +17,8 @@ namespace ErrorLogging
                 var conn = new NpgsqlConnection(constring);
                 conn.Open();
 
-                var cmd = new NpgsqlCommand("insert into interlock_log (tableToSearch, columnToSearch, dataToFind, funct, errormsg, pc_name, saved_on) " +
-                    "values(:tableToSearch, :columnToSearch, :dataToFind, :funct, :errormsg, :pc_name, :saved_on)", conn);
+                var cmd = new NpgsqlCommand("insert into interlock_log (tableToSearch, columnToSearch, dataToFind, funct, errormsg, pc_name, saved_on, errorlocation) " +
+                    "values(:tableToSearch, :columnToSearch, :dataToFind, :funct, :errormsg, :pc_name, :saved_on, :errorlocation)", conn);
                 cmd.Parameters.Add(new NpgsqlParameter("tableToSearch", tableToSearch));
                 cmd.Parameters.Add(new NpgsqlParameter("columnToSearch", columnToSearch));
                 cmd.Parameters.Add(new NpgsqlParameter("dataToFind", dataToFind));
@@ -26,6 +26,7 @@ namespace ErrorLogging
                 cmd.Parameters.Add(new NpgsqlParameter("errormsg", msgToShow));
                 cmd.Parameters.Add(new NpgsqlParameter("pc_name", System.Environment.MachineName));
                 cmd.Parameters.Add(new NpgsqlParameter("saved_on", DateTime.Now));
+                cmd.Parameters.Add(new NpgsqlParameter("errorlocation", errorlocation));
 
                 cmd.ExecuteNonQuery();
                 conn.Close();

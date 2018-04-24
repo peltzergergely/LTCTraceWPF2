@@ -164,12 +164,7 @@ namespace LTCTraceWPF
                     }
                     else
                     {
-                        //MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a termék! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        //if (messageBoxResult == MessageBoxResult.No)
-                        //{
-                        //    CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
-                        //}
-                        ErrorLog.Create("final_assy_two", "housing_dm", housingDmTxbx.Text,MethodBase.GetCurrentMethod().Name.ToString(), "Előző munkafolyamaton nem szerepelt a termék!");
+                        ErrorLog.Create("final_assy_two", "housing_dm", housingDmTxbx.Text,MethodBase.GetCurrentMethod().Name.ToString(), "Előző munkafolyamaton nem szerepelt a termék!", this.GetType().Name.ToString());
                     }
                 }
                 StartedOn = DateTime.Now;

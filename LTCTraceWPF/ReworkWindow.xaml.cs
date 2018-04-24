@@ -77,7 +77,7 @@ namespace LTCTraceWPF
                     }
                     else
                     {
-                        ErrorLog.Create("mb_hs_assy", "mb_dm", MbDmTxbx.Text, MethodBase.GetCurrentMethod().Name.ToString(), "Mainboard Heatsink Szerelés folyamaton nem szerepelt a Mainboard!");
+                        ErrorLog.Create("mb_hs_assy", "mb_dm", MbDmTxbx.Text, MethodBase.GetCurrentMethod().Name.ToString(), "Mainboard Heatsink Szerelés folyamaton nem szerepelt a Mainboard!", this.GetType().Name.ToString());
                         AllFieldsValidated = true;
                     }
                 }
