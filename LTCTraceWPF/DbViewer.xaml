@@ -183,7 +183,9 @@
                       SelectionUnit="Cell"
                       HorizontalScrollBarVisibility="Visible" 
                       SelectedCellsChanged="ShowImage"
-                      />
+                      >
+                
+            </DataGrid>
         </StackPanel>
         <Button x:Name="BackBtn"
                     HorizontalAlignment="Left"

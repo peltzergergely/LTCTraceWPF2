@@ -42,7 +42,7 @@ namespace LTCTraceWPF
                 return;
             }
 
-            if (e.Key == Key.Enter && HousingDmTxbx.Text.Length > 0)
+            if (e.Key == Key.Enter && HousingDmTxbx.Text.Length > 0 && HousingDmTxbx.IsFocused)
             {
                 TraversalRequest tRequest = new TraversalRequest(FocusNavigationDirection.Next);
                 UIElement keyboardFocus = Keyboard.FocusedElement as UIElement;

@@ -107,6 +107,8 @@ namespace LTCTraceWPF
             AllFieldsValidated = false;
             IsCameraLaunched = false;
             HousingDmTxbx.Text = "";
+            Label1Txbx.Text = "";
+            Label2Txbx.Text = "";
             HousingDmTxbx.Focus();
         }
 

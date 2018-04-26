@@ -61,7 +61,8 @@ namespace LTCTraceWPF
             workSteps.Add("46 Hipot Teszt II.", "hipot_test_two");
             workSteps.Add("47 EOL", "eol");
             workSteps.Add("48 Firewall", "firewall");
-            workSteps.Add("   INTERLOCK HIBÁK", "interlock_log");
+            workSteps.Add("-- INTERLOCK HIBÁK", "interlock_log");
+            workSteps.Add("-- HIBAJELENTÉS", "errorreport");
 
             workStationCbx.ItemsSource = workSteps;
             workStationCbx.DisplayMemberPath = "Key";
@@ -106,12 +107,19 @@ namespace LTCTraceWPF
 
             string Querycmd = "SELECT * FROM " + workStationCbx.SelectedValue.ToString() + " WHERE date(saved_on) >= " + start + " and date(saved_on) <= " + end;
 
-            if (prodDmTbx.Text.Length > 0 && prodCbx.SelectedIndex != 0 && workStationCbx.SelectedValue.ToString() != "interlock_log")
+            if (prodDmTbx.Text.Length > 0 && prodCbx.SelectedIndex != 0 && (workStationCbx.SelectedValue.ToString() != "interlock_log" || workStationCbx.SelectedValue.ToString() != "errorreport"))
             {
                 Querycmd = Querycmd + " AND " + prodCbx.SelectedValue.ToString() + " = '" + prodDmTbx.Text + "'";
             }
 
-
+            #region temporary solution while errorreport can be listed
+            if (workStationCbx.SelectedValue.ToString() == "errorreport")
+            {
+                Querycmd = "SELECT * FROM " + workStationCbx.SelectedValue.ToString() + " order by id desc";
+                //// if there are many then you can filter by date
+                //Querycmd = "SELECT * FROM " + workStationCbx.SelectedValue.ToString() + " WHERE date(created_on) >= " + start + " and date(created_on) <= " + end +" order by id desc";
+            }
+            #endregion
             return Querycmd;
         }
 
@@ -177,6 +185,12 @@ namespace LTCTraceWPF
                     MessageBox.Show(msg.Message);
                 }
                 resultDataGrid.Columns[0].Width = 70;
+
+                if (resultDataGrid.Columns[1].Header.ToString() == "comments")
+                {
+                    resultDataGrid.Columns[1].Width = 1500;
+                }
+
 
             }
             resultRowCount.Content = resultDataGrid.Items.Count;

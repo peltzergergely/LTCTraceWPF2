@@ -68,7 +68,7 @@ namespace LTCTraceWPF
             string errorMsg = "";
             if (IsDmValidated == true)
             {
-                if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length > 2)
+                if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length >= 2)
                 {
                     AllFieldsValidated = true;
                 }
