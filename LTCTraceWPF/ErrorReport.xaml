@@ -38,12 +38,22 @@
                     VerticalAlignment="Center">
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1400" />
                 </Grid.ColumnDefinitions>
-                <TextBox Name="reportTxbx" Height="500" FontSize="25">
+                <Label FontSize="20"
+                       HorizontalAlignment="Center"
+                       Margin="0 0 0 30">
+                    A hibajelentést olyan formában írd meg, hogy az reprodukálható legyen!
+                </Label>
+                <TextBox Name="reportTxbx" 
+                         Height="500" 
+                         FontSize="25" 
+                         Grid.Row="1"
+                         GotFocus="reportTxbx_GotFocus">
                     Ide írhatsz.
                 </TextBox>
             </Grid>

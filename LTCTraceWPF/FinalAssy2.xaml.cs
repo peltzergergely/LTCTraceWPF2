@@ -57,7 +57,6 @@ namespace LTCTraceWPF
 
             if (Keyboard.FocusedElement == SaveBtn)
             {
-                FormValidator();
                 SaveBtn_Click(sender, e);
             }
 
@@ -169,6 +168,8 @@ namespace LTCTraceWPF
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
+            FormValidator();
+
             if (AllFieldsValidated)
             {
                 DbInsert("final_assy_two");

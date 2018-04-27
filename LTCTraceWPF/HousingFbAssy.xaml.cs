@@ -64,10 +64,8 @@ namespace LTCTraceWPF
         private void FormValidator()
         {
             string errorMsg = "";
-
             if (IsDmValidated == true)
             {
-
                 if (ConfigurationManager.AppSettings["PreCheckMode"] == "hard")
                 {
                     PreChk("housing_leak_test_one", "housing_dm", HousingDmTxbx.Text);
@@ -104,14 +102,8 @@ namespace LTCTraceWPF
                             IsPreChkPassed = true;
                         }
 
-                        if (IsPreChkPassed)
-                        {
-                            AllFieldsValidated = true;
-                        }
-                        else errorMsg += "Előző munkafolyamaton nem szerepelt a Filterboard! ";
+                        AllFieldsValidated = true;  
                     }
-                    else
-                        errorMsg += " Előző munkafolyamaton nem szerepelt a Ház! ";
                 }
             }
 
@@ -228,6 +220,7 @@ namespace LTCTraceWPF
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
             FormValidator();
+
             if (AllFieldsValidated)
             {
                 DbInsert("housing_fb_assy");

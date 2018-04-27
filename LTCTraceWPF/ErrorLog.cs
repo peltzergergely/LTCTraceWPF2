@@ -1,6 +1,5 @@
 ﻿using System.Configuration;
 using Npgsql;
-using System.IO;
 using System;
 using System.Windows;
 using LTCTraceWPF;
@@ -24,7 +23,7 @@ namespace ErrorLogging
                 cmd.Parameters.Add(new NpgsqlParameter("dataToFind", dataToFind));
                 cmd.Parameters.Add(new NpgsqlParameter("funct", methodname));
                 cmd.Parameters.Add(new NpgsqlParameter("errormsg", msgToShow));
-                cmd.Parameters.Add(new NpgsqlParameter("pc_name", System.Environment.MachineName));
+                cmd.Parameters.Add(new NpgsqlParameter("pc_name", Environment.MachineName));
                 cmd.Parameters.Add(new NpgsqlParameter("saved_on", DateTime.Now));
                 cmd.Parameters.Add(new NpgsqlParameter("errorlocation", errorlocation));
 
