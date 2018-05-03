@@ -104,7 +104,7 @@ namespace LTCTraceWPF
 
             if (isNum)
             {
-                if (Num < 5)
+                if (Num <= 5)
                 {
                     this.Number = Num;
                     AllFieldsValidated = true;
