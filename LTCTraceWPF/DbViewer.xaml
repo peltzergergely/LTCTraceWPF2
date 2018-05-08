@@ -185,9 +185,13 @@
                       SelectedCellsChanged="ShowImage"
                       >
             </DataGrid>
-            <StackPanel x:Name="Tabs"
-                        Orientation="Horizontal">
-            </StackPanel>
+            <Grid>
+                <StackPanel x:Name="Tabs"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            >
+                </StackPanel>
+            </Grid>
         </StackPanel>
         <Button x:Name="BackBtn"
                     HorizontalAlignment="Left"

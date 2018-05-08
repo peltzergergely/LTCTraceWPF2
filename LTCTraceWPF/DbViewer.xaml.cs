@@ -122,7 +122,7 @@ namespace LTCTraceWPF
                 //Querycmd = "SELECT * FROM " + workStationCbx.SelectedValue.ToString() + " WHERE date(created_on) >= " + start + " and date(created_on) <= " + end +" order by id desc";
             }
             #endregion
-            return Querycmd +" offset "+dbQueryOffset+" limit 100";
+            return Querycmd +" offset "+dbQueryOffset+" limit 200";
         }
 
         private string getSQLcount()
@@ -141,7 +141,7 @@ namespace LTCTraceWPF
             #region temporary solution while errorreport can be listed
             if (workStationCbx.SelectedValue.ToString() == "errorreport")
             {
-                Querycmd = "SELECT COUNT(*) FROM " + workStationCbx.SelectedValue.ToString() + " order by id desc";
+                Querycmd = "SELECT COUNT(*) FROM " + workStationCbx.SelectedValue.ToString();
                 //// if there are many then you can filter by date
                 //Querycmd = "SELECT * FROM " + workStationCbx.SelectedValue.ToString() + " WHERE date(created_on) >= " + start + " and date(created_on) <= " + end +" order by id desc";
             }
@@ -207,6 +207,7 @@ namespace LTCTraceWPF
                     // get the query result count
                     var countcmd = new NpgsqlCommand(getSQLcount(), conn);
                     Tabcount = Convert.ToInt32(countcmd.ExecuteScalar());
+                    resultRowCount.Content = Tabcount;
 
                     conn.Close();
 
@@ -221,13 +222,10 @@ namespace LTCTraceWPF
                 {
                     resultDataGrid.Columns[1].Width = 1500;
                 }
-
-
             }
-            resultRowCount.Content = resultDataGrid.Items.Count;
 
             Tabs.Children.Clear();
-            for (int i = 0; i <= Tabcount/ 100; i++)
+            for (int i = 0; i <= Tabcount/ 200; i++)
             {
                 Button newBtn = new Button();
 
@@ -238,15 +236,25 @@ namespace LTCTraceWPF
                 newBtn.Click += getOffset;
                 newBtn.Content = (i+1).ToString();
                 newBtn.Name = "Tab" + (i+1).ToString();
+                newBtn.Width = 25;
+                newBtn.Margin = new Thickness(1, 1, 1, 0);
+                newBtn.FontSize = 15;
 
                 Tabs.Children.Add(newBtn);
+
+                //change back and foreground color on active button
+                if (int.Parse(dbQueryOffset) == i*200)
+                {
+                    newBtn.Background = Brushes.DarkSlateGray;
+                    newBtn.Foreground = Brushes.White;
+                }
             }
             dbQueryOffset = "0";
         }
 
         private void getOffset(object sender, RoutedEventArgs e)
         {
-            dbQueryOffset = (int.Parse((sender as Button).Content.ToString()+"00")-100).ToString();
+            dbQueryOffset = ((int.Parse((sender as Button).Content.ToString()+"00")-100)*2).ToString();
             ListBtn_Click(sender, e);
         }
 
