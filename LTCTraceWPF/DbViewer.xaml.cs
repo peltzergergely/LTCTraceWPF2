@@ -27,6 +27,7 @@ namespace LTCTraceWPF
     {
         public IDictionary<string, string> workSteps = new Dictionary<string, string>();
         public ShowImageWindow w;
+        private string dbQueryOffset;
 
         public DbWindow()
         {
@@ -40,6 +41,7 @@ namespace LTCTraceWPF
             FillProductNames();
 
             w = new ShowImageWindow();
+            dbQueryOffset = "0";
         }
 
         public void FillWorkStationList()
@@ -120,6 +122,30 @@ namespace LTCTraceWPF
                 //Querycmd = "SELECT * FROM " + workStationCbx.SelectedValue.ToString() + " WHERE date(created_on) >= " + start + " and date(created_on) <= " + end +" order by id desc";
             }
             #endregion
+            return Querycmd +" offset "+dbQueryOffset+" limit 100";
+        }
+
+        private string getSQLcount()
+        {
+
+            string start = "'" + startDate.SelectedDate.Value.Year.ToString() + "-" + startDate.SelectedDate.Value.Month.ToString() + "-" + startDate.SelectedDate.Value.Day.ToString() + "'";
+            string end = "'" + endDate.SelectedDate.Value.Year.ToString() + "-" + endDate.SelectedDate.Value.Month.ToString() + "-" + endDate.SelectedDate.Value.Day.ToString() + "'";
+
+            string Querycmd = "SELECT COUNT(*) FROM " + workStationCbx.SelectedValue.ToString() + " WHERE date(saved_on) >= " + start + " and date(saved_on) <= " + end;
+
+            if (prodDmTbx.Text.Length > 0 && prodCbx.SelectedIndex != 0 && (workStationCbx.SelectedValue.ToString() != "interlock_log" || workStationCbx.SelectedValue.ToString() != "errorreport"))
+            {
+                Querycmd = Querycmd + " AND " + prodCbx.SelectedValue.ToString() + " = '" + prodDmTbx.Text + "'";
+            }
+
+            #region temporary solution while errorreport can be listed
+            if (workStationCbx.SelectedValue.ToString() == "errorreport")
+            {
+                Querycmd = "SELECT COUNT(*) FROM " + workStationCbx.SelectedValue.ToString() + " order by id desc";
+                //// if there are many then you can filter by date
+                //Querycmd = "SELECT * FROM " + workStationCbx.SelectedValue.ToString() + " WHERE date(created_on) >= " + start + " and date(created_on) <= " + end +" order by id desc";
+            }
+            #endregion
             return Querycmd;
         }
 
@@ -142,6 +168,7 @@ namespace LTCTraceWPF
 
         private  void ListBtn_Click(object sender, RoutedEventArgs e)
         {
+            Int32 Tabcount = 0;
             using (new WaitCursor())
             {
                 try
@@ -177,6 +204,10 @@ namespace LTCTraceWPF
                         }
                     }
 
+                    // get the query result count
+                    var countcmd = new NpgsqlCommand(getSQLcount(), conn);
+                    Tabcount = Convert.ToInt32(countcmd.ExecuteScalar());
+
                     conn.Close();
 
                 }
@@ -194,10 +225,33 @@ namespace LTCTraceWPF
 
             }
             resultRowCount.Content = resultDataGrid.Items.Count;
+
+            Tabs.Children.Clear();
+            for (int i = 0; i <= Tabcount/ 100; i++)
+            {
+                Button newBtn = new Button();
+
+                newBtn.Background = Brushes.White;
+                newBtn.Foreground = Brushes.DarkSlateGray;
+                newBtn.BorderThickness = new Thickness(0);
+                newBtn.Focusable = false;
+                newBtn.Click += getOffset;
+                newBtn.Content = (i+1).ToString();
+                newBtn.Name = "Tab" + (i+1).ToString();
+
+                Tabs.Children.Add(newBtn);
+            }
+            dbQueryOffset = "0";
+        }
+
+        private void getOffset(object sender, RoutedEventArgs e)
+        {
+            dbQueryOffset = (int.Parse((sender as Button).Content.ToString()+"00")-100).ToString();
+            ListBtn_Click(sender, e);
         }
 
         #region datagrid helper functions
-        
+
         #endregion
 
         private void MainMenuBtn_Click(object sender, RoutedEventArgs e)
