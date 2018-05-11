@@ -68,7 +68,7 @@ namespace LTCTraceWPF
             {
                 if (ConfigurationManager.AppSettings["PreCheckMode"] == "hard")
                 {
-                    PreChk("housing_leak_test_one", "housing_dm", HousingDmTxbx.Text);
+                    PreChk("cooling_leak_test", "housing_dm", HousingDmTxbx.Text);
 
                     if (IsPreChkPassed)
                     {
@@ -84,11 +84,11 @@ namespace LTCTraceWPF
                 }
                 else
                 {
-                    PreChk("housing_leak_test_one", "housing_dm", HousingDmTxbx.Text);
+                    PreChk("cooling_leak_test", "housing_dm", HousingDmTxbx.Text);
 
                     if(!IsPreChkPassed)
                     {
-                        ErrorLog.Create("housing_leak_test_one", "housing_dm", HousingDmTxbx.Text,MethodBase.GetCurrentMethod().Name.ToString(), "Előző munkafolyamaton nem szerepelt a Ház!", this.GetType().Name.ToString());
+                        ErrorLog.Create("cooling_leak_test", "housing_dm", HousingDmTxbx.Text,MethodBase.GetCurrentMethod().Name.ToString(), "Előző munkafolyamaton nem szerepelt a Ház!", this.GetType().Name.ToString());
                         IsPreChkPassed = true;
                     }
 

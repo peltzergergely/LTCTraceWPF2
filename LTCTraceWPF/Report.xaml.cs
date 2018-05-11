@@ -94,10 +94,11 @@ namespace LTCTraceWPF
             QueryDb("32 HiPot Test I. ", "SELECT housing_dm, test_result, pc_name, started_on, saved_on FROM hipot_test_one WHERE housing_dm = '" + HousingDm + "'");
             XmlSaver("select * from hipot_test_one where housing_dm = '" + HousingDm + "'");
             QueryDb("41 Final Assy I. ", "SELECT housing_dm, mb_dm, pc_name, started_on, saved_on FROM final_assy_one WHERE housing_dm = '" + HousingDm + "'");
-            QueryDb("34 Housing Connector Assy ", "SELECT housing_dm, pc_name, started_on, saved_on FROM housing_connector_assy WHERE housing_dm = '" + HousingDm + "'");
-            QueryDb("33 Potting ", "SELECT housing_dm, pc_name, started_on, saved_on FROM housing_fb_assy WHERE housing_dm = '" + HousingDm + "'");
+            QueryDb("35 Housing Connector Assy ", "SELECT housing_dm, pc_name, started_on, saved_on FROM housing_connector_assy WHERE housing_dm = '" + HousingDm + "'");
+            QueryDb("34 Potting ", "SELECT housing_dm, pc_name, started_on, saved_on FROM potting WHERE housing_dm = '" + HousingDm + "'");
             ImageSaver("SELECT * FROM potting WHERE housing_dm = '" + HousingDm + "'", folderpath);
-            QueryDb("32 Housing FB Assy ", "SELECT housing_dm, fb_dm, pc_name, started_on, saved_on FROM housing_fb_assy WHERE housing_dm = '" + HousingDm + "'");
+            QueryDb("33 Housing FB Assy ", "SELECT housing_dm, fb_dm, pc_name, started_on, saved_on FROM housing_fb_assy WHERE housing_dm = '" + HousingDm + "'");
+            QueryDb("32 Cooling Leak Test ", "SELECT housing_dm, leak_test_result, pc_name, saved_on FROM cooling_leak_test WHERE housing_dm = '" + HousingDm + "'");
             QueryDb("31 Leak Test I. ", "SELECT housing_dm, leak_test_result, pc_name, saved_on FROM housing_leak_test_one WHERE housing_dm = '" + HousingDm + "'");
             QueryDb("22 Filterboard EMC Assy ", "SELECT fb_dm, pc_name, started_on, saved_on FROM fb_emc_assy WHERE fb_dm = '" + FbDm + "'");
             ImageSaver("SELECT * FROM fb_emc_assy WHERE fb_dm = '" + FbDm + "'", folderpath);

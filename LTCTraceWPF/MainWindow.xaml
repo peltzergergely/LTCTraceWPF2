@@ -85,13 +85,21 @@
                             Click="HouseLeakTestBtn_Click" >
                         31 - Ház Leak Teszt
                     </Button>
+                    <Button x:Name="CoolingLeakTest" 
+                            FontSize="25" 
+                            Padding="10,10" 
+                            Margin="10,30,10,10" 
+                            Background="#AEBCDE" 
+                            Click="CoolingLeakTest_Click" >
+                        32 - Cooling Leak Teszt
+                    </Button>
                     <Button x:Name="HousingFbAssyBtn" 
                             FontSize="25" 
                             Padding="10,10" 
                             Margin="10,30,10,10" 
                             Background="#F2C66C" 
                             Click="HousingFbAssyBtn_Click">
-                        32 - Ház Filterboard Szer.
+                        33 - Ház Filterboard Szer.
                     </Button>
                     <Button x:Name="PottingBtn" 
                             FontSize="25" 
@@ -99,7 +107,7 @@
                             Margin="10,30,10,10" 
                             Background="HotPink" 
                             Click="Potting_Click">
-                        33 - Potting után kaptonozás
+                        34 - Potting után kaptonozás
                     </Button>
                     <Button x:Name="HousingConnectorAssyBtn" 
                             FontSize="25" 
@@ -107,12 +115,12 @@
                             Margin="10,30,10,10" 
                             Background="#F2C66C" 
                             Click="HousingConnectorAssyBtn_Click">
-                        34 - Ház konnektor szerelés
+                        35 - Ház konnektor szerelés
                     </Button>
                     <Button x:Name="ReworkBtn" 
                             FontSize="25" 
                             Padding="10,10" 
-                            Margin="10,220,10,10" 
+                            Margin="10,125,10,10" 
                             Background="#bf6fd1" 
                             Click="ReworkBtn_Click">
                         XX - Rework

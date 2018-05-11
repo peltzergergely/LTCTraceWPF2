@@ -52,9 +52,10 @@ namespace LTCTraceWPF
             workSteps.Add("21 FB ACDC Szerelés", "fb_acdc_assy");
             workSteps.Add("22 FB EMC Szerelés", "fb_emc_assy");
             workSteps.Add("31 Ház Leak Teszt I.", "housing_leak_test_one");
-            workSteps.Add("32 Ház FB Szerelés", "housing_fb_assy");
-            workSteps.Add("33 Potting után Kapton", "potting");
-            workSteps.Add("34 Ház Konnektor Szerelés", "housing_connector_assy");
+            workSteps.Add("32 Cooling Leak Teszt", "cooling_leak_test");
+            workSteps.Add("33 Ház FB Szerelés", "housing_fb_assy");
+            workSteps.Add("34 Potting után Kapton", "potting");
+            workSteps.Add("35 Ház Konnektor Szerelés", "housing_connector_assy");
             workSteps.Add("41 Végszerelés I.", "final_assy_one");
             workSteps.Add("42 HiPot Teszt I.", "hipot_test_one");
             workSteps.Add("43 Kalibráció", "calibration");
@@ -194,6 +195,7 @@ namespace LTCTraceWPF
                                 if (blob.Length > 10)
                                 {
                                     // change the "byte [] array" text to something more readable.
+                                
                                 }
                                 else
                                 {

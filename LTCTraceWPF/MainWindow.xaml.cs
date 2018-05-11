@@ -37,6 +37,10 @@ namespace LTCTraceWPF
             {
                 LeakTestOne.IsEnabled = false;
             }
+            if (ConfigurationManager.AppSettings["CoolingLeakTest"] == "false")
+            {
+                CoolingLeakTest.IsEnabled = false;
+            }
             if (ConfigurationManager.AppSettings["HousingFbAssy"] == "false")
             {
                 HousingFbAssyBtn.IsEnabled = false;
@@ -214,6 +218,12 @@ namespace LTCTraceWPF
         {
             var pottingwindow = new PottingWindow();
             pottingwindow.Show();
+        }
+
+        private void CoolingLeakTest_Click(object sender, RoutedEventArgs e)
+        {
+            var coolingleaktestwindow = new CoolingLeakTest();
+            coolingleaktestwindow.Show();
         }
     }
 }
