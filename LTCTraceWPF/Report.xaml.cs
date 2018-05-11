@@ -105,7 +105,7 @@ namespace LTCTraceWPF
             QueryDb("21 Filterboard ACDC Assy ", "SELECT fb_dm, pc_name, started_on, saved_on FROM fb_acdc_assy WHERE fb_dm = '" + FbDm + "'");
             QueryDb("12 Mainboard DSP Assy ", "SELECT mb_dm, dsp_one_one, dsp_one_two, dsp_one_three, dsp_two_one, dsp_two_two, dsp_two_three, pc_name, started_on, saved_on FROM mb_dsp_assy WHERE mb_dm = '" + MbDm + "'");
             ImageSaver("SELECT * FROM mb_dsp_assy WHERE mb_dm = '" + MbDm + "'", folderpath);
-            QueryDb("11 Mainboard Heatsink Assy ", "SELECT mb_dm, pc_name, started_on, saved_on FROM mb_dsp_assy WHERE mb_dm = '" + MbDm + "'");
+            QueryDb("11 Mainboard Heatsink Assy ", "SELECT mb_dm, pc_name, started_on, saved_on FROM mb_hs_assy WHERE mb_dm = '" + MbDm + "'");
             txtBlck.Text = strbuilder.ToString();
             var complete = Path.Combine(systemPath + "\\LTCReportFolder\\Report_" + HousingDm, HousingDm + ".txt");
             //StreamWriter file = new StreamWriter(complete);
