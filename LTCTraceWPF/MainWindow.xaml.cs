@@ -9,75 +9,85 @@ namespace LTCTraceWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private bool admin;
+
+        public MainWindow() : this(false, "00,11,12,21,22,31,32,33,34,35,41,42,43,44,45,46,47,48,XX") { }
+
+        public MainWindow(bool admin,string trained)
         {
             InitializeComponent();
 
-            if (ConfigurationManager.AppSettings["transistordate"] == "false")
+            this.admin = admin;
+
+            if (ConfigurationManager.AppSettings["transistordate"] == "false" || !trained.Contains("00"))
             {
                 TransistorDateBtn.IsEnabled = false;
             }
-            if (ConfigurationManager.AppSettings["MbHsAssy"] == "false")
+            if (ConfigurationManager.AppSettings["MbHsAssy"] == "false" || !trained.Contains("11"))
             {
                 MbHsAssyBtn.IsEnabled = false;
             }
-            if (ConfigurationManager.AppSettings["MbDspAssy"] == "false")
+            if (ConfigurationManager.AppSettings["MbDspAssy"] == "false" || !trained.Contains("12"))
             {
-                HousingConnectorAssyBtn.IsEnabled = false;
+                MbDspAssyBtn.IsEnabled = false;
             }
-            if (ConfigurationManager.AppSettings["FbAcdcAssy"] == "false")
+            if (ConfigurationManager.AppSettings["FbAcdcAssy"] == "false" || !trained.Contains("21"))
             {
                 FbAcdcAssyBtn.IsEnabled = false;
             }
-            if (ConfigurationManager.AppSettings["FbEmcAssy"] == "false")
+            if (ConfigurationManager.AppSettings["FbEmcAssy"] == "false" || !trained.Contains("22"))
             {
                 FbEmcAssyBtn.IsEnabled = false;
             }
-            if (ConfigurationManager.AppSettings["LeakTestOne"] == "false")
+            if (ConfigurationManager.AppSettings["LeakTestOne"] == "false" || !trained.Contains("31"))
             {
                 LeakTestOne.IsEnabled = false;
             }
-            if (ConfigurationManager.AppSettings["HousingFbAssy"] == "false")
+            if (ConfigurationManager.AppSettings["CoolingLeakTest"] == "false" || !trained.Contains("32"))
+            {
+                CoolingLeakTest.IsEnabled = false;
+            }
+            if (ConfigurationManager.AppSettings["HousingFbAssy"] == "false" || !trained.Contains("33"))
             {
                 HousingFbAssyBtn.IsEnabled = false;
             }
-            if (ConfigurationManager.AppSettings["Potting"] == "false")
+            if (ConfigurationManager.AppSettings["Potting"] == "false" || !trained.Contains("34"))
             {
                 PottingBtn.IsEnabled = false;
             }
-            if (ConfigurationManager.AppSettings["HousingConnectorAssy"] == "false")
+            if (ConfigurationManager.AppSettings["HousingConnectorAssy"] == "false" || !trained.Contains("35"))
             {
                 HousingConnectorAssyBtn.IsEnabled = false;
             }
-            if (ConfigurationManager.AppSettings["FinalAssyOne"] == "false")
+            if (ConfigurationManager.AppSettings["FinalAssyOne"] == "false" || !trained.Contains("41"))
             {
                 FinalAssyOneBtn.IsEnabled = false;
             }
-            if (ConfigurationManager.AppSettings["HiPotTestOne"] == "false")
+            if (ConfigurationManager.AppSettings["HiPotTestOne"] == "false" || !trained.Contains("42"))
             {
                 HiPotTestOneBtn.IsEnabled = false;
             }
-            if (ConfigurationManager.AppSettings["Calibration"] == "false")
+            if (ConfigurationManager.AppSettings["Calibration"] == "false" || !trained.Contains("43"))
             {
                 CalibrationBtn.IsEnabled = false;
             }
-            if (ConfigurationManager.AppSettings["FinalAssyTwo"] == "false")
+            if (ConfigurationManager.AppSettings["FinalAssyTwo"] == "false" || !trained.Contains("44"))
             {
                 FinalAssyTwoBtn.IsEnabled = false;
             }
-            if (ConfigurationManager.AppSettings["LeakTestTwo"] == "false")
+            if (ConfigurationManager.AppSettings["LeakTestTwo"] == "false" || !trained.Contains("45"))
             {
                 LeakTestTwoBtn.IsEnabled = false;
             }
-            if (ConfigurationManager.AppSettings["HiPotTestTwo"] == "false")
+            if (ConfigurationManager.AppSettings["HiPotTestTwo"] == "false" || !trained.Contains("46"))
             {
                 HiPotTestTwoBtn.IsEnabled = false;
             }
-            if (ConfigurationManager.AppSettings["EOL"] == "false")
+            if (ConfigurationManager.AppSettings["EOL"] == "false" || !trained.Contains("47"))
             {
                 EolBtn.IsEnabled = false;
             }
-            if (ConfigurationManager.AppSettings["Firewall"] == "false")
+            if (ConfigurationManager.AppSettings["Firewall"] == "false" || !trained.Contains("48"))
             {
                 FirewallBtn.IsEnabled = false;
             }
@@ -85,16 +95,23 @@ namespace LTCTraceWPF
             {
                 ErrorReportBtn.IsEnabled = false;
             }
-            if (ConfigurationManager.AppSettings["Rework"] == "false")
+            if (ConfigurationManager.AppSettings["Rework"] == "false" || !trained.Contains("XX"))
             {
                 ReworkBtn.IsEnabled = false;
+            }
+            if (trained.Contains("Trainer") || admin == true)
+            {
+                manageUsersBtn.IsEnabled = true;
             }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
-            //this.Close();
+            //Application.Current.Shutdown();
+            this.Close();
+            if (Owner != null)
+                this.Owner.Show();
+
         }
 
         private void FbAcdcAssyBtn_Click(object sender, RoutedEventArgs e)
@@ -214,6 +231,20 @@ namespace LTCTraceWPF
         {
             var pottingwindow = new PottingWindow();
             pottingwindow.Show();
+        }
+
+        private void CoolingLeakTest_Click(object sender, RoutedEventArgs e)
+        {
+            var coolingleaktestwindow = new CoolingLeakTest();
+            coolingleaktestwindow.Show();
+        }
+
+        private void manageUsersBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var manageUsers = new ManageUsers(admin);
+            manageUsers.Owner = this;
+            manageUsers.Show();
+            this.Hide();
         }
     }
 }
