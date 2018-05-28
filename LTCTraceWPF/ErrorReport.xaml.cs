@@ -67,5 +67,13 @@ namespace LTCTraceWPF
         {
             DbInsert("errorreport");
         }
+
+        private void reportTxbx_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (reportTxbx.Text == "Ide írhatsz.")
+            {
+                reportTxbx.Text = "";
+            }
+        }
     }
 }

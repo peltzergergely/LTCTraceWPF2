@@ -1,7 +1,9 @@
-﻿using Npgsql;
+﻿using ErrorLogging;
+using Npgsql;
 using System;
 using System.Configuration;
 using System.IO;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
@@ -40,7 +42,7 @@ namespace LTCTraceWPF
                 return;
             }
 
-            if (e.Key == Key.Enter && HousingDmTxbx.Text.Length > 0)
+            if (e.Key == Key.Enter && HousingDmTxbx.Text.Length > 0 && HousingDmTxbx.IsFocused)
             {
                 TraversalRequest tRequest = new TraversalRequest(FocusNavigationDirection.Next);
                 UIElement keyboardFocus = Keyboard.FocusedElement as UIElement;
@@ -64,7 +66,7 @@ namespace LTCTraceWPF
             string errorMsg = "";
             if (IsDmValidated == true)
             {
-                if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length > 2)
+                if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length >= 1)
                 {
                     AllFieldsValidated = true;
                 }
@@ -194,11 +196,7 @@ namespace LTCTraceWPF
                     }
                     else
                     {
-                        MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a termék! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        if (messageBoxResult == MessageBoxResult.No)
-                        {
-                            CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
-                        }
+                        ErrorLog.Create("housing_fb_assy", "housing_dm", HousingDmTxbx.Text, MethodBase.GetCurrentMethod().Name.ToString(), "Előző munkafolyamaton nem szerepelt a termék!", this.GetType().Name.ToString());
                     }
                 }
                 StartedOn = DateTime.Now;

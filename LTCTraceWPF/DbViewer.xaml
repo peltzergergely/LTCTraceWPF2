@@ -165,12 +165,15 @@
                        Grid.Row="1"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
+                       HorizontalContentAlignment="Center"
                        FontSize="25"
                        Foreground="White"
                        x:Name="resultRowCount"
-                       Margin="45,5" Width="70"/>
+                       Height="auto"
+                       Width="auto"
+                       />
             </Grid>
-            <DataGrid Height="706"
+            <DataGrid Height="660"
                       Background="White"
                       x:Name="resultDataGrid"
                       FontSize="15"
@@ -183,7 +186,15 @@
                       SelectionUnit="Cell"
                       HorizontalScrollBarVisibility="Visible" 
                       SelectedCellsChanged="ShowImage"
-                      />
+                      >
+            </DataGrid>
+            <Grid>
+                <StackPanel x:Name="Tabs"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            >
+                </StackPanel>
+            </Grid>
         </StackPanel>
         <Button x:Name="BackBtn"
                     HorizontalAlignment="Left"
@@ -257,9 +268,34 @@
             </StackPanel>
         </Button>
 
+        <Button x:Name="quantityBtn"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,870,40"
+                    VerticalAlignment="Bottom"
+                    Height="auto"
+                    Width="auto"
+                    Background="#FDFDFD" 
+                    BorderBrush="White"
+                    Foreground="DarkSlateGray"
+                    KeyboardNavigation.IsTabStop="False"
+                    Click="quantityBtn_Click"
+                >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center"
+                               Margin="5" 
+                               HorizontalAlignment="Left"
+                               FontFamily="Segoe MDL2 Assets" 
+                               FontSize="48" 
+                               Padding="2" ><Run Text="&#xE90F;"/></TextBlock>
+                <TextBlock VerticalAlignment="Center" 
+                               FontSize="25"
+                               Padding="2"><Run Text="Darabszám"/></TextBlock>
+            </StackPanel>
+        </Button>
+        
         <Button x:Name="ReportBtn"
                     HorizontalAlignment="Right"
-                    Margin="0,0,562,40"
+                    Margin="0,0,550,40"
                     VerticalAlignment="Bottom"
                     Height="auto"
                     Width="auto"

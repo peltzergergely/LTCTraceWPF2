@@ -27,6 +27,7 @@ namespace LTCTraceWPF
     {
         public IDictionary<string, string> workSteps = new Dictionary<string, string>();
         public ShowImageWindow w;
+        private string dbQueryOffset;
 
         public DbWindow()
         {
@@ -40,6 +41,7 @@ namespace LTCTraceWPF
             FillProductNames();
 
             w = new ShowImageWindow();
+            dbQueryOffset = "0";
         }
 
         public void FillWorkStationList()
@@ -50,10 +52,11 @@ namespace LTCTraceWPF
             workSteps.Add("21 FB ACDC Szerelés", "fb_acdc_assy");
             workSteps.Add("22 FB EMC Szerelés", "fb_emc_assy");
             workSteps.Add("31 Ház Leak Teszt I.", "housing_leak_test_one");
-            workSteps.Add("32 Ház FB Szerelés", "housing_fb_assy");
-            workSteps.Add("33 Potting után Kapton", "potting");
-            workSteps.Add("34 Ház Konnektor Szerelés", "housing_connector_assy");
-            workSteps.Add("41 Végszerelés I.", "housing_connector_assy");
+            workSteps.Add("32 Cooling Leak Teszt", "cooling_leak_test");
+            workSteps.Add("33 Ház FB Szerelés", "housing_fb_assy");
+            workSteps.Add("34 Potting után Kapton", "potting");
+            workSteps.Add("35 Ház Konnektor Szerelés", "housing_connector_assy");
+            workSteps.Add("41 Végszerelés I.", "final_assy_one");
             workSteps.Add("42 HiPot Teszt I.", "hipot_test_one");
             workSteps.Add("43 Kalibráció", "calibration");
             workSteps.Add("44 Végszerelés II.", "final_assy_two");
@@ -61,6 +64,8 @@ namespace LTCTraceWPF
             workSteps.Add("46 Hipot Teszt II.", "hipot_test_two");
             workSteps.Add("47 EOL", "eol");
             workSteps.Add("48 Firewall", "firewall");
+            workSteps.Add("-- INTERLOCK HIBÁK", "interlock_log");
+            workSteps.Add("-- HIBAJELENTÉS", "errorreport");
 
             workStationCbx.ItemsSource = workSteps;
             workStationCbx.DisplayMemberPath = "Key";
@@ -105,12 +110,43 @@ namespace LTCTraceWPF
 
             string Querycmd = "SELECT * FROM " + workStationCbx.SelectedValue.ToString() + " WHERE date(saved_on) >= " + start + " and date(saved_on) <= " + end;
 
-            if (prodDmTbx.Text.Length > 0 && prodCbx.SelectedIndex != 0)
+            if (prodDmTbx.Text.Length > 0 && prodCbx.SelectedIndex != 0 && (workStationCbx.SelectedValue.ToString() != "interlock_log" || workStationCbx.SelectedValue.ToString() != "errorreport"))
             {
                 Querycmd = Querycmd + " AND " + prodCbx.SelectedValue.ToString() + " = '" + prodDmTbx.Text + "'";
             }
 
+            #region temporary solution while errorreport can be listed
+            if (workStationCbx.SelectedValue.ToString() == "errorreport")
+            {
+                Querycmd = "SELECT * FROM " + workStationCbx.SelectedValue.ToString() + " order by id desc";
+                //// if there are many then you can filter by date
+                //Querycmd = "SELECT * FROM " + workStationCbx.SelectedValue.ToString() + " WHERE date(created_on) >= " + start + " and date(created_on) <= " + end +" order by id desc";
+            }
+            #endregion
+            return Querycmd +" offset "+dbQueryOffset+" limit 200";
+        }
 
+        private string getSQLcount()
+        {
+
+            string start = "'" + startDate.SelectedDate.Value.Year.ToString() + "-" + startDate.SelectedDate.Value.Month.ToString() + "-" + startDate.SelectedDate.Value.Day.ToString() + "'";
+            string end = "'" + endDate.SelectedDate.Value.Year.ToString() + "-" + endDate.SelectedDate.Value.Month.ToString() + "-" + endDate.SelectedDate.Value.Day.ToString() + "'";
+
+            string Querycmd = "SELECT COUNT(*) FROM " + workStationCbx.SelectedValue.ToString() + " WHERE date(saved_on) >= " + start + " and date(saved_on) <= " + end;
+
+            if (prodDmTbx.Text.Length > 0 && prodCbx.SelectedIndex != 0 && (workStationCbx.SelectedValue.ToString() != "interlock_log" || workStationCbx.SelectedValue.ToString() != "errorreport"))
+            {
+                Querycmd = Querycmd + " AND " + prodCbx.SelectedValue.ToString() + " = '" + prodDmTbx.Text + "'";
+            }
+
+            #region temporary solution while errorreport can be listed
+            if (workStationCbx.SelectedValue.ToString() == "errorreport")
+            {
+                Querycmd = "SELECT COUNT(*) FROM " + workStationCbx.SelectedValue.ToString();
+                //// if there are many then you can filter by date
+                //Querycmd = "SELECT * FROM " + workStationCbx.SelectedValue.ToString() + " WHERE date(created_on) >= " + start + " and date(created_on) <= " + end +" order by id desc";
+            }
+            #endregion
             return Querycmd;
         }
 
@@ -133,6 +169,7 @@ namespace LTCTraceWPF
 
         private  void ListBtn_Click(object sender, RoutedEventArgs e)
         {
+            Int32 Tabcount = 0;
             using (new WaitCursor())
             {
                 try
@@ -168,6 +205,11 @@ namespace LTCTraceWPF
                         }
                     }
 
+                    // get the query result count
+                    var countcmd = new NpgsqlCommand(getSQLcount(), conn);
+                    Tabcount = Convert.ToInt32(countcmd.ExecuteScalar());
+                    resultRowCount.Content = Tabcount;
+
                     conn.Close();
 
                 }
@@ -177,12 +219,48 @@ namespace LTCTraceWPF
                 }
                 resultDataGrid.Columns[0].Width = 70;
 
+                if (resultDataGrid.Columns[1].Header.ToString() == "comments")
+                {
+                    resultDataGrid.Columns[1].Width = 1500;
+                }
             }
-            resultRowCount.Content = resultDataGrid.Items.Count;
+
+            Tabs.Children.Clear();
+            for (int i = 0; i <= Tabcount/ 200; i++)
+            {
+                Button newBtn = new Button();
+
+                newBtn.Background = Brushes.White;
+                newBtn.Foreground = Brushes.DarkSlateGray;
+                newBtn.BorderThickness = new Thickness(0);
+                newBtn.Focusable = false;
+                newBtn.Click += getOffset;
+                newBtn.Content = (i+1).ToString();
+                newBtn.Name = "Tab" + (i+1).ToString();
+                newBtn.Width = 28;
+                newBtn.Margin = new Thickness(1, 1, 1, 0);
+                newBtn.FontSize = 15;
+
+                Tabs.Children.Add(newBtn);
+
+                //change back and foreground color on active button
+                if (int.Parse(dbQueryOffset) == i*200)
+                {
+                    newBtn.Background = Brushes.DarkSlateGray;
+                    newBtn.Foreground = Brushes.White;
+                }
+            }
+            dbQueryOffset = "0";
+        }
+
+        private void getOffset(object sender, RoutedEventArgs e)
+        {
+            dbQueryOffset = ((int.Parse((sender as Button).Content.ToString()+"00")-100)*2).ToString();
+            ListBtn_Click(sender, e);
         }
 
         #region datagrid helper functions
-        
+
         #endregion
 
         private void MainMenuBtn_Click(object sender, RoutedEventArgs e)
@@ -277,6 +355,39 @@ namespace LTCTraceWPF
 
             }
 
+        }
+
+        private void quantityBtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
+                var conn = new NpgsqlConnection(connstring);
+                conn.Open();
+
+                string start = "'" + startDate.SelectedDate.Value.Year.ToString() + "-" + startDate.SelectedDate.Value.Month.ToString() + "-" + startDate.SelectedDate.Value.Day.ToString() + "'";
+                string end = "'" + endDate.SelectedDate.Value.Year.ToString() + "-" + endDate.SelectedDate.Value.Month.ToString() + "-" + endDate.SelectedDate.Value.Day.ToString() + "'";
+
+                new NpgsqlCommand("SELECT todaycount(" + start + "," + end + ");", conn).ExecuteNonQuery();
+                var dataAdapter = new NpgsqlDataAdapter("SELECT * FROM count_today_product", conn);
+                dataSet.Reset();
+                dataAdapter.Fill(dataSet);
+                dataTable = dataSet.Tables[0];
+                resultDataGrid.ItemsSource = dataTable.AsDataView();
+
+                conn.Close();
+
+                int sum = 0;
+                for (int i = 0; i < dataTable.Rows.Count; i++)
+                {
+                    sum += int.Parse(dataTable.Rows[i][2].ToString());
+                }
+                resultRowCount.Content = sum.ToString();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
 }

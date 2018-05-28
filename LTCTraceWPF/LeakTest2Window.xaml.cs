@@ -1,6 +1,8 @@
-﻿using Npgsql;
+﻿using ErrorLogging;
+using Npgsql;
 using System;
 using System.Configuration;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
@@ -87,7 +89,7 @@ namespace LTCTraceWPF
 
             if (isNum)
             {
-                if (Num < 5)
+                if (Num <= 5)
                 {
                     this.Number = Num;
                     AllFieldsValidated = true;
@@ -162,11 +164,7 @@ namespace LTCTraceWPF
                     }
                     else
                     {
-                        MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a termék! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        if (messageBoxResult == MessageBoxResult.No)
-                        {
-                            CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
-                        }
+                        ErrorLog.Create("final_assy_two", "housing_dm", housingDmTxbx.Text,MethodBase.GetCurrentMethod().Name.ToString(), "Előző munkafolyamaton nem szerepelt a termék!", this.GetType().Name.ToString());
                     }
                 }
                 StartedOn = DateTime.Now;

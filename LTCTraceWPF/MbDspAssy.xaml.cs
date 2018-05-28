@@ -1,7 +1,9 @@
-﻿using Npgsql;
+﻿using ErrorLogging;
+using Npgsql;
 using System;
 using System.Configuration;
 using System.IO;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
@@ -66,7 +68,7 @@ namespace LTCTraceWPF
             string errorMsg = "";
             if (IsDmValidated == true)
             {
-                if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length > 2)
+                if (Directory.GetFiles(@"c:\TraceImages\", "*.Jpeg").Length >= 2)
                 {
                     AllFieldsValidated = true;
                 }
@@ -218,11 +220,7 @@ namespace LTCTraceWPF
                     }
                     else
                     {
-                        MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a termék! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        if (messageBoxResult == MessageBoxResult.No)
-                        {
-                            CallMessageForm("Előző munkafolyamaton nem szerepelt a termék!");
-                        }
+                        ErrorLog.Create("mb_hs_assy", "mb_dm", MbDmTxbx.Text,MethodBase.GetCurrentMethod().Name.ToString(), "Előző munkafolyamaton nem szerepelt a termék!", this.GetType().Name.ToString());
                     }
                 }
                 

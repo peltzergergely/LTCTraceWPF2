@@ -1,7 +1,9 @@
-﻿using Npgsql;
+﻿using ErrorLogging;
+using Npgsql;
 using System;
 using System.Configuration;
 using System.IO;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
@@ -62,13 +64,11 @@ namespace LTCTraceWPF
         private void FormValidator()
         {
             string errorMsg = "";
-
             if (IsDmValidated == true)
             {
-
                 if (ConfigurationManager.AppSettings["PreCheckMode"] == "hard")
                 {
-                    PreChk("housing_leak_test_one", "housing_dm", HousingDmTxbx.Text);
+                    PreChk("cooling_leak_test", "housing_dm", HousingDmTxbx.Text);
 
                     if (IsPreChkPassed)
                     {
@@ -84,15 +84,12 @@ namespace LTCTraceWPF
                 }
                 else
                 {
-                    PreChk("housing_leak_test_one", "housing_dm", HousingDmTxbx.Text);
+                    PreChk("cooling_leak_test", "housing_dm", HousingDmTxbx.Text);
 
                     if(!IsPreChkPassed)
                     {
-                        MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a Ház! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        if (messageBoxResult == MessageBoxResult.Yes)
-                        {
-                            IsPreChkPassed = true;
-                        }
+                        ErrorLog.Create("cooling_leak_test", "housing_dm", HousingDmTxbx.Text,MethodBase.GetCurrentMethod().Name.ToString(), "Előző munkafolyamaton nem szerepelt a Ház!", this.GetType().Name.ToString());
+                        IsPreChkPassed = true;
                     }
 
                     if (IsPreChkPassed)
@@ -101,21 +98,12 @@ namespace LTCTraceWPF
 
                         if (!IsPreChkPassed)
                         {
-                            MessageBoxResult messageBoxResult = MessageBox.Show("Előző munkafolyamaton nem szerepelt a Filterboard! Folytatáshoz nyomd meg a SPACE billentyűt!", "Interlock hiba!", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                            if (messageBoxResult == MessageBoxResult.Yes)
-                            {
-                                IsPreChkPassed = true;
-                            }
+                            ErrorLog.Create("fb_emc_assy", "fb_dm", FbDmTxbx.Text,MethodBase.GetCurrentMethod().Name.ToString(), "Előző munkafolyamaton nem szerepelt a Filterboard!", this.GetType().Name.ToString());
+                            IsPreChkPassed = true;
                         }
 
-                        if (IsPreChkPassed)
-                        {
-                            AllFieldsValidated = true;
-                        }
-                        else errorMsg += "Előző munkafolyamaton nem szerepelt a Filterboard! ";
+                        AllFieldsValidated = true;  
                     }
-                    else
-                        errorMsg += " Előző munkafolyamaton nem szerepelt a Ház! ";
                 }
             }
 
@@ -232,6 +220,7 @@ namespace LTCTraceWPF
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
             FormValidator();
+
             if (AllFieldsValidated)
             {
                 DbInsert("housing_fb_assy");
