@@ -287,15 +287,55 @@ namespace LTCTraceWPF
 
         private void ExportBtn_Click(object sender, EventArgs e)
         {
-            resultDataGrid.SelectAllCells();
-            resultDataGrid.ClipboardCopyMode = DataGridClipboardCopyMode.IncludeHeader;
-            ApplicationCommands.Copy.Execute(null, resultDataGrid);
-            String resultat = (string)Clipboard.GetData(DataFormats.CommaSeparatedValue);
-            String result = (string)Clipboard.GetData(DataFormats.Text);
-            resultDataGrid.UnselectAllCells();
+            String resultat = "";
+            String result = "";
+
+            var connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
+            using (var conn = new NpgsqlConnection(connstring))
+            {
+                conn.Open();
+
+                for (int i = 0; i < Tabs.Children.Count; i++)
+                {
+                    //fill datagrid
+                    string sql = getSQLcommand();
+                    var dataAdapter = new NpgsqlDataAdapter(sql, conn);
+                    dataSet.Reset();
+                    dataAdapter.Fill(dataSet);
+                    dataTable = dataSet.Tables[0];
+                    resultDataGrid.ItemsSource = dataTable.AsDataView();
+
+                    dbQueryOffset = ((i+1) * 200).ToString();
+
+                    // concatenate the tabs
+                    resultDataGrid.SelectAllCells();
+                    if (i == 0)
+                        resultDataGrid.ClipboardCopyMode = DataGridClipboardCopyMode.IncludeHeader;
+                    else
+                        resultDataGrid.ClipboardCopyMode = DataGridClipboardCopyMode.ExcludeHeader;
+                    ApplicationCommands.Copy.Execute(null, resultDataGrid);
+                    resultat += (string)Clipboard.GetData(DataFormats.CommaSeparatedValue);
+                    result += (string)Clipboard.GetData(DataFormats.Text);
+                    resultDataGrid.UnselectAllCells();
+
+                    // set back the default result
+                    if (i == Tabs.Children.Count-1)
+                    {
+                        foreach (var item in Tabs.Children)
+                        {
+                            if ((item as Button).Background == Brushes.DarkSlateGray)
+                                dbQueryOffset = (int.Parse((item as Button).Content.ToString())*200-200).ToString();
+                        }
+                        ListBtn_Click(sender, e as RoutedEventArgs);
+
+                    }
+                }
+            }
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Excel |*.xls";
+            //saveFileDialog.DefaultExt = "xls";
+            //saveFileDialog.AddExtension = true;
             if (saveFileDialog.ShowDialog() == true)
             {
                 System.IO.StreamWriter file1 = new System.IO.StreamWriter(saveFileDialog.FileName);

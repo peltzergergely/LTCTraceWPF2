@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
@@ -77,8 +78,9 @@ namespace LTCTraceWPF
         {
             //QueryDb(costumquery.Text);
             var systemPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            string folderpath = Directory.CreateDirectory(systemPath + "\\LTCReportFolder\\Report_FB" + searchedDM.Text).ToString();
-            Directory.CreateDirectory(systemPath + "\\LTCReportFolder\\Report_" + HousingDm);
+
+            string folderpath = systemPath + "\\LTCReportFolder\\Report_" + searchedDM.Text;
+            Directory.CreateDirectory(folderpath+@"\Images");
 
             HousingDm = searchedDM.Text;
             QueryDb("48 Firewall", "SELECT housing_dm, pc_name, started_on, saved_on FROM firewall WHERE housing_dm = '" + HousingDm + "'");
@@ -210,17 +212,30 @@ namespace LTCTraceWPF
                             stream.Write(blob, 0, blob.Length);
                             stream.Position = 0;
 
-                            System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
+                            Image img = Image.FromStream(stream);
                             BitmapImage bi = new BitmapImage();
                             bi.BeginInit();
 
                             MemoryStream ms = new MemoryStream();
-                            img.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                            img.Save(ms, ImageFormat.Bmp);
                             ms.Seek(0, SeekOrigin.Begin);
                             bi.StreamSource = ms;
                             bi.EndInit();
+
                             var complete = Path.Combine(folderpath, dataTable.Rows[i][1] + "" + dataTable.Rows[i][0] + "_" + j + ".Jpeg");
-                            img.Save(complete, ImageFormat.Jpeg);
+                            img.Save(folderpath +@"\Images\"+ dataTable.Rows[i][1] + "_" + dataTable.Rows[i][0] + "_" + j + ".Jpeg", ImageFormat.Jpeg);
+
+                            //Other solution
+                            //byte[] byteArray = blob; // Put the bytes of the image here....
+                            //Image result = null;
+                            //ImageFormat format = ImageFormat.Png;
+                            //result = new Bitmap(new MemoryStream(byteArray));
+
+                            //using (Image imageToExport = result)
+                            //{
+                            //    string filePath = string.Format(@"C:\ProgramData\szartest\Myfile.{0}", format.ToString());
+                            //    imageToExport.Save(folderpath +@"\Images\"+ dataTable.Rows[i][1] + "_" + dataTable.Rows[i][0] + "_" + j + ".Jpeg", ImageFormat.Jpeg);
+                            //}
                         }
                     }
                 }
@@ -234,15 +249,15 @@ namespace LTCTraceWPF
         private void FBReportGenBtn_Click(object sender, RoutedEventArgs e)
         {
             var systemPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            string folderpath = systemPath + "\\LTCReportFolder\\Report_FB" + searchedDM.Text;
-            Directory.CreateDirectory(systemPath + "\\LTCReportFolder\\Report_FB" + searchedDM.Text);
+            string folderpath = systemPath + "\\LTCReportFolder\\Report_FB_" + searchedDM.Text;
+            Directory.CreateDirectory(folderpath+@"\Images");
 
             QueryDb("22 Filterboard EMC Assy ", "SELECT fb_dm, pc_name, started_on, saved_on FROM fb_emc_assy WHERE fb_dm = '" + searchedDM.Text + "'");
             ImageSaver("SELECT * FROM fb_emc_assy WHERE fb_dm = '" + searchedDM.Text + "'", folderpath);
             QueryDb("21 Filterboard ACDC Assy ", "SELECT fb_dm, pc_name, started_on, saved_on FROM fb_acdc_assy WHERE fb_dm = '" + searchedDM.Text + "'");
             txtBlck.Text = strbuilder.ToString();
 
-            var complete = Path.Combine(systemPath + "\\LTCReportFolder\\Report_FB" + searchedDM.Text, searchedDM.Text + ".txt");
+            var complete = Path.Combine(systemPath + "\\LTCReportFolder\\Report_FB_" + searchedDM.Text, searchedDM.Text + ".txt");
             //StreamWriter file = new StreamWriter(complete);
             System.Diagnostics.Process.Start("explorer.exe", systemPath + "\\LTCReportFolder");
 
@@ -255,15 +270,15 @@ namespace LTCTraceWPF
         private void MBReportGenBtn_Click(object sender, RoutedEventArgs e)
         {
             var systemPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            string folderpath = systemPath + "\\LTCReportFolder\\Report_MB" + searchedDM.Text;
-            Directory.CreateDirectory(systemPath + "\\LTCReportFolder\\Report_MB" + searchedDM.Text);
+            string folderpath = systemPath + "\\LTCReportFolder\\Report_MB_" + searchedDM.Text;
+            Directory.CreateDirectory(folderpath+@"\Images");
 
             QueryDb("12 Mainboard DSP Assy ", "SELECT mb_dm, dsp_one_one, dsp_one_two, dsp_one_three, dsp_two_one, dsp_two_two, dsp_two_three, pc_name, started_on, saved_on FROM mb_dsp_assy WHERE mb_dm = '" + searchedDM.Text + "'");
             ImageSaver("SELECT * FROM mb_dsp_assy WHERE mb_dm = '" + searchedDM.Text + "'", folderpath);
             QueryDb("11 Mainboard Heatsink Assy ", "SELECT mb_dm, pc_name, started_on, saved_on FROM mb_dsp_assy WHERE mb_dm = '" + searchedDM.Text + "'");
             txtBlck.Text = strbuilder.ToString();
             
-            var complete = Path.Combine(systemPath + "\\LTCReportFolder\\Report_MB" + searchedDM.Text, searchedDM.Text + ".txt");
+            var complete = Path.Combine(systemPath + "\\LTCReportFolder\\Report_MB_" + searchedDM.Text, searchedDM.Text + ".txt");
             //StreamWriter file = new StreamWriter(complete);
             System.Diagnostics.Process.Start("explorer.exe", systemPath + "\\LTCReportFolder");
 

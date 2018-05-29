@@ -253,7 +253,8 @@
                     Background="#FDFDFD" 
                     BorderBrush="White"
                     Foreground="DarkSlateGray"
-                    KeyboardNavigation.IsTabStop="False" Click="ExportBtn_Click"
+                    KeyboardNavigation.IsTabStop="False" 
+                Click="ExportBtn_Click"
                 >
             <StackPanel Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center"
