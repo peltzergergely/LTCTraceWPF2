@@ -76,6 +76,8 @@ namespace LTCTraceWPF
 
         private void reportGenBtn_Click(object sender, RoutedEventArgs e)
         {
+            strbuilder.Clear();
+
             //QueryDb(costumquery.Text);
             var systemPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
 
@@ -248,6 +250,8 @@ namespace LTCTraceWPF
 
         private void FBReportGenBtn_Click(object sender, RoutedEventArgs e)
         {
+            strbuilder.Clear();
+
             var systemPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             string folderpath = systemPath + "\\LTCReportFolder\\Report_FB_" + searchedDM.Text;
             Directory.CreateDirectory(folderpath+@"\Images");
@@ -269,6 +273,8 @@ namespace LTCTraceWPF
 
         private void MBReportGenBtn_Click(object sender, RoutedEventArgs e)
         {
+            strbuilder.Clear();
+
             var systemPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             string folderpath = systemPath + "\\LTCReportFolder\\Report_MB_" + searchedDM.Text;
             Directory.CreateDirectory(folderpath+@"\Images");

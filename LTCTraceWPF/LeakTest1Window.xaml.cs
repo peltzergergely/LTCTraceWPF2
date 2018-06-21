@@ -27,6 +27,8 @@ namespace LTCTraceWPF
         public int SerialNumber { get; set; }
         public double Number { get; set; } = 0;
         public bool AutoID { get; set; }
+        public string runningtext { get; set; } = "LTC";
+
 
 
         public LeakTest1Win()
@@ -35,6 +37,8 @@ namespace LTCTraceWPF
             InitializeComponent();
             GetAutoID();
             RefreshAutoIdSetting();
+
+            versionCbx.SelectedIndex = 0;
         }
 
         private void GetAutoID()
@@ -148,12 +152,11 @@ namespace LTCTraceWPF
 
         private void PrintDMC(int number)
         {
-            string runningtext = "LTC";
             if (number > 0)
             {
                 HousingDM = runningtext + number.ToString();
                 CounterTxbx.Text = HousingDM;
-                string s = @"^XA^MMT^PW406^LL0280^LS0^BY252,252^FT16,266^BXN,18,200,0,0,1,~^FH\^FD" + @HousingDM + @"^FS^FT345,274^A0B,25,26^FH\^FDLTC 1E0002187 AD B2.5^FS^FT376,274^A0B,25,26^FH\^FD" + @HousingDM + @"^FS^PQ1,0,1,Y^XZ";
+                string s = @"^XA^MMT^PW406^LL0280^LS0^BY252,252^FT16,266^BXN,18,200,0,0,1,~^FH\^FD" + @HousingDM + @"^FS^FT345,274^A0B,25,26^FH\^FD" + barcodeText.Text + @"^FS^FT376,274^A0B,25,26^FH\^FD" + @HousingDM + @"^FS^PQ1,0,1,Y^XZ";
                 string printerName = "ZDesigner ZT420-203dpi ZPL";
                 RawPrinterHelper.SendStringToPrinter(printerName, s);
             }
@@ -348,6 +351,25 @@ namespace LTCTraceWPF
             {
                 //since the operator not always jump with enter, the FormValidor called when the textbox lost the focus.
                 FormValidator();
+            }
+        }
+
+        private void versionCbx_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (versionCbx.SelectedIndex.ToString() == "0")
+            {
+                barcodeText.Text = "LTC 1E0002187AD B2.5";
+                runningtext = "LTC";
+            }
+            else if (versionCbx.SelectedIndex.ToString() == "1")
+            {
+                barcodeText.Text = "LTC B3.5 LEVC PN";
+                runningtext = "35LTC";
+            }
+            else if (versionCbx.SelectedIndex.ToString() == "2")
+            {
+                barcodeText.Text = "LTC P514";
+                runningtext = "P514LTC";
             }
         }
     }

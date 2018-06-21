@@ -172,7 +172,7 @@ namespace LTCTraceWPF
                     }
                     else
                     {
-                        ErrorLog.Create("hipot_test_one", "housing_dm", HousingDmTxbx.Text,MethodBase.GetCurrentMethod().Name.ToString(), "Előző munkafolyamaton nem szerepelt a termék!",this.GetType().Name.ToString());
+                        ErrorLog.Create("hipot_test_one", "housing_dm", HousingDmTxbx.Text, MethodBase.GetCurrentMethod().Name.ToString(), "Előző munkafolyamaton nem szerepelt a termék!", this.GetType().Name.ToString());
                     }
                 }
                 StartedOn = DateTime.Now;

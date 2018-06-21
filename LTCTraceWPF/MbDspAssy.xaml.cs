@@ -6,6 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace LTCTraceWPF
@@ -100,8 +101,14 @@ namespace LTCTraceWPF
 
         private void DmValidator()
         {
-            if (RegexValidation(MbDmTxbx.Text, "HousingDmRegEx") == true
-                && RegexValidation(DspOne1.Text, "FbDmRegEx") == true)
+            if (RegexValidation(MbDmTxbx.Text, "MbDmRegEx") == true
+                && RegexValidation(DspOne1.Text, "DspDmRegEx") == true
+                && RegexValidation(DspOne2.Text, "DspDmRegEx") == true
+                && RegexValidation(DspOne3.Text, "DspDmRegEx") == true
+                && RegexValidation(DspTwo1.Text, "DspDmRegEx") == true
+                && RegexValidation(DspTwo2.Text, "DspDmRegEx") == true
+                && RegexValidation(DspTwo3.Text, "DspDmRegEx") == true
+                )
                 IsDmValidated = true;
             else
                 IsDmValidated = false;
@@ -253,6 +260,49 @@ namespace LTCTraceWPF
             {
                 DbInsert("mb_dsp_assy");
             }
+        }
+
+        private void DSPnotReadable(object sender, RoutedEventArgs e)
+        {
+            if ((sender as Button).Name.Contains("11"))
+            {
+                DspOne1.Text = "NEM OLVASHATÓ";
+                DspOne1.Focus();
+            }
+
+            if ((sender as Button).Name.Contains("12"))
+            {
+                DspOne2.Text = "NEM OLVASHATÓ";
+                DspOne2.Focus();
+            }
+
+            if ((sender as Button).Name.Contains("13"))
+            {
+                DspOne3.Text = "NEM OLVASHATÓ";
+                DspOne3.Focus();
+            }
+
+            if ((sender as Button).Name.Contains("21"))
+            {
+                DspTwo1.Text = "NEM OLVASHATÓ";
+                DspTwo1.Focus();
+            }
+
+            if ((sender as Button).Name.Contains("22"))
+            {
+                DspTwo2.Text = "NEM OLVASHATÓ";
+                DspTwo2.Focus();
+            }
+
+            if ((sender as Button).Name.Contains("23"))
+            {
+                DspTwo3.Text = "NEM OLVASHATÓ";
+                DspTwo3.Focus();
+            }
+
+            TraversalRequest tRequest = new TraversalRequest(FocusNavigationDirection.Next);
+            UIElement keyboardFocus = Keyboard.FocusedElement as UIElement;
+            keyboardFocus.MoveFocus(tRequest);
         }
     }
 }

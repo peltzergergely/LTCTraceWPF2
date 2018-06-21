@@ -83,6 +83,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="700" />
@@ -97,20 +98,39 @@
                            Grid.Column="0" 
                            FontSize="35"
                            HorizontalAlignment="Right" 
+                           Margin="30,15">Verzió:</TextBlock>
+                <ComboBox x:Name="versionCbx"
+                          Grid.Row="1"
+                          Grid.Column="1"
+                          FontSize="35"
+                          Margin="35,15"
+                          Width="auto"
+                          HorizontalAlignment="Left"
+                          HorizontalContentAlignment="Center"
+                          SelectionChanged="versionCbx_SelectionChanged">
+                    <ComboBoxItem>2.5</ComboBoxItem>
+                    <ComboBoxItem>3.5</ComboBoxItem>
+                    <ComboBoxItem>P514</ComboBoxItem>
+                </ComboBox>
+                <TextBlock Grid.Row="2"
+                           Grid.Column="0" 
+                           FontSize="35"
+                           HorizontalAlignment="Right" 
                            Margin="30,15">Szöveg:</TextBlock>
-                <TextBlock Grid.Row="1"
+                <TextBlock x:Name="barcodeText"
+                           Grid.Row="2"
                            Grid.Column="1" 
                            FontSize="35"
                            HorizontalAlignment="Left" 
-                           Margin="30,15">LTC1E0002187AD B2.5</TextBlock>
+                           Margin="30,15">LTC 1E0002187 AD B2.5</TextBlock>
 
-                <TextBlock Grid.Row="2"
+                <TextBlock Grid.Row="3"
                            Grid.Column="0" 
                            FontSize="35"
                            HorizontalAlignment="Right" 
                            Margin="30,15">Kezdő sorszám:</TextBlock>
                 <TextBox Name ="StartingIdTxbx"
-                           Grid.Row="2"
+                           Grid.Row="3"
                            Grid.Column="1" 
                            FontSize="35"
                            HorizontalAlignment="Left" 
@@ -119,13 +139,13 @@
                            LostFocus="CheckStartingIdValidity"
                            KeyUp="MoveFocus">0000</TextBox>
 
-                <TextBlock Grid.Row="3"
+                <TextBlock Grid.Row="4"
                            Grid.Column="0" 
                            FontSize="35"
                            HorizontalAlignment="Right" 
                            Margin="30,15">Sorszám:</TextBlock>
                 <TextBlock Name ="CounterTxbx"
-                           Grid.Row="3"
+                           Grid.Row="4"
                            Grid.Column="1" 
                            FontSize="35"
                            HorizontalAlignment="Left" 
@@ -141,7 +161,7 @@
                          KeyUp="OnKeyUpEvent" 
                          LostFocus="CheckValidate"></TextBox>
                 <TextBlock Name ="Resultlbl"
-                    Grid.Row="4"
+                           Grid.Row="5"
                            Grid.ColumnSpan="2" 
                            FontSize="35"
                            HorizontalAlignment="Center"

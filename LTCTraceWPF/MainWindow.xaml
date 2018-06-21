@@ -91,7 +91,7 @@
                             Margin="10,30,10,10" 
                             Background="#AEBCDE" 
                             Click="CoolingLeakTest_Click" >
-                        32 - Cooling Leak Teszt
+                        32 - Hűtőkör Leak Teszt
                     </Button>
                     <Button x:Name="HousingFbAssyBtn" 
                             FontSize="25" 

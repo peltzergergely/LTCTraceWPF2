@@ -50,13 +50,15 @@
                            Grid.Column="0" 
                            FontSize="35" 
                            HorizontalAlignment="Right"
-                           Margin="30,15">
+                           Margin="30,15"
+                           VerticalAlignment="Center">
                     Ház DataMátrix
                 </TextBlock>
                 <TextBlock Grid.Row="1" 
                            Grid.Column="0" 
                            FontSize="35"
                            HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
                            Margin="30,15">
                     Filterboard DataMátrix
                 </TextBlock>
@@ -85,6 +87,22 @@
                            HorizontalAlignment="Center"
                            Margin="0,70, 0, 15">eredmény</TextBlock>
             </Grid>
+
+            <Button x:Name="NotReadableBtn"
+                    Height="50"
+                    Click="NotReadableBtn_Click"
+                    Focusable="False"
+                    Margin="0,0,0,43"
+                        >
+                <TextBlock TextWrapping="Wrap"
+                               FontSize="15"
+                               TextAlignment="Center"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               >
+                        Nem olvasható
+                </TextBlock>
+            </Button>
         </StackPanel>
 
         <Button x:Name="MainMenuBtn" 

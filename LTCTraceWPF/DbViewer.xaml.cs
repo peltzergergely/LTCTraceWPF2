@@ -52,7 +52,7 @@ namespace LTCTraceWPF
             workSteps.Add("21 FB ACDC Szerelés", "fb_acdc_assy");
             workSteps.Add("22 FB EMC Szerelés", "fb_emc_assy");
             workSteps.Add("31 Ház Leak Teszt I.", "housing_leak_test_one");
-            workSteps.Add("32 Cooling Leak Teszt", "cooling_leak_test");
+            workSteps.Add("32 Hűtőkör Leak Teszt", "cooling_leak_test");
             workSteps.Add("33 Ház FB Szerelés", "housing_fb_assy");
             workSteps.Add("34 Potting után Kapton", "potting");
             workSteps.Add("35 Ház Konnektor Szerelés", "housing_connector_assy");
@@ -123,6 +123,7 @@ namespace LTCTraceWPF
                 //Querycmd = "SELECT * FROM " + workStationCbx.SelectedValue.ToString() + " WHERE date(created_on) >= " + start + " and date(created_on) <= " + end +" order by id desc";
             }
             #endregion
+
             return Querycmd +" offset "+dbQueryOffset+" limit 200";
         }
 
@@ -258,10 +259,6 @@ namespace LTCTraceWPF
             dbQueryOffset = ((int.Parse((sender as Button).Content.ToString()+"00")-100)*2).ToString();
             ListBtn_Click(sender, e);
         }
-
-        #region datagrid helper functions
-
-        #endregion
 
         private void MainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -428,6 +425,114 @@ namespace LTCTraceWPF
             {
                 MessageBox.Show(ex.ToString());
             }
+        }
+
+        private void finishedProductsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Int32 Tabcount = 0;
+
+            string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
+            try
+            {
+                using (var conn = new NpgsqlConnection(connstring))
+                {
+                    conn.Open();
+
+                    string start = "'" + startDate.SelectedDate.Value.Year.ToString() + "-" + startDate.SelectedDate.Value.Month.ToString() + "-" + startDate.SelectedDate.Value.Day.ToString() + "'";
+                    string end = "'" + endDate.SelectedDate.Value.Year.ToString() + "-" + endDate.SelectedDate.Value.Month.ToString() + "-" + endDate.SelectedDate.Value.Day.ToString() + "'";
+
+
+                    string filterByComponent = String.Empty;
+                    if (prodCbx.SelectedValue.ToString() == "fb_dm")
+                    {
+                        filterByComponent = "AND housing_fb_assy.fb_dm = '"+ prodDmTbx.Text + "' ";
+                    }
+                    else if (prodCbx.SelectedValue.ToString() == "housing_dm")
+                    {
+                        filterByComponent = "AND housing_fb_assy.housing_dm = '" + prodDmTbx.Text + "' ";
+                    }
+                    else if (prodCbx.SelectedValue.ToString() == "mb_dm")
+                    {
+                        filterByComponent = "AND mb_dsp_assy.mb_dm = '" + prodDmTbx.Text + "' ";
+                    }
+                    else if (prodCbx.SelectedValue.ToString() == "gw_dm")
+                    {
+                        filterByComponent = "AND final_assy_two.gw_dm = '" + prodDmTbx.Text + "' ";
+                    }
+
+                    string Querycmd = @"SELECT 
+                                    final_assy_two.saved_on as ""Összeszerelve"",
+                                    final_assy_two.housing_dm as ""Ház"",
+	                                final_assy_one.mb_dm as ""Mainboard"",
+	                                final_assy_two.gw_dm as ""Gateway"",
+	                                housing_fb_assy.fb_dm as ""Filterboard"",
+	                                mb_dsp_assy.dsp_one_one as ""DSP 11"",
+	                                mb_dsp_assy.dsp_one_two as ""DSP 12"",
+	                                mb_dsp_assy.dsp_one_three as ""DSP 13"",
+	                                mb_dsp_assy.dsp_two_one as ""DSP 21"",
+	                                mb_dsp_assy.dsp_two_two as ""DSP 22"",
+	                                mb_dsp_assy.dsp_two_three as ""DSP 23""                                    
+
+                                FROM housing_fb_assy
+                                FULL JOIN final_assy_one on final_assy_one.housing_dm = housing_fb_assy.housing_dm
+                                FULL JOIN mb_dsp_assy on mb_dsp_assy.mb_dm = final_assy_one.mb_dm
+                                FULL JOIN final_assy_two on final_assy_two.housing_dm = final_assy_one.housing_dm
+                                WHERE date(final_assy_two.saved_on) >= " + start + " and date(final_assy_two.saved_on) <= " + end +
+                                filterByComponent+
+                                        "order by final_assy_two.saved_on desc";
+
+                    string CountQuerycmd = @"select count(*) from (" + Querycmd + ") as q";
+                    Querycmd += " offset " + dbQueryOffset + " limit 200";
+
+                    var dataAdapter = new NpgsqlDataAdapter(Querycmd, conn);
+                    dataSet.Reset();
+                    dataAdapter.Fill(dataSet);
+                    dataTable = dataSet.Tables[0];
+                    resultDataGrid.ItemsSource = dataTable.AsDataView();
+
+                    var countcmd = new NpgsqlCommand(CountQuerycmd, conn);
+                    Tabcount = Convert.ToInt32(countcmd.ExecuteScalar());
+                    resultRowCount.Content = Tabcount;
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            
+
+            Tabs.Children.Clear();
+            for (int i = 0; i <= Tabcount / 200; i++)
+            {
+                Button newBtn = new Button();
+
+                newBtn.Background = Brushes.White;
+                newBtn.Foreground = Brushes.DarkSlateGray;
+                newBtn.BorderThickness = new Thickness(0);
+                newBtn.Focusable = false;
+                newBtn.Click += getOffsetForFinishedProducts;
+                newBtn.Content = (i + 1).ToString();
+                newBtn.Name = "Tab" + (i + 1).ToString();
+                newBtn.Width = 28;
+                newBtn.Margin = new Thickness(1, 1, 1, 0);
+                newBtn.FontSize = 15;
+
+                Tabs.Children.Add(newBtn);
+
+                //change back and foreground color on active button
+                if (int.Parse(dbQueryOffset) == i * 200)
+                {
+                    newBtn.Background = Brushes.DarkSlateGray;
+                    newBtn.Foreground = Brushes.White;
+                }
+            }
+            dbQueryOffset = "0";
+        }
+
+        private void getOffsetForFinishedProducts(object sender, RoutedEventArgs e)
+        {
+            dbQueryOffset = ((int.Parse((sender as Button).Content.ToString() + "00") - 100) * 2).ToString();
+            finishedProductsBtn_Click(sender, e);
         }
     }
 }

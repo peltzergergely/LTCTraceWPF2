@@ -29,15 +29,16 @@
                    Foreground="white"
                 TextWrapping="Wrap"
                 TextAlignment="Center">
-                Rework után olvasd be a működő konstrukció elemeit. MINDEN mező kitöltése kötelező!
+                Rework után olvasd be a működő konstrukció kicserélt elemeit.
             </TextBlock>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" 
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
-            <Grid>
+            <Grid Margin="0,100,0,0">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -57,37 +58,42 @@
                            FontSize="35" 
                            HorizontalAlignment="Right" 
                            Margin="30,15">Ház DataMatrix</TextBlock>
-                <TextBlock Grid.Row="1" 
+                <TextBlock Grid.Row="2" 
                            Grid.Column="0" 
                            FontSize="35" 
                            HorizontalAlignment="Right" 
                            Margin="30,15">Mainboard DataMatrix</TextBlock>
-                <TextBlock Grid.Row="2" 
-                           Grid.Column="0"
-                           FontSize="35"
-                           HorizontalAlignment="Right"
-                           Margin="30,15">DSP1 1</TextBlock>
+                <TextBlock Grid.Row="1" 
+                           Grid.Column="0" 
+                           FontSize="35" 
+                           HorizontalAlignment="Right" 
+                           Margin="30,15">Gateway DataMatrix</TextBlock>
                 <TextBlock Grid.Row="3" 
                            Grid.Column="0"
                            FontSize="35"
                            HorizontalAlignment="Right"
-                           Margin="30,15">DSP1 2</TextBlock>
+                           Margin="30,15">DSP1 1</TextBlock>
                 <TextBlock Grid.Row="4" 
                            Grid.Column="0"
                            FontSize="35"
                            HorizontalAlignment="Right"
-                           Margin="30,15">DSP1 3</TextBlock>
+                           Margin="30,15">DSP1 2</TextBlock>
                 <TextBlock Grid.Row="5" 
                            Grid.Column="0"
                            FontSize="35"
                            HorizontalAlignment="Right"
-                           Margin="30,15">DSP2 1</TextBlock>
+                           Margin="30,15">DSP1 3</TextBlock>
                 <TextBlock Grid.Row="6" 
                            Grid.Column="0"
                            FontSize="35"
                            HorizontalAlignment="Right"
-                           Margin="30,15">DSP2 2</TextBlock>
+                           Margin="30,15">DSP2 1</TextBlock>
                 <TextBlock Grid.Row="7" 
+                           Grid.Column="0"
+                           FontSize="35"
+                           HorizontalAlignment="Right"
+                           Margin="30,15">DSP2 2</TextBlock>
+                <TextBlock Grid.Row="8" 
                            Grid.Column="0"
                            FontSize="35"
                            HorizontalAlignment="Right"
@@ -101,7 +107,7 @@
                          TabIndex="0"
                          KeyUp="OnKeyUpEvent"
                          />
-                <TextBox x:Name="MbDmTxbx" 
+                <TextBox x:Name="GwDmTxbx" 
                          Grid.Row="1" 
                          Grid.Column="1" 
                          FontSize="35" 
@@ -110,7 +116,8 @@
                          TabIndex="0"
                          KeyUp="OnKeyUpEvent"
                          />
-                <TextBox x:Name="DSP11DmTxbx" 
+                
+                <TextBox x:Name="MbDmTxbx" 
                          Grid.Row="2" 
                          Grid.Column="1" 
                          FontSize="35" 
@@ -119,7 +126,8 @@
                          TabIndex="0"
                          KeyUp="OnKeyUpEvent"
                          />
-                <TextBox x:Name="DSP12DmTxbx" 
+                
+                <TextBox x:Name="DSP11DmTxbx" 
                          Grid.Row="3" 
                          Grid.Column="1" 
                          FontSize="35" 
@@ -128,7 +136,7 @@
                          TabIndex="0"
                          KeyUp="OnKeyUpEvent"
                          />
-                <TextBox x:Name="DSP13DmTxbx" 
+                <TextBox x:Name="DSP12DmTxbx" 
                          Grid.Row="4" 
                          Grid.Column="1" 
                          FontSize="35" 
@@ -137,7 +145,7 @@
                          TabIndex="0"
                          KeyUp="OnKeyUpEvent"
                          />
-                <TextBox x:Name="DSP21DmTxbx" 
+                <TextBox x:Name="DSP13DmTxbx" 
                          Grid.Row="5" 
                          Grid.Column="1" 
                          FontSize="35" 
@@ -146,7 +154,7 @@
                          TabIndex="0"
                          KeyUp="OnKeyUpEvent"
                          />
-                <TextBox x:Name="DSP22DmTxbx" 
+                <TextBox x:Name="DSP21DmTxbx" 
                          Grid.Row="6" 
                          Grid.Column="1" 
                          FontSize="35" 
@@ -155,8 +163,17 @@
                          TabIndex="0"
                          KeyUp="OnKeyUpEvent"
                          />
-                <TextBox x:Name="DSP23DmTxbx" 
+                <TextBox x:Name="DSP22DmTxbx" 
                          Grid.Row="7" 
+                         Grid.Column="1" 
+                         FontSize="35" 
+                         Margin="30,15"
+                         IsTabStop="True"
+                         TabIndex="0"
+                         KeyUp="OnKeyUpEvent"
+                         />
+                <TextBox x:Name="DSP23DmTxbx" 
+                         Grid.Row="8" 
                          Grid.Column="1" 
                          FontSize="35" 
                          Margin="30,15"
@@ -167,6 +184,13 @@
             </Grid>
         </StackPanel>
 
+        <Label x:Name="result"
+               VerticalAlignment="Bottom"
+               HorizontalAlignment="Center"
+               FontSize="30"
+               Margin="0,0,0,40">
+            Eredmény
+        </Label>
         <Button x:Name="MainMenuBtn" 
                 HorizontalAlignment="Left"
                 Margin="40" 

@@ -16,7 +16,7 @@
         Background="#FDFDFD">
     <Grid>
         <StackPanel>
-            <Label Content="Cooling Leak Teszt"
+            <Label Content="Hűtőkör Leak Teszt"
                    HorizontalContentAlignment="Center" 
                    Padding="15" 
                    FontSize="45" 

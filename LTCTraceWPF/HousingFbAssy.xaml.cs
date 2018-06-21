@@ -226,5 +226,12 @@ namespace LTCTraceWPF
                 DbInsert("housing_fb_assy");
             }
         }
+
+        private void NotReadableBtn_Click(object sender, RoutedEventArgs e)
+        {
+            FbDmTxbx.Text = "NEM OLVASHATÓ";
+            DmValidator();
+            SaveBtn.Focus();
+        }
     }
 }

@@ -83,9 +83,9 @@ namespace LTCTraceWPF
 
         private void DmValidator()
         {
-            if (RegexValidation(HousingDmTxbx.Text, "MbDmRegEx"))
+            if (RegexValidation(HousingDmTxbx.Text, "HousingDmRegEx"))
             {
-                if (RegexValidation(GwDmTxbx.Text, "MbDmRegEx"))
+                if (RegexValidation(GwDmTxbx.Text, "GwDmRegEx"))
                 IsDmValidated = true;
             }
             else
