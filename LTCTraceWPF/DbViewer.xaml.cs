@@ -347,52 +347,7 @@ namespace LTCTraceWPF
             reportWindow.Show();
         }
 
-        private void ShowImage(object sender, SelectedCellsChangedEventArgs e)
-        {
-            try
-            {
-                if (resultDataGrid.Items.Count > 0) // there is row in datagrid
-                {
-                    //get the indexes
-                    int column = resultDataGrid.CurrentColumn.DisplayIndex;
-                    int row = resultDataGrid.Items.IndexOf(resultDataGrid.CurrentItem);
-
-                    if (dataTable.Columns[column].ColumnName.Contains("pic") && !(dataTable.Rows[row][column] is DBNull)) //check if the focused cell is a picture
-                    {
-                        byte[] blob = (byte[])dataTable.Rows[row][column];
-                        MemoryStream stream = new MemoryStream();
-                        if (blob.Length > 10)
-                        {
-                            stream.Write(blob, 0, blob.Length);
-                            stream.Position = 0;
-                            System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
-                            BitmapImage bi = new BitmapImage();
-                            bi.BeginInit();
-                            MemoryStream ms = new MemoryStream();
-                            img.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-                            ms.Seek(0, SeekOrigin.Begin);
-                            bi.StreamSource = ms;
-                            bi.EndInit();
-
-                            w.SetImg(bi);
-                        }
-                        else
-                        {
-                            w.Visibility = Visibility.Hidden;
-                        }
-                    }
-                    else
-                    {
-                        w.Visibility = Visibility.Hidden;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-
-            }
-
-        }
+        
 
         private void quantityBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -533,6 +488,52 @@ namespace LTCTraceWPF
         {
             dbQueryOffset = ((int.Parse((sender as Button).Content.ToString() + "00") - 100) * 2).ToString();
             finishedProductsBtn_Click(sender, e);
+        }
+
+        private void ShowImage(object sender, SelectedCellsChangedEventArgs e)
+        {
+            try
+            {
+                if (resultDataGrid.Items.Count > 0) // there is row in datagrid
+                {
+                    //get the indexes
+                    int column = resultDataGrid.CurrentColumn.DisplayIndex;
+                    int row = resultDataGrid.Items.IndexOf(resultDataGrid.CurrentItem);
+
+                    if (dataTable.Columns[column].ColumnName.Contains("pic") && !(dataTable.Rows[row][column] is DBNull)) //check if the focused cell is a picture
+                    {
+                        byte[] blob = (byte[])dataTable.Rows[row][column];
+                        MemoryStream stream = new MemoryStream();
+                        if (blob.Length > 10)
+                        {
+                            stream.Write(blob, 0, blob.Length);
+                            stream.Position = 0;
+                            System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
+                            BitmapImage bi = new BitmapImage();
+                            bi.BeginInit();
+                            MemoryStream ms = new MemoryStream();
+                            img.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                            ms.Seek(0, SeekOrigin.Begin);
+                            bi.StreamSource = ms;
+                            bi.EndInit();
+
+                            w.SetImg(bi);
+                        }
+                        else
+                        {
+                            w.Visibility = Visibility.Hidden;
+                        }
+                    }
+                    else
+                    {
+                        w.Visibility = Visibility.Hidden;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }

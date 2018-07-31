@@ -123,6 +123,49 @@
             </Grid>
         </StackPanel>
 
+        <StackPanel x:Name="ThreeFivePanel"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Margin="0,430,0,0"
+                    Visibility="Hidden"
+                    >
+            <Label FontSize="40"
+                   FontWeight="Bold"
+                   FontStyle="Italic"
+                   Foreground="Gray">
+                Utolsó mezőt manuálisan kell megadni
+            </Label>
+            <StackPanel >
+                <TextBox x:Name="ThreeFiveRightTxt"
+                         FontSize="50"
+                         FontWeight="Bold"
+                         FontFamily="Arial Narrow"
+                         Background="White"
+                         VerticalContentAlignment="Center"
+                         VerticalAlignment="Center"
+                         HorizontalContentAlignment="Center" 
+                         HorizontalAlignment="Center"
+                         Foreground="LightBlue"
+                         GotFocus="ClearValue"
+                         Width="300"
+                         LostFocus="SetDefaultValue"
+                         >
+                    B/VV/C
+                </TextBox>
+            </StackPanel>
+                <Button x:Name="SaveDMCBtn"
+                        HorizontalAlignment="Center" 
+                        Click="SaveDMCBtn_Click"
+                        Margin="10"
+                        >
+                    <TextBlock TextWrapping="Wrap"
+                               FontSize="40"
+                               Foreground="DarkSlateGray">
+                        Mentés
+                    </TextBlock>
+                </Button>
+        </StackPanel>
+
         <Button x:Name="MainMenuBtn" 
                 HorizontalAlignment="Left" 
                 Margin="40"

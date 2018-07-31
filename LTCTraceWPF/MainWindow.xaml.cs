@@ -195,7 +195,12 @@ namespace LTCTraceWPF
 
         private void DbBtn_Click(object sender, RoutedEventArgs e)
         {
-            var DbWindow = new DbWindow();
+            //DB Viewer 1.0
+            //var DbWindow = new DbWindow();
+            //DbWindow.Show();
+
+            //DB Viewer 2.0
+            var DbWindow = new DbViewerV2();
             DbWindow.Show();
         }
 
@@ -247,6 +252,11 @@ namespace LTCTraceWPF
             manageUsers.Owner = this;
             manageUsers.Show();
             this.Hide();
+        }
+
+        private void EditHousingNumberBtn_Click(object sender, RoutedEventArgs e)
+        {
+            new EditHousingNumberWindow().Show();
         }
     }
 }

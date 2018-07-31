@@ -41,6 +41,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -50,6 +51,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -155,6 +157,12 @@
       <DependentUpon>CoolingLeakTest.xaml</DependentUpon>
     </Compile>
     <Compile Include="DatabaseHelper.cs" />
+    <Compile Include="DbViewerV2.xaml.cs">
+      <DependentUpon>DbViewerV2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditHousingNumberWindow.xaml.cs">
+      <DependentUpon>EditHousingNumberWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EOLTest.xaml.cs">
       <DependentUpon>EOLTest.xaml</DependentUpon>
     </Compile>
@@ -176,6 +184,9 @@
     </Compile>
     <Compile Include="PrintDMCWindow.xaml.cs">
       <DependentUpon>PrintDMCWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PrintHousingDMCWindow.xaml.cs">
+      <DependentUpon>PrintHousingDMCWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="RawPrinterHelper.cs" />
     <Compile Include="RegistrationPage.xaml.cs">
@@ -207,6 +218,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DbViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DbViewerV2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditHousingNumberWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -370,6 +389,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PrintHousingDMCWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="RegistrationPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -477,6 +500,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\p514img.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\3.5img.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\HousingDM.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

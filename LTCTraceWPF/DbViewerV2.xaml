@@ -1,0 +1,861 @@
+﻿<Window x:Class="LTCTraceWPF.DbViewerV2"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LTCTraceWPF"
+        mc:Ignorable="d"
+        Title="Adatbázis" 
+        Height="1080" Width="1920" 
+        ResizeMode="NoResize" 
+        WindowState="Maximized" 
+        WindowStartupLocation="CenterScreen" 
+        WindowStyle="None" FontFamily="Verdana" 
+        Background="#FDFDFD">
+
+    <Window.Resources>
+        <Style x:Key="DGHeaderStyle" TargetType="{x:Type DataGrid}">
+            <Setter Property="ColumnHeaderStyle" Value="{DynamicResource DGCHeaderStyle}"/>
+        </Style>
+        <Style x:Key="DGCHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Background" Value="#FF008F95"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10,0,10,0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+            <EventSetter Event="Click" Handler="columnHeader_Click"/>
+        </Style>
+        
+        <Style TargetType="DataGridCell">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <StackPanel x:Name="mainStackPanel" Background="White">
+            <Label Content="Adatbázis" 
+                   Padding="10" 
+                   FontSize="25" 
+                   Background="#00363a" 
+                   Foreground="white"
+                   FontWeight="Bold"/>
+
+            <Grid HorizontalAlignment="Center"
+                  Margin="0,15,0,15"
+                  Background="#FDFDFD">
+                <Grid x:Name="Menus"
+                      Visibility="Hidden"
+                      IsEnabled="False">
+                    <!--Search-->
+                    <Button x:Name="searchBtn"
+                        Margin="0,0,1350,0"
+                        Focusable="False"
+                        Height="auto"
+                        Width="300"
+                        Background="#FDFDFD" 
+                        BorderBrush="#FF00686C"
+                        BorderThickness="0"
+                        Foreground="#FF00686C"
+                        KeyboardNavigation.IsTabStop="False"
+                        Click="MenuBtn_Click" 
+                        Cursor="Hand">
+                        <StackPanel>
+                            <TextBlock VerticalAlignment="Top"
+                                   Margin="5" 
+                                   HorizontalAlignment="Center"
+                                   FontFamily="Segoe MDL2 Assets" 
+                                   FontSize="100" 
+                                   Padding="2" ><Run Text="&#xE71E;"/></TextBlock>
+                            <TextBlock VerticalAlignment="Center"
+                                       TextAlignment="Center"
+                                   FontSize="25"
+                                   Padding="2"><Run Text="Keresés"/></TextBlock>
+                        </StackPanel>
+                    </Button>
+
+                    <!--Finished products-->
+                    <Button x:Name="finishedProductsBtn"
+                        Margin="0,0,450,0"
+                        Focusable="False"
+                        Height="auto"
+                        Width="300"
+                        Background="#FDFDFD" 
+                        BorderBrush="#FF00686C"
+                        BorderThickness="0"
+                        Foreground="#FF00686C"
+                        KeyboardNavigation.IsTabStop="False"
+                        Click="MenuBtn_Click"
+                        Cursor="Hand">
+                        <StackPanel>
+                            <TextBlock VerticalAlignment="Top"
+                                   Margin="5" 
+                                   HorizontalAlignment="Center"
+                                   FontFamily="Segoe MDL2 Assets" 
+                                   FontSize="100" 
+                                   Padding="2" ><Run Text="&#xE890;"/></TextBlock>
+                            <TextBlock VerticalAlignment="Center"
+                                       TextAlignment="Center"
+                                   FontSize="25"
+                                   Padding="2"><Run Text="Kész Termékek"/></TextBlock>
+                        </StackPanel>
+                    </Button>
+
+                    <!--Quantitiy-->
+                    <Button x:Name="quantityBtn"
+                        Margin="0,0,-450,0"
+                        Focusable="False"
+                        Height="auto"
+                        Width="300"
+                        Background="#FDFDFD" 
+                        BorderBrush="#FF00686C"
+                        BorderThickness="0"
+                        Foreground="#FF00686C"
+                        KeyboardNavigation.IsTabStop="False"
+                        Click="MenuBtn_Click"
+                            Cursor="Hand">
+                        <StackPanel>
+                            <TextBlock VerticalAlignment="Top"
+                                   Margin="5" 
+                                   HorizontalAlignment="Center"
+                                   FontFamily="Segoe MDL2 Assets" 
+                                   FontSize="100" 
+                                   Padding="2" ><Run Text="&#xE90F;"/></TextBlock>
+                            <TextBlock VerticalAlignment="Center"
+                                       TextAlignment="Center"
+                                   FontSize="25"
+                                   Padding="2"><Run Text="Darabszám"/></TextBlock>
+                        </StackPanel>
+                    </Button>
+
+                    <!--Bugreport-->
+                    <Button x:Name="bugreportBtn"
+                        Margin="0,0,-1350,0"
+                        Focusable="False"
+                        Height="auto"
+                        Width="300"
+                        Background="#FDFDFD" 
+                        BorderBrush="#FF00686C"
+                        BorderThickness="0"
+                        Foreground="#FF00686C"
+                        KeyboardNavigation.IsTabStop="False"
+                        Click="MenuBtn_Click"
+                            Cursor="Hand">
+                        <StackPanel>
+                            <TextBlock VerticalAlignment="Top"
+                                   Margin="5" 
+                                   HorizontalAlignment="Center"
+                                   FontFamily="Segoe MDL2 Assets" 
+                                   FontSize="100"
+                                   Padding="2" ><Run Text="&#xEC50;"/></TextBlock>
+                            <TextBlock VerticalAlignment="Center"
+                                       TextAlignment="Center"
+                                   FontSize="25"
+                                   Padding="2"><Run Text="Teljes Riport Készítése"/></TextBlock>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <Grid x:Name="showMenuPnl"
+                            Visibility="Visible"
+                            >
+                    <!--New Action-->
+                    <Button x:Name="undoBtn"
+                        Margin="0,0,1600,0"
+                        Focusable="False"
+                        Height="auto"
+                        Width="300"
+                        Background="#FDFDFD" 
+                        BorderBrush="#FF00686C"
+                            BorderThickness="0"
+                        Foreground="#FF00686C"
+                        KeyboardNavigation.IsTabStop="False"
+                        Click="undoBtn_Click"
+                            Cursor="Hand">
+                        <StackPanel>
+                            <TextBlock VerticalAlignment="Top"
+                                   Margin="5" 
+                                   HorizontalAlignment="Center"
+                                   FontFamily="Segoe MDL2 Assets" 
+                                   FontSize="100" 
+                                   Padding="2" ><Run Text="&#xE72A;"/></TextBlock>
+                            <TextBlock VerticalAlignment="Center"
+                                       TextAlignment="Center"
+                                   FontSize="25"
+                                   Padding="2"><Run Text="Vissza"/></TextBlock>
+                        </StackPanel>
+                    </Button>
+
+                    <Grid x:Name="showSearchPanel"
+                          Margin="300,0,0,0"
+                          VerticalAlignment="Center"
+                          Visibility="Hidden">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="230"/>
+                            <ColumnDefinition Width="300"/>
+                            <ColumnDefinition Width="300"/>
+                            <ColumnDefinition Width="300"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+
+                        <!--Workstation label + combobox + Timeintervall label-->
+                        <Label x:Name="workStationlbl"
+                               Content="Munkaállomás"
+                               FontSize="25"
+                               FontWeight="Bold"
+                               Foreground="DarkSlateGray"
+                               Margin="15,0,0,0"
+                               Width="auto"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Grid.Column="0"
+                               Grid.Row="0"
+                               Grid.ColumnSpan="1"
+                               Padding="-1"
+                               />
+                        <ComboBox x:Name="workStationCbx"
+                                  Focusable="False"
+                                  BorderThickness="1"
+                                  FontSize="20"
+                                  Margin="10,2,10,2"
+                                  Background="#FDFDFD"
+                                  VerticalContentAlignment="Center"
+                                  HorizontalContentAlignment="Center"
+                                  Grid.Column="1"
+                                  Grid.Row="0"
+                                  SelectionChanged="workStationCbx_SelectionChanged"
+                                  Visibility="Visible"
+                                  
+                                />
+
+                        <Label x:Name="ervallumtxt"
+                               Content="ervallum"
+                               FontSize="35"
+                               FontWeight="Bold"
+                               Foreground="Gray"
+                               FontStyle="Italic"
+                               Width="auto"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Grid.Column="1"
+                               Grid.Row="0"
+                               Visibility="Hidden"
+                               Padding="-1"
+                               />
+
+                        <!--Starting date + datepicker-->
+                        <Label Content="Kezdő Dátum"
+                               FontSize="25"
+                               FontWeight="Bold"
+                               Foreground="DarkSlateGray"
+                               Width="auto"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Grid.Column="0"
+                               Grid.Row="1"
+                               />
+
+                        <Viewbox Grid.Column="1"
+                                 Grid.Row="1"
+                                 Margin="10,2,10,2">
+                            <DatePicker BorderThickness="1" 
+                                  Focusable="False"
+                                Background="#FDFDFD" 
+                                Width="167"
+                                x:Name="startDate"
+                                VerticalContentAlignment="Center"
+                                HorizontalContentAlignment="Center">
+                            </DatePicker>
+                        </Viewbox>
+
+                        <!--Ending date + datepicker-->
+                        <Label Content="Végső Dátum"
+                               FontSize="25"
+                               FontWeight="Bold"
+                               Foreground="DarkSlateGray"
+                               Width="auto"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Grid.Column="0"
+                               Grid.Row="2"
+                               />
+
+                        <Viewbox Grid.Column="1"
+                                 Grid.Row="2"
+                                 Margin="10,2,10,2">
+                            <DatePicker BorderThickness="1" 
+                                  Focusable="False"
+                                Background="#FDFDFD" 
+                                Width="167"
+                                x:Name="endDate"
+                                VerticalContentAlignment="Center"
+                                HorizontalContentAlignment="Center">
+                            </DatePicker>
+                        </Viewbox>
+
+                        <!--Filter-->
+                        <Label x:Name="filterLbl"
+                               Content="Szűrés"
+                               FontSize="35"
+                               FontWeight="Bold"
+                               Foreground="Gray"
+                               FontStyle="Italic"
+                               Width="auto"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Padding="0,-1,0,0"
+                               Grid.Column="2"
+                               Grid.Row="0"
+                               Grid.ColumnSpan="2"
+                               />
+
+                        <Label x:Name="filterColumn"
+                               Content="Oszlop"
+                               FontSize="25"
+                               FontWeight="Bold"
+                               Foreground="DarkSlateGray"
+                               Width="auto"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Grid.Column="2"
+                               Grid.Row="1"
+                               />
+
+                        <ComboBox x:Name="FilterByCbx"
+                                  Focusable="False"
+                                  BorderThickness="1"
+                                  FontSize="20"
+                                  Background="#FDFDFD"
+                                  Margin="10,2,10,2"
+                                  VerticalContentAlignment="Center"
+                                  HorizontalContentAlignment="Center"
+                                  Grid.Column="3"
+                                  Grid.Row="1"
+                                  SelectionChanged="FilterByCbx_SelectionChanged"
+                        />
+
+                        <ComboBox x:Name="workflowCbx"
+                                  Focusable="False"
+                                  BorderThickness="1"
+                                  FontSize="20"
+                                  Margin="10,2,10,2"
+                                  VerticalContentAlignment="Center"
+                                  HorizontalContentAlignment="Center"
+                                  Grid.Column="3"
+                                  Grid.Row="1"
+                                  Visibility="Hidden"
+                                  IsEnabled="False"/>
+
+                        <Label x:Name="valueLbl"
+                               Content="Érték"
+                               FontSize="25"
+                               FontWeight="Bold"
+                               Foreground="DarkSlateGray"
+                               Width="auto"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Grid.Column="2"
+                               Grid.Row="2"
+                               />
+
+                        <TextBox x:Name="filterByTbx"
+                                  Focusable="True"
+                                 Grid.Column="3"
+                                 Grid.Row="2"
+                                 BorderThickness="1"
+                                 Margin="10,2,10,2"
+                                 FontSize="20"
+                                 Background="White"
+                                 VerticalContentAlignment="Center"
+                                 HorizontalContentAlignment="Left"
+                                 Visibility="Visible"></TextBox>
+
+                        <Button x:Name="checkProductBtn"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Height="auto"
+                                Width="280"
+                                Background="LightBlue" 
+                                BorderBrush="White"
+                                Foreground="DarkSlateGray"
+                                KeyboardNavigation.IsTabStop="False"
+                                Grid.Column="3"
+                                Grid.Row="2"
+                                Click="checkProductBtn_Click"
+                                Visibility="Hidden"
+                                Cursor="Hand">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center"
+                                       HorizontalAlignment="Left"
+                                       FontFamily="Segoe MDL2 Assets" 
+                                       FontSize="34" 
+                                       Padding="2" ><Run Text="&#xE7C5;"/></TextBlock>
+                                <TextBlock VerticalAlignment="Center" 
+                                            TextAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                       FontSize="25"
+                                       Padding="2"><Run Text="Megtekintés"/></TextBlock>
+                            </StackPanel>
+                        </Button>
+
+                    </Grid>
+
+                    <!--Riport menubar-->
+                    <Grid x:Name="fullRiportPanel"
+                          Margin="300,0,0,0"
+                          VerticalAlignment="Center"
+                          Visibility="Visible">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="290"/>
+                            <ColumnDefinition Width="220"/>
+                            <ColumnDefinition Width="220"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="80"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Content="BARCODE"
+                               FontSize="35"
+                               FontStyle="Italic"
+                               FontWeight="Bold"
+                               Foreground="Gray"
+                               Margin="30,0,0,0"
+                               Width="auto"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Grid.Column="0"
+                               Grid.Row="0"
+                               Grid.ColumnSpan="1"
+                               Padding="-1"
+                               />
+
+                        <TextBox x:Name="riportByTbx"
+                                  Focusable="True"
+                                 Grid.Column="0"
+                                 Grid.Row="1"
+                                 BorderThickness="1"
+                                 Margin="30,2,10,2"
+                                 FontSize="35"
+                                 Background="White"
+                                 VerticalContentAlignment="Center"
+                                 HorizontalContentAlignment="Center"
+                                 Visibility="Visible"/>
+
+                        <!--Housing report-->
+                        <Button x:Name="housingReportBtn"
+                            Focusable="False"
+                            Height="auto"
+                            Width="200"
+                            Background="#FDFDFD" 
+                            BorderBrush="DarkSlateGray"
+                            BorderThickness="0"
+                            Foreground="#FF00686C"
+                            KeyboardNavigation.IsTabStop="False"
+                            HorizontalAlignment="Right"
+                            Visibility="Visible"
+                            IsEnabled="True"
+                            Grid.Column="1"
+                            Grid.RowSpan="2"
+                            Grid.Row="0"
+                            Click="housingReportBtn_Click"
+                                Cursor="Hand"
+                            >
+                            <StackPanel>
+                                <TextBlock VerticalAlignment="Top"
+                                       Margin="5" 
+                                       HorizontalAlignment="Center"
+                                       FontFamily="Segoe MDL2 Assets" 
+                                       FontSize="60" 
+                                       Padding="2"><Run Text="&#xE70F;"/></TextBlock>
+                                <TextBlock VerticalAlignment="Center"
+                                           TextAlignment="Center"
+                                           TextWrapping="Wrap"
+                                       FontSize="25"
+                                       Padding="2" Width="114"><Run Text="Ház Riport"/></TextBlock>
+                            </StackPanel>
+                        </Button>
+
+                        <Button x:Name="MbRiportBtn"
+                            Focusable="False"
+                            Height="auto"
+                            Width="200"
+                            Background="#FDFDFD" 
+                            BorderBrush="DarkSlateGray"
+                            BorderThickness="0"
+                            Foreground="#FF00686C"
+                            KeyboardNavigation.IsTabStop="False"
+                            Visibility="Visible"
+                            IsEnabled="True"
+                            Grid.Column="2"
+                            Grid.RowSpan="2"
+                            HorizontalAlignment="Center"
+                            Grid.Row="0"
+                                Click="MbRiportBtn_Click"
+                                Cursor="Hand"
+                            >
+                            <StackPanel>
+                                <TextBlock VerticalAlignment="Top"
+                                       Margin="5" 
+                                       HorizontalAlignment="Center"
+                                       FontFamily="Segoe MDL2 Assets" 
+                                       FontSize="60" 
+                                       Padding="2"><Run Text="&#xE70F;"/></TextBlock>
+                                <TextBlock VerticalAlignment="Center"
+                                           TextAlignment="Center"
+                                           TextWrapping="Wrap"
+                                       FontSize="25"
+                                       Padding="2"><Run Text="Mainboard Riport"/></TextBlock>
+                            </StackPanel>
+                        </Button>
+
+                        <Button x:Name="FbRiportBtn"
+                            Focusable="False"
+                            Height="auto"
+                            Width="200"
+                            Background="#FDFDFD" 
+                            BorderBrush="DarkSlateGray"
+                            BorderThickness="0"
+                            Foreground="#FF00686C"
+                            KeyboardNavigation.IsTabStop="False"
+                            Visibility="Visible"
+                            IsEnabled="True"
+                            Grid.Column="3"
+                            Grid.RowSpan="2"
+                                HorizontalAlignment="Left"
+                            Grid.Row="0"
+                                Click="FbRiportBtn_Click"
+                                Cursor="Hand"
+                            >
+                            <StackPanel>
+                                <TextBlock VerticalAlignment="Top"
+                                       Margin="5" 
+                                       HorizontalAlignment="Center"
+                                       FontFamily="Segoe MDL2 Assets" 
+                                       FontSize="60" 
+                                       Padding="2"><Run Text="&#xE70F;"/></TextBlock>
+                                <TextBlock VerticalAlignment="Center"
+                                           TextAlignment="Center"
+                                           TextWrapping="Wrap"
+                                       FontSize="25"
+                                       Padding="2"><Run Text="Filterboard Riport"/></TextBlock>
+                            </StackPanel>
+                        </Button>
+
+                        <!--Save report-->
+                        <Button x:Name="saveReportBtn"
+                            Focusable="False"
+                            Height="auto"
+                            Width="300"
+                            Background="#FDFDFD" 
+                            BorderBrush="DarkSlateGray"
+                                HorizontalAlignment="Right"
+                            BorderThickness="0"
+                            Foreground="#FF00686C"
+                            KeyboardNavigation.IsTabStop="False"
+                            Visibility="Visible"
+                            IsEnabled="True"
+                            Grid.Column="4"
+                            Grid.RowSpan="2"
+                            Grid.Row="0"
+                                Click="saveReportBtn_Click"
+                                Cursor="Hand"
+                            >
+                            <StackPanel>
+                                <TextBlock VerticalAlignment="Top"
+                                       Margin="5" 
+                                       HorizontalAlignment="Center"
+                                       FontFamily="Segoe MDL2 Assets" 
+                                       FontSize="100" 
+                                       Padding="2"><Run Text="&#xE74E;"/></TextBlock>
+                                <TextBlock VerticalAlignment="Center"
+                                           TextAlignment="Center"
+                                       FontSize="25"
+                                       Padding="2"><Run Text="Riport Mentése"/></TextBlock>
+                            </StackPanel>
+                        </Button>
+
+
+                    </Grid>
+
+                    <!--Save and list button-->
+                    <Button x:Name="SaveBtn"
+                        Margin="0,0,-1250,0"
+                        Focusable="False"
+                        Height="auto"
+                        Width="200"
+                        Background="#FDFDFD" 
+                        BorderBrush="DarkSlateGray"
+                        BorderThickness="0"
+                        Foreground="#FF00686C"
+                        KeyboardNavigation.IsTabStop="False"
+                        Click="SaveBtn_Click"
+                            Visibility="Hidden"
+                            IsEnabled="False"
+                            Cursor="Hand"
+                        >
+                        <StackPanel>
+                            <TextBlock VerticalAlignment="Top"
+                                   Margin="5" 
+                                   HorizontalAlignment="Center"
+                                   FontFamily="Segoe MDL2 Assets" 
+                                   FontSize="100" 
+                                   Padding="2"><Run Text="&#xE74E;"/></TextBlock>
+                            <TextBlock VerticalAlignment="Center"
+                                       TextAlignment="Center"
+                                   FontSize="25"
+                                   Padding="2"><Run Text="Mentés Excelbe"/></TextBlock>
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="ListBtn"
+                        Margin="0,0,-1700,0"
+                        Focusable="False"
+                        Height="auto"
+                        Width="200"
+                        Background="#FDFDFD" 
+                        BorderBrush="DarkSlateGray"
+                        BorderThickness="0"
+                        Foreground="#FF00686C"
+                        KeyboardNavigation.IsTabStop="False"
+                        Click="ListBtn_Click"
+                        Visibility="Hidden"
+                        IsEnabled="False"
+                            Cursor="Hand">
+                        <StackPanel>
+                            <TextBlock VerticalAlignment="Top"
+                                   Margin="5" 
+                                   HorizontalAlignment="Center"
+                                   FontFamily="Segoe MDL2 Assets" 
+                                   FontSize="100" 
+                                   Padding="2" ><Run Text="&#xE8FC;"/></TextBlock>
+                            <TextBlock VerticalAlignment="Center"
+                                       TextAlignment="Center"
+                                   FontSize="25"
+                                   Padding="2"><Run Text="Listázás"/></TextBlock>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Grid>
+
+
+            <DataGrid x:Name="resultDataGrid"
+                      Height="0"
+                      Margin="10,0,10,0"
+                      BorderThickness="2"
+                      BorderBrush="DarkSlateGray"
+                      Background="White"
+                      FontSize="15"
+                      VerticalAlignment="Stretch"
+                      ColumnWidth="auto"
+                      CanUserAddRows="false"
+                      Style="{DynamicResource DGHeaderStyle}"
+                      VerticalGridLinesBrush="#FFE0E0E0"
+                      HorizontalGridLinesBrush="White"
+                      SelectionUnit="Cell"
+                      HorizontalScrollBarVisibility="Visible" 
+                      SelectedCellsChanged="ShowImage"
+                      RowHeaderWidth="0" 
+                      GridLinesVisibility="None" 
+                      IsReadOnly="True"
+                      Visibility="Hidden"
+                      IsEnabled="False"
+                      >
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Padding" Value="5,0,5,0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                    <Border Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                        <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.CellStyle>
+            </DataGrid>
+            <Grid x:Name="DatagridTabs"
+                  Height="0">
+                <StackPanel x:Name="Tabs"
+                            Margin="0,25,0,0"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            >
+                </StackPanel>
+            </Grid>
+            
+            <!--Greetings page-->
+            <StackPanel x:Name="GreetingPage"
+                        Height="0">
+                <TextBlock VerticalAlignment="Center"
+                            Foreground="#FF00686C"
+                            Margin="0,100,0,0"
+                            HorizontalAlignment="Center"
+                            FontFamily="Segoe MDL2 Assets" 
+                            FontSize="400" 
+                            Padding="2"><Run Text="&#xE774;"/></TextBlock>
+                <TextBlock VerticalAlignment="Center"
+                            Foreground="CadetBlue"
+                            TextAlignment="Center"
+                           FontWeight="Bold"
+                            TextWrapping="Wrap"
+                            FontSize="100"
+                            Padding="2"><Run Text="LTC Adatbázis"/></TextBlock>
+            </StackPanel>
+            <!--Riport output-->
+            <StackPanel x:Name="riportOutput"
+                        Orientation="Horizontal"
+                        Visibility="Visible">
+                <Grid Margin="15,0,15,0"
+                      Width="1890">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="250"/>
+                        <RowDefinition Height="450"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!--Left side, Riport-->
+                    <StackPanel Grid.Column="0"
+                          Grid.RowSpan="2">
+                        <Label Content="Riport"
+                               FontSize="70"
+                               FontWeight="Bold"
+                               Foreground="DarkSlateGray"
+                               Width="auto"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Top"
+                               Grid.ColumnSpan="1"
+                               Padding="-1"
+                               />
+                        <TextBox x:Name="txtBlck" 
+                             TextWrapping="Wrap"
+                             FontFamily="Consolas"
+                             FontWeight="Light"
+                             Height="595"
+                             FontSize="15"
+                             VerticalAlignment="Top" 
+                             ScrollViewer.CanContentScroll="True"
+                             ScrollViewer.VerticalScrollBarVisibility="Visible" 
+                         HorizontalAlignment="Center"
+                             IsReadOnly="True" Margin="10" Width="925"/>
+                    </StackPanel>
+                    
+                    <!--Right side Files-->
+                    <StackPanel Grid.Column="1"
+                          Grid.Row="0">
+                        <Label Content="Dokumentumok"
+                               FontSize="50"
+                               FontWeight="Bold"
+                               Foreground="DarkSlateGray"
+                               Width="auto"
+                               Margin="0,25,0,0"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Top"
+                               Grid.ColumnSpan="1"
+                               Padding="-1"
+                               />
+                        <TextBlock x:Name="Documentums"
+                                   TextAlignment="Left"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   Foreground="#FF00686C"
+                                   Margin="0,10,0,0">LTC CALIBRATON b2-5 20180206_AD_SW_fixture_withSN_[18061662][13 54 00][2018.03.21.].html
+                        </TextBlock>
+                    </StackPanel>
+                    <!--Right side Images-->
+                    
+
+                        <StackPanel Height="450"
+                                    Grid.Column="1"
+                                    Grid.Row="1"
+                                    >
+                            <Label Content="Képek"
+                                   FontSize="50"
+                                   FontWeight="Bold"
+                                   Foreground="DarkSlateGray"
+                                   Width="auto"
+                                   Height="65"
+                                   Margin="0,25,0,0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Top"
+                                   Grid.ColumnSpan="1"
+                                   Padding="-1"
+                                   />
+                            <ScrollViewer   Height="350"
+                                            CanContentScroll="False"
+                                            VerticalScrollBarVisibility="Visible"
+                                            >
+                                
+                                <StackPanel x:Name="Images"
+                                            >
+                                </StackPanel>
+                            </ScrollViewer>
+
+                    </StackPanel>
+
+
+                </Grid>
+            </StackPanel>
+
+
+
+        </StackPanel>
+
+        <!--Buttons and item count-->
+        <Grid VerticalAlignment="Bottom"
+            >
+            <!--Back button-->
+            <Button x:Name="BackBtn"
+                    HorizontalAlignment="Left"
+                    Margin="40,40,0,40"
+                    VerticalAlignment="Bottom"
+                    Height="auto"
+                    Width="auto"
+                    Background="#FDFDFD" 
+                    BorderBrush="White"
+                    Foreground="DarkSlateGray"
+                    KeyboardNavigation.IsTabStop="False"
+                    Click="BackBtn_Click"
+                    Cursor="Hand">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center"
+                               Margin="5" 
+                               HorizontalAlignment="Left"
+                               FontFamily="Segoe MDL2 Assets" 
+                               FontSize="48" 
+                               Padding="2" ><Run Text="&#xEC25;"/></TextBlock>
+                    <TextBlock VerticalAlignment="Center" 
+                               FontSize="25"
+                               Padding="2"><Run Text="Vissza"/></TextBlock>
+                </StackPanel>
+            </Button>
+
+            <!--Item count label-->
+            <Label  x:Name="resultRowCount"
+                    Content=""
+                    FontSize="35"
+                    FontWeight="Bold"
+                    Foreground="DarkSlateGray"
+                    Margin="15,35,40,40"
+                    Width="auto"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Grid.ColumnSpan="2"
+                    />
+        </Grid>
+    </Grid>
+
+</Window>

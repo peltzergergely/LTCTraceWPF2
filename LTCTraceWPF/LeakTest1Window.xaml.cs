@@ -38,6 +38,15 @@ namespace LTCTraceWPF
             GetAutoID();
             RefreshAutoIdSetting();
 
+            //Print golden DMC
+            // 985 és 614
+            //string s = @"^XA^MMT^PW406^LL0280^LS0^BY252,252^FT16,266^BXN,18,200,0,0,1,~^FH\^FD" + "LTC985" + @"^FS^FT345,274^A0B,25,26^FH\^FD" + "LTC 1E0002187AD B2.5" + @"^FS^FT376,274^A0B,25,26^FH\^FD" + "LTC985" + @"^FS^PQ1,0,1,Y^XZ";
+            //string printerName = "ZDesigner ZT420-203dpi ZPL";
+            //RawPrinterHelper.SendStringToPrinter(printerName, s);
+
+            //s = @"^XA^MMT^PW406^LL0280^LS0^BY252,252^FT16,266^BXN,18,200,0,0,1,~^FH\^FD" + "LTC614" + @"^FS^FT345,274^A0B,25,26^FH\^FD" + "LTC 1E0002187AD B2.5" + @"^FS^FT376,274^A0B,25,26^FH\^FD" + "LTC614" + @"^FS^PQ1,0,1,Y^XZ";
+            //RawPrinterHelper.SendStringToPrinter(printerName, s);
+
             versionCbx.SelectedIndex = 0;
         }
 
@@ -371,6 +380,11 @@ namespace LTCTraceWPF
                 barcodeText.Text = "LTC P514";
                 runningtext = "P514LTC";
             }
+        }
+
+        private void ManualPrintBtn_Click(object sender, RoutedEventArgs e)
+        {
+            new PrintHousingDMCWindow().Show();
         }
     }
 }

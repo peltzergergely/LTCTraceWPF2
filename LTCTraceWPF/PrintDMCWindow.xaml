@@ -17,6 +17,7 @@
     <Window.Resources>
         <BitmapImage x:Key="2.5" UriSource="..\Images\2.5img.png" />
         <BitmapImage x:Key="P514" UriSource="..\Images\p514img.png" />
+        <BitmapImage x:Key="3.5" UriSource="..\Images\3.5img.png" />
     </Window.Resources>
     <Grid>
         <StackPanel>
@@ -97,6 +98,11 @@
 
             <Image Source="{StaticResource P514}" 
                    Grid.Column="1"
+                   Grid.Row="1"
+                   />
+
+            <Image Source="{StaticResource 3.5}" 
+                   Grid.Column="2"
                    Grid.Row="1"
                    />
 
@@ -199,7 +205,7 @@
                         Grid.Row="1"
                         Margin="150,260,0,0">
                 <TextBox x:Name="ThreeFiveTopTxt"
-                         IsEnabled="False"
+                         IsEnabled="true"
                          FontSize="37"
                          FontWeight="Bold"
                          FontFamily="Arial Narrow"
@@ -221,9 +227,33 @@
 
             <StackPanel Grid.Column="2"
                         Grid.Row="1"
+                        Margin="320,260,0,0">
+                <TextBox x:Name="ThreeFiveRightTxt"
+                         IsEnabled="true"
+                         FontSize="37"
+                         FontWeight="Bold"
+                         FontFamily="Arial Narrow"
+                         Background="White"
+                         VerticalContentAlignment="Top"
+                         VerticalAlignment="Top"
+                         HorizontalContentAlignment="Left" 
+                         HorizontalAlignment="Left"
+                         Padding="-5,-8,0,-10"
+                         Width="102"
+                         Foreground="LightBlue"
+                         Height="35"
+                         GotFocus="ClearValue"
+                         LostFocus="SetDefaultValue"
+                         >
+                    B/VV/C
+                </TextBox>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2"
+                        Grid.Row="1"
                         Margin="150,300,0,0">
                 <TextBox x:Name="ThreeFiveBotTxt"
-                         IsEnabled="False"
+                         IsEnabled="true"
                          FontSize="37"
                          FontWeight="Bold"
                          FontFamily="Arial Narrow"
@@ -262,7 +292,9 @@
                     Foreground="DarkSlateGray"
                     >Nyomtatás</Button>
 
-            <Button IsEnabled="False"
+            <Button x:Name="ThreeFivePrintBtn"
+                    Click="ThreeFivePrintBtn_Click"
+                    IsEnabled="true"
                     Grid.Column="2"
                     Grid.Row="2"
                     Margin="20"
@@ -274,7 +306,7 @@
         <Label Height="60"
                  Width="340"
                  FontSize="25"
-                 Margin="0,0,500,40"
+                 Margin="0,0,300,90"
                  VerticalAlignment="Bottom"
                  HorizontalAlignment="Center"
                  VerticalContentAlignment="Center"
@@ -288,10 +320,34 @@
                  FontSize="40"
                  VerticalContentAlignment="Center"
                  HorizontalContentAlignment="Center"
-                 Margin="0,0,0,40"
+                 Margin="0,0,300,40"
+                 VerticalAlignment="Bottom"
+                 HorizontalAlignment="Center" 
+                 KeyUp="HousingKeyUpEvent">
+            
+        </TextBox>
+
+        <Label Height="60"
+                 Width="340"
+                 FontSize="25"
+                 Margin="300,0,0,90"
+                 VerticalAlignment="Bottom"
+                 HorizontalAlignment="Center"
+                 VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center">
+            Kalibráció nap
+        </Label>
+
+        <TextBox x:Name="calibDateTbx"
+                 Height="60"
+                 Width="250"
+                 FontSize="40"
+                 VerticalContentAlignment="Center"
+                 HorizontalContentAlignment="Center"
+                 Margin="300,0,0,40"
                  VerticalAlignment="Bottom"
                  HorizontalAlignment="Center" KeyUp="HousingKeyUpEvent">
-            
+
         </TextBox>
 
         <Button Height="60"
@@ -299,7 +355,7 @@
                  FontSize="20"
                  VerticalContentAlignment="Center"
                  HorizontalContentAlignment="Center"
-                 Margin="600,0,0,40"
+                 Margin="900,0,0,40"
                  VerticalAlignment="Bottom"
                  HorizontalAlignment="Center"
                 Click="Button_Click">Adatok kitöltése</Button>

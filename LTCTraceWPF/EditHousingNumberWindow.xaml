@@ -1,0 +1,513 @@
+﻿<Window x:Class="LTCTraceWPF.EditHousingNumberWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LTCTraceWPF"
+        mc:Ignorable="d"
+        Title="Ház Leak Teszt II." 
+        Height="1080"
+        Width="1920" 
+        ResizeMode="NoResize"
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen" 
+        WindowStyle="None" 
+        FontFamily="Verdana" 
+        Background="#FDFDFD">
+    <Grid>
+        <StackPanel>
+            <Label Content="Házszám módosítása"
+                   HorizontalContentAlignment="Center" 
+                   Padding="15" 
+                   FontSize="45" 
+                   Background="#00363a" 
+                   Foreground="white"/>
+            <TextBlock
+                   Padding="30" 
+                   FontSize="35" 
+                   Background="#006064" 
+                   Foreground="white"
+                TextWrapping="Wrap"
+                TextAlignment="Center"
+                   >Az adatok kitöltésével lehetőséged van házszám módosítására az adatbázisban!
+            </TextBlock>
+        </StackPanel>
+
+        <Grid HorizontalAlignment="Center"
+              Margin="0,230,0,130">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="900"/>
+                <ColumnDefinition Width="900"/>
+            </Grid.ColumnDefinitions>
+
+            <!--First Column-->
+            <Grid Grid.Row="0" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="400"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--Old Housing DM-->
+                <TextBlock Text="Régi ház DM:"
+                           FontSize="35"
+                           Foreground="DarkSlateGray"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Grid.Column="0" Grid.Row="0"/>
+                <!--New Housing DM #1-->
+                <TextBlock Text="Új ház DM:"
+                           FontSize="35"
+                           Foreground="DarkSlateGray"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Grid.Column="0" Grid.Row="1"/>
+                <!--New Housing DM #2-->
+                <TextBlock Text="Új ház DM újra:"
+                           FontSize="35"
+                           Foreground="DarkSlateGray"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Grid.Column="0" Grid.Row="2"/>
+                <!--Modifier-->
+                <TextBlock Text="Módosító:"
+                           FontSize="35"
+                           Foreground="DarkSlateGray"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Grid.Column="0" Grid.Row="4"/>
+                <!--Password #1-->
+                <TextBlock Text="Jelszó:"
+                           FontSize="35"
+                           Foreground="DarkSlateGray"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Grid.Column="0" Grid.Row="5"/>
+                <!--Password #2-->
+                <TextBlock Text="Jelszó újra:"
+                           FontSize="35"
+                           Foreground="DarkSlateGray"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Grid.Column="0" Grid.Row="6"/>
+
+                <!--Textboxes-->
+
+                <!--Old Housing DM Tbox-->
+                <TextBox x:Name="OldHousingDm"
+                         FontSize="35"
+                         Width="380"
+                         Foreground="DarkSlateGray"
+                         FontWeight="Normal"
+                         TextAlignment="Center"
+                         VerticalAlignment="Center"
+                         Grid.Column="1" Grid.Row="0"
+                         KeyUp="Inputs_LostFocus"/>
+                <!--New Housing DM Tbox #1-->
+                <TextBox x:Name="NewHousingDm1"
+                         FontSize="35"
+                         Width="380"
+                         Foreground="DarkSlateGray"
+                         FontWeight="Normal"
+                         TextAlignment="Center"
+                         VerticalAlignment="Center"
+                         Grid.Column="1" Grid.Row="1"
+                         KeyUp="Inputs_LostFocus"/>
+                <!--New Housing DM Tbox #2-->
+                <TextBox x:Name="NewHousingDm2"
+                         FontSize="35"
+                         Width="380"
+                         Foreground="DarkSlateGray"
+                         FontWeight="Normal"
+                         TextAlignment="Center"
+                         VerticalAlignment="Center"
+                         Grid.Column="1" Grid.Row="2"
+                         KeyUp="Inputs_LostFocus"/>
+                <!--Modifier Tbox-->
+                <TextBox  x:Name="Modifier"
+                         FontSize="35"
+                         Width="380"
+                         Foreground="DarkSlateGray"
+                         FontWeight="Normal"
+                         TextAlignment="Center"
+                         VerticalAlignment="Bottom"
+                         Grid.Column="1" Grid.Row="4"
+                         KeyUp="Inputs_LostFocus" 
+                          HorizontalAlignment="Left" 
+                          Margin="10,0,0,18"/>
+                <!--Password Tbox #1-->
+                <PasswordBox  x:Name="pw1"
+                         FontSize="35"
+                         Width="380"
+                         Foreground="DarkSlateGray"
+                         FontWeight="Normal"
+                         VerticalAlignment="Center"
+                         Grid.Column="1" Grid.Row="5"
+                             KeyUp="Inputs_LostFocus"/>
+                <!--Password Tbox #2-->
+                <PasswordBox  x:Name="pw2"
+                         FontSize="35"
+                         Width="380"
+                         Foreground="DarkSlateGray"
+                         FontWeight="Normal"
+                         VerticalAlignment="Center"
+                         Grid.Column="1" Grid.Row="6"
+                             KeyUp="Inputs_LostFocus"/>
+
+                <!--Validators-->
+
+                <!-- Old Dm validator-->
+                <Label x:Name="Validator_oldHousingDM"
+                    FontSize="50"
+                    Foreground="Red"
+                    VerticalAlignment="Center"
+                    Grid.Column="2"
+                    Grid.Row="0"
+                    HorizontalAlignment="left"
+                    FontWeight="Bold"
+                    Width="auto"
+                    FontFamily="Segoe MDL2 Assets"
+                    />
+                <!-- New Dm validator 1-->
+                <Label x:Name="Validator_newHousingDM1"
+                    FontSize="50"
+                    Foreground="Red"
+                    VerticalAlignment="Center"
+                    Grid.Column="2"
+                    Grid.Row="1"
+                    HorizontalAlignment="left"
+                    FontWeight="Bold"
+                    Width="auto"
+                    FontFamily="Segoe MDL2 Assets"
+                    />
+                <!-- New Dm validator 2-->
+                <Label x:Name="Validator_newHousingDM2"
+                    FontSize="50"
+                    Foreground="Red"
+                    VerticalAlignment="Center"
+                    Grid.Column="2"
+                    Grid.Row="2"
+                    HorizontalAlignment="left"
+                    FontWeight="Bold"
+                    Width="auto"
+                    FontFamily="Segoe MDL2 Assets"
+                    />
+                <!-- Modifier validator -->
+                <Label x:Name="Validator_modifier"
+                    FontSize="50"
+                    Foreground="Red"
+                    VerticalAlignment="Center"
+                    Grid.Column="2"
+                    Grid.Row="4"
+                    HorizontalAlignment="left"
+                    FontWeight="Bold"
+                    Width="auto"
+                    FontFamily="Segoe MDL2 Assets"
+                    />
+                <!-- Pw validator 1 -->
+                <Label x:Name="Validator_pw1"
+                    FontSize="50"
+                    Foreground="Red"
+                    VerticalAlignment="Center"
+                    Grid.Column="2"
+                    Grid.Row="5"
+                    HorizontalAlignment="left"
+                    FontWeight="Bold"
+                    Width="auto"
+                    FontFamily="Segoe MDL2 Assets"
+                    />
+                <!-- Pw validator 2 -->
+                <Label x:Name="Validator_pw2"
+                    FontSize="50"
+                    Foreground="Red"
+                    VerticalAlignment="Center"
+                    Grid.Column="2"
+                    Grid.Row="6"
+                    HorizontalAlignment="left"
+                    FontWeight="Bold"
+                    Width="auto"
+                    FontFamily="Segoe MDL2 Assets"
+                    />
+
+                <!-- Execute Button -->
+                <Button x:Name="Btn_Execute"
+                        Grid.ColumnSpan="3"
+                        Grid.Row="7"
+                        Margin="100 20 100 20"
+                        FontSize="30"
+                        Click="Btn_Execute_Click"
+                        Background="#FF03989E"
+                        Foreground="White" 
+                        FontFamily="Corbel"
+                    >MÓDOSÍT</Button>
+
+            </Grid>
+
+            <!--Second Column-->
+            <StackPanel Grid.Row="0" Grid.Column="1">
+
+                <!-- Warning panel-->
+                <StackPanel x:Name="WarningPanel"
+                            Height="0">
+
+                    <!-- Start of warning text -->
+                    <TextBlock Text="A módosítás"
+                           FontSize="46"
+                           Margin="0,70,0,0"
+                           Foreground="DarkSlateGray"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           />
+                    <!-- Number of changes-->
+                    <TextBlock x:Name="QuantityText"
+                           Text="24"
+                           FontSize="100"
+                           Foreground="#FF05868B"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           />
+                    <!-- End of warning text -->
+                    <TextBlock Text="adat változását okozza az adatbázisban!"
+                           FontSize="46"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           Margin="0,10,0,0"
+                           Foreground="DarkSlateGray"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           />
+                    <TextBlock Text="Biztosan végrehajtod?"
+                           FontSize="60"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           Margin="0,10,0,0"
+                           Foreground="DarkSlateGray"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           />
+
+                    <!-- Buttons -->
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Margin="0,40,0,0">
+                        <Button x:Name="okBtn" 
+                                    Margin="200,0,5,0"
+                                    HorizontalAlignment="Left" 
+                                    VerticalAlignment="Center"
+                                    Height="100" 
+                                    Width="300"
+                                    Background="#4B7D7D" 
+                                    BorderBrush="White" 
+                                    Foreground="#FDFDFD"
+                                    Focusable="False"
+                                    Click="okBtn_Click"
+                            >
+                            <TextBlock VerticalAlignment="Center" 
+                                       FontSize="40" 
+                                       Padding="2">Igen</TextBlock>
+                        </Button>
+
+                        <Button x:Name="nokBtn" 
+                                Margin="5,0,200,0"
+                                HorizontalAlignment="Right" 
+                                VerticalAlignment="Center"
+                                Height="100" 
+                                Width="300"
+                                Background="DarkSlateGray" 
+                                BorderBrush="White" 
+                                Foreground="#FDFDFD"
+                                Click="nokBtn_Click"
+                            >
+                            <TextBlock VerticalAlignment="Center" 
+                               FontSize="40" 
+                               Padding="2">Nem</TextBlock>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- No changes panel-->
+                <StackPanel x:Name="NochangePanel"
+                            Height="0">
+
+                    <!-- Start of warning text -->
+                    <TextBlock Text="A módosítás nem okozna változást az adatbázisban, változtass a paramétereken."
+                           FontSize="46"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                           Margin="0,170,0,0"
+                           Foreground="DarkSlateGray"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           />
+
+                </StackPanel>
+
+                <!-- Housing number already in DB-->
+                <StackPanel x:Name="HousingInDbPanel"
+                            Height="0">
+
+                    <!-- Start of warning text -->
+                    <TextBlock Text="A megadott új házszám már szerepel az adatbázisban! Adj meg másikat."
+                           FontSize="46"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                           Margin="0,170,0,0"
+                           Foreground="DarkSlateGray"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           />
+
+                </StackPanel>
+
+                <!-- Print DMC -->
+                <StackPanel x:Name="PrintDMCPanel"
+                            Height="0">
+
+                    <!-- Start of warning text -->
+
+                    <!-- End of warning text -->
+                    <TextBlock Text="Változások elmentve!"
+                           FontSize="60"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           Margin="0,100,0,0"
+                           Foreground="DarkSlateGray"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           />
+                    <TextBlock Text="Szeretnél új címkét nyomtatni a háznak?"
+                           FontSize="46"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           Margin="0,100,0,0"
+                           Foreground="DarkSlateGray"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           />
+
+                    <!-- Buttons -->
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Margin="0,40,0,0">
+                        <Button x:Name="printBtn" 
+                                    Margin="200,0,5,0"
+                                    HorizontalAlignment="Left" 
+                                    VerticalAlignment="Center"
+                                    Height="100" 
+                                    Width="300"
+                                    Background="#4B7D7D" 
+                                    BorderBrush="White" 
+                                    Foreground="#FDFDFD"
+                                    Focusable="False"
+                                Click="printBtn_Click"
+                            >
+                            <TextBlock VerticalAlignment="Center" 
+                                       FontSize="40" 
+                                       Padding="2">Igen</TextBlock>
+                        </Button>
+
+                        <Button x:Name="noPrintBtn" 
+                                Margin="5,0,200,0"
+                                HorizontalAlignment="Right" 
+                                VerticalAlignment="Center"
+                                Height="100" 
+                                Width="300"
+                                Background="DarkSlateGray" 
+                                BorderBrush="White" 
+                                Foreground="#FDFDFD"
+                                Click="nokBtn_Click"
+                            >
+                            <TextBlock VerticalAlignment="Center" 
+                               FontSize="40" 
+                               Padding="2">Nem</TextBlock>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+
+
+                <!-- Result Print DMC -->
+                <StackPanel x:Name="ResultPrintDMCPanel"
+                            Height="0">
+
+                    <!-- End of warning text -->
+                    <TextBlock Text="Nyomtatás kész!"
+                           FontSize="60"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           Margin="0,100,0,0"
+                           Foreground="DarkSlateGray"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           />
+
+                    <Button x:Name="newBtn" 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center"
+                                Height="150" 
+                                Width="400"
+                            Margin="0,100,0,0"
+                                Background="DarkSlateGray" 
+                                BorderBrush="White" 
+                                Foreground="#FDFDFD"
+                                Click="nokBtn_Click"
+                            >
+                        <TextBlock VerticalAlignment="Center" 
+                               FontSize="50" 
+                               Padding="2">Új módosítás</TextBlock>
+                    </Button>
+
+                </StackPanel>
+            </StackPanel>
+
+        </Grid>
+
+        <Button x:Name="MainMenuBtn" 
+                HorizontalAlignment="Left" 
+                Margin="40" 
+                VerticalAlignment="Bottom" 
+                Height="auto"
+                Width="auto" 
+                Click="MainMenuBtn_Click"
+                Background="#FDFDFD"
+                BorderBrush="White"
+                Foreground="DarkSlateGray"
+                KeyboardNavigation.IsTabStop="False">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center" 
+                           Margin="5" 
+                           HorizontalAlignment="Left" 
+                           FontFamily="Segoe MDL2 Assets"
+                           FontSize="48" 
+                           Padding="2" >&#xE8FC;</TextBlock>
+                <TextBlock VerticalAlignment="Center"
+                           FontSize="25" 
+                           Padding="2">Főmenü</TextBlock>
+            </StackPanel>
+        </Button>
+    </Grid>
+</Window>
