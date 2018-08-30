@@ -29,7 +29,7 @@
                    Foreground="white"
                 TextWrapping="Wrap"
                 TextAlignment="Center">
-                Csavarozás ELŐTT olvasd be a Ház és Mainboard Datamátrixot majd csavarozás után pipáld ki és mentsd el!
+                Olvasd be a Ház a Gateway és Mainboard Datamátrixot majd mentsd el az adatokat!
             </TextBlock>
         </StackPanel>
 
@@ -62,7 +62,7 @@
                            Grid.Column="0"
                            FontSize="35"
                            HorizontalAlignment="Right"
-                           Margin="30,15">Csavarozás, Gateway be kész</TextBlock>
+                           Margin="30,15">Gateway DataMatrix</TextBlock>
                 <TextBox x:Name="HousingDmTxbx" 
                          Grid.Row="0" 
                          Grid.Column="1" 
@@ -81,20 +81,15 @@
                          TabIndex="0"
                          KeyUp="OnKeyUpEvent"
                          LostFocus="MbDmTxbx_LostFocus"></TextBox>
-                <CheckBox x:Name="screwChkbx"
-                          Grid.Row="2"
-                          Grid.Column="1"
-                          HorizontalAlignment="left" 
-                          Margin="30,15" 
-                          KeyboardNavigation.TabIndex="1" 
-                          KeyUp="OnKeyUpEvent"
-                          >
-                    <CheckBox.LayoutTransform>
-                        <ScaleTransform ScaleX="3" 
-                                        ScaleY="3"
-                                        ></ScaleTransform>
-                    </CheckBox.LayoutTransform>
-                </CheckBox>
+                <TextBox x:Name="GwDmTxbx" 
+                         Grid.Row="2" 
+                         Grid.Column="1" 
+                         FontSize="35" 
+                         Margin="30,15"
+                         IsTabStop="True"
+                         TabIndex="0"
+                         KeyUp="OnKeyUpEvent"
+                         LostFocus="MbDmTxbx_LostFocus"></TextBox>
                 <TextBlock Name ="Resultlbl"
                     Grid.Row="3"
                            Grid.ColumnSpan="2" 

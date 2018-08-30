@@ -86,10 +86,10 @@ namespace LTCTraceWPF
             workSteps.Add("33 Ház FB Szerelés", "housing_fb_assy");
             workSteps.Add("34 Potting után Kapton", "potting");
             workSteps.Add("35 Ház Konnektor Szerelés", "housing_connector_assy");
-            workSteps.Add("41 Végszerelés I.", "final_assy_one");
+            workSteps.Add("41 Végszerelés I. MB", "final_assy_one");
+            workSteps.Add("41 Végszerelés I. GW", "final_assy_two");
             workSteps.Add("42 HiPot Teszt I.", "hipot_test_one");
             workSteps.Add("43 Kalibráció", "calibration");
-            workSteps.Add("44 Végszerelés II.", "final_assy_two");
             workSteps.Add("45 Leak Teszt II.", "housing_leak_test_two");
             workSteps.Add("46 Hipot Teszt II.", "hipot_test_two");
             workSteps.Add("47 EOL", "eol");
@@ -868,10 +868,10 @@ namespace LTCTraceWPF
             txtBlck.Text += GetDatasFromDb("33 HÁZ FILTERBOARD SZERELÉS:", "SELECT * FROM housing_fb_assy WHERE housing_dm = '" + riportByTbx.Text + "' ORDER BY ID DESC LIMIT 1");
             txtBlck.Text += GetDatasFromDb("34 POTTING UTÁN KAPTONOZÁS:", "SELECT * FROM potting WHERE housing_dm = '" + riportByTbx.Text + "' ORDER BY ID DESC LIMIT 1");
             txtBlck.Text += GetDatasFromDb("35 HÁZ KONNEKTOR SZERELÉS:", "SELECT * FROM housing_connector_assy WHERE housing_dm = '" + riportByTbx.Text + "' ORDER BY ID DESC LIMIT 1");
-            txtBlck.Text += GetDatasFromDb("41 VÉGSZERELÉS I.:", "SELECT * FROM final_assy_one WHERE housing_dm = '" + riportByTbx.Text + "' ORDER BY ID DESC LIMIT 1");
+            txtBlck.Text += GetDatasFromDb("41 VÉGSZERELÉS I. MB:", "SELECT * FROM final_assy_one WHERE housing_dm = '" + riportByTbx.Text + "' ORDER BY ID DESC LIMIT 1");
+            txtBlck.Text += GetDatasFromDb("41 VÉGSZERELÉS I. GW:", "SELECT * FROM final_assy_two WHERE housing_dm = '" + riportByTbx.Text + "' ORDER BY ID DESC LIMIT 1");
             txtBlck.Text += GetDatasFromDb("42 HIPOT I. GEN:", "SELECT * FROM hipot_test_one WHERE housing_dm = '" + riportByTbx.Text + "' ORDER BY ID DESC LIMIT 1");
             txtBlck.Text += GetDatasFromDb("43 KALIBRÁCIÓ GEN:", "SELECT * FROM calibration WHERE housing_dm = '" + riportByTbx.Text + "' ORDER BY ID DESC LIMIT 1");
-            txtBlck.Text += GetDatasFromDb("44 VÉGSZERELÉS II.:", "SELECT * FROM final_assy_two WHERE housing_dm = '" + riportByTbx.Text + "' ORDER BY ID DESC LIMIT 1");
             txtBlck.Text += GetDatasFromDb("45 LEAK TESZT VÉGSZERELÉS II. UTÁN:", "SELECT * FROM housing_leak_test_two WHERE housing_dm = '" + riportByTbx.Text + "' ORDER BY ID DESC LIMIT 1");
             txtBlck.Text += GetDatasFromDb("46 HIPOT II.:", "SELECT * FROM hipot_test_two WHERE housing_dm = '" + riportByTbx.Text + "' ORDER BY ID DESC LIMIT 1");
             txtBlck.Text += GetDatasFromDb("47 EOL:", "SELECT * FROM eol WHERE housing_dm = '" + riportByTbx.Text + "' ORDER BY ID DESC LIMIT 1");

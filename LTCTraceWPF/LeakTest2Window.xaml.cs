@@ -54,7 +54,7 @@ namespace LTCTraceWPF
 
             if (Keyboard.FocusedElement == SaveBtn)
             {
-                FormValidator();
+                
                 SaveBtn_Click(sender, e);
             }
             DmValidator();
@@ -145,6 +145,9 @@ namespace LTCTraceWPF
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
+            DmValidator();
+            FormValidator();
+
             if (AllFieldsValidated)
             {
                 DbInsert("housing_leak_test_two");
@@ -156,7 +159,7 @@ namespace LTCTraceWPF
             if (housingDmTxbx.Text.Length > 0)
             {
                 var preCheck = new DatabaseHelper();
-                if (preCheck.CountRowInDB("final_assy_two", "housing_dm", housingDmTxbx.Text) == 0)
+                if (preCheck.CountRowInDB("calibration", "housing_dm", housingDmTxbx.Text) == 0)
                 {
                     if (ConfigurationManager.AppSettings["PreCheckMode"] == "hard")
                     {

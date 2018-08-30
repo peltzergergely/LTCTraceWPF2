@@ -19,7 +19,7 @@ namespace LTCTraceWPF
         public bool IsDmValidated { get; set; } = false;
 
         public bool IsHousingDmValidated { get; set; } = false;
-
+        public bool IsGwDmValidated { get; set; } = false;
         public DateTime? StartedOn { get; set; } = null;
 
         public bool IsPreChkPassed { get; set; } = false;
@@ -52,10 +52,6 @@ namespace LTCTraceWPF
                 }
                 e.Handled = true;
 
-                if (Keyboard.FocusedElement == screwChkbx)
-                {
-                    screwChkbx.IsChecked = true;
-                }
             }
 
             if (Keyboard.FocusedElement == SaveBtn)
@@ -68,7 +64,7 @@ namespace LTCTraceWPF
         private void FormValidator()
         {
             var preChecker = new DatabaseHelper();
-            if (IsDmValidated == true && IsHousingDmValidated == true && screwChkbx.IsChecked == true)
+            if (IsDmValidated == true && IsHousingDmValidated == true && IsGwDmValidated == true)
             {
                 AllFieldsValidated = true;
             }
@@ -94,16 +90,22 @@ namespace LTCTraceWPF
             if (RegexValidation(MbDmTxbx.Text, "MbDmRegEx"))
                 IsDmValidated = true;
             else
-                IsDmValidated = false;  
+                IsDmValidated = false;
+
+            if (RegexValidation(GwDmTxbx.Text, "GwDmRegEx"))
+                IsGwDmValidated = true;
+            else
+                IsGwDmValidated = false;
         }
 
         private void ResetForm()
         {
             IsDmValidated = false;
+            IsGwDmValidated = false;
             AllFieldsValidated = false;
             HousingDmTxbx.Text = "";
             MbDmTxbx.Text = "";
-            screwChkbx.IsChecked = false;
+            GwDmTxbx.Text = "";
             IsPreChkPassed = false;
             HousingDmTxbx.Focus();
         }
@@ -130,6 +132,36 @@ namespace LTCTraceWPF
                     "VALUES(:housing_dm, :mb_dm, :pc_name, :started_on, :saved_on)", conn);
                 cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
                 cmd.Parameters.Add(new NpgsqlParameter("mb_dm", MbDmTxbx.Text));
+                cmd.Parameters.Add(new NpgsqlParameter("pc_name", System.Environment.MachineName));
+                cmd.Parameters.Add(new NpgsqlParameter("started_on", StartedOn));
+                cmd.Parameters.Add(new NpgsqlParameter("saved_on", DateTime.Now));
+                cmd.ExecuteNonQuery();
+                //closing connection ASAP
+                conn.Close();
+                //Resultlbl.Text = "Adatok elmentve! " + DateTime.Now;
+                //ResetForm();
+            }
+            catch (Exception msg)
+            {
+                MessageBox.Show(msg.ToString());
+                ResetForm();
+            }
+        }
+
+        private void DbInsertGw(string table) //DB insert
+        {
+            try
+            {
+                string connstring = ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString;
+                // Making connection with Npgsql provider
+                var conn = new NpgsqlConnection(connstring);
+                DateTime UploadMoment = DateTime.Now;
+                conn.Open();
+                // building SQL query
+                var cmd = new NpgsqlCommand("INSERT INTO " + table + " (housing_dm, gw_dm, pc_name, started_on, saved_on) " +
+                    "VALUES(:housing_dm, :gw_dm, :pc_name, :started_on, :saved_on)", conn);
+                cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
+                cmd.Parameters.Add(new NpgsqlParameter("gw_dm", GwDmTxbx.Text));
                 cmd.Parameters.Add(new NpgsqlParameter("pc_name", System.Environment.MachineName));
                 cmd.Parameters.Add(new NpgsqlParameter("started_on", StartedOn));
                 cmd.Parameters.Add(new NpgsqlParameter("saved_on", DateTime.Now));
@@ -204,6 +236,8 @@ namespace LTCTraceWPF
             if (AllFieldsValidated)
             {
                 DbInsert("final_assy_one");
+                DbInsertGw("final_assy_two");
+
             }
         }
 

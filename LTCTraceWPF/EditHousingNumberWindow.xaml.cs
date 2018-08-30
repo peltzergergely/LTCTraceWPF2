@@ -128,7 +128,12 @@ namespace LTCTraceWPF
 
         private void Btn_Execute_Click(object sender, RoutedEventArgs e)
         {
+            string newNumber = NewHousingDm1.Text;
+            newNumber = newNumber.Substring(newNumber.IndexOf("LTC") + 3, newNumber.Length - (newNumber.IndexOf("LTC") + 3));
+            string oldNumber = OldHousingDm.Text;
+            oldNumber = oldNumber.Substring(oldNumber.IndexOf("LTC") + 3, oldNumber.Length - (oldNumber.IndexOf("LTC") + 3));
             DatabaseHelper d = new DatabaseHelper();
+
             if (Validator_oldHousingDM.Content == null ||
                 Validator_newHousingDM1.Content == null ||
                 Validator_newHousingDM2.Content == null ||
@@ -146,6 +151,27 @@ namespace LTCTraceWPF
                 return;
             
             if (d.CountRowInDB("housing_leak_test_one","housing_dm", NewHousingDm1.Text) > 0)
+            {
+                HousingInDbPanel.Height = 720;
+                return;
+            }
+
+            int num = 0;
+            try
+            {
+                using (var conn = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString))
+                {
+                    conn.Open();
+
+                   num = int.Parse(new NpgsqlCommand("SELECT COUNT(*) FROM counter where ID = "+newNumber+"", conn).ExecuteScalar().ToString());
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            if (num > 0 && (newNumber != oldNumber))
             {
                 HousingInDbPanel.Height = 720;
                 return;
@@ -200,6 +226,34 @@ namespace LTCTraceWPF
             UpdateTable("housing_leak_test_two");
             UpdateTable("potting");
             UpdateTable("reworked_products");
+
+            //Update counter table
+            UpdateCounterTable();
+        }
+
+        private void UpdateCounterTable()
+        {
+            string newNumber = NewHousingDm1.Text;
+            newNumber = newNumber.Substring(newNumber.IndexOf("LTC")+3,newNumber.Length- (newNumber.IndexOf("LTC") + 3));
+
+            string oldNumber = OldHousingDm.Text;
+            oldNumber = oldNumber.Substring(oldNumber.IndexOf("LTC") + 3, oldNumber.Length - (oldNumber.IndexOf("LTC") + 3));
+
+            //MessageBox.Show(newNumber+" "+oldNumber);
+            try
+            {
+                using (var conn = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["LTCTrace.DBConnectionString"].ConnectionString))
+                {
+                    conn.Open();
+
+                    new NpgsqlCommand("UPDATE counter SET id = "+newNumber+" WHERE id = "+oldNumber+"", conn).ExecuteNonQuery();
+                    //MessageBox.Show("UPDATE counter SET id = " + newNumber + " WHERE id = " + oldNumber + "");
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         private void UpdateTable(string t)

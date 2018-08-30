@@ -499,8 +499,8 @@
                             Grid.RowSpan="2"
                             HorizontalAlignment="Center"
                             Grid.Row="0"
-                                Click="MbRiportBtn_Click"
-                                Cursor="Hand"
+                            Click="MbRiportBtn_Click"
+                            Cursor="Hand"
                             >
                             <StackPanel>
                                 <TextBlock VerticalAlignment="Top"
