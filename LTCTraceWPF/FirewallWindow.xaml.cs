@@ -126,6 +126,7 @@ namespace LTCTraceWPF
             HousingDmTxbx.Text = "";
             Label1Txbx.Text = "";
             Label2Txbx.Text = "";
+            NoteTxBx.Text = "";
             HousingDmTxbx.Focus();
         }
 
@@ -163,8 +164,8 @@ namespace LTCTraceWPF
                     using (NpgsqlConnection conn = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["ltctrace.dbconnectionstring"].ConnectionString))
                     {
                         conn.Open();
-                        var cmd = new NpgsqlCommand("insert into " + table + " (housing_dm, pc_name, started_on, saved_on, label_one, label_two, pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8, pic9) " +
-                        "values(:housing_dm, :pc_name, :started_on, :saved_on, :label_one, :label_two, :pic1, :pic2, :pic3, :pic4, :pic5, :pic6, :pic7, :pic8, :pic9)", conn);
+                        var cmd = new NpgsqlCommand("insert into " + table + " (housing_dm, pc_name, started_on, saved_on, label_one, label_two, pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8, pic9,note) " +
+                        "values(:housing_dm, :pc_name, :started_on, :saved_on, :label_one, :label_two, :pic1, :pic2, :pic3, :pic4, :pic5, :pic6, :pic7, :pic8, :pic9,:note)", conn);
                         cmd.Parameters.Add(new NpgsqlParameter("housing_dm", HousingDmTxbx.Text));
                         cmd.Parameters.Add(new NpgsqlParameter("pc_name", System.Environment.MachineName));
                         cmd.Parameters.Add(new NpgsqlParameter("started_on", StartedOn));
@@ -182,6 +183,7 @@ namespace LTCTraceWPF
                                 cmd.Parameters.Add(new NpgsqlParameter("pic" + (i + 1).ToString(), imgByteArray[i]));
                             }
                         }
+                        cmd.Parameters.Add(new NpgsqlParameter("note", NoteTxBx.Text));
 
                         int result = cmd.ExecuteNonQuery();
                         if (result == 1)
@@ -312,7 +314,7 @@ namespace LTCTraceWPF
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
             FormValidator();
-            if (AllFieldsValidated)
+            if (AllFieldsValidated && NoteTxBx.Text.Length <= 100)
             {
                 DbInsert("firewall");
             }
