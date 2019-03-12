@@ -394,6 +394,7 @@ namespace LTCTraceWPF
         {
             w.Close();
             this.Close();
+            Application.Current.Shutdown();
         }
 
         #region Animation Methods
